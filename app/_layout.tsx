@@ -1,49 +1,52 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from 'react';
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Providers } from '@/core/providers';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+import "../global.css";
+import useAuthStore from '@/core/store/auth.store';
+import { injectLogout } from '@/core/api/httpClient';
+import { useAppStore } from '@/core/store/app.store';
+
 SplashScreen.preventAutoHideAsync();
 
-// Disable reanimated warnings
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
   strict: false,
 });
 
+export const unstable_settings = {
+  initialRouteName: '(main)',
+};
+
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  const { isReady, initialize } = useAuthStore();
+  const { loadFonts, fontsLoaded } = useAppStore()
 
   useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-      if (error) {
-        console.warn(`Error in loading fonts: ${error}`);
-      }
-    }
-  }, [loaded, error]);
+    loadFonts()
+    injectLogout(() => useAuthStore.setState({ user: null }));
+    initialize();
+  }, []);
 
-  if (!loaded && !error) {
-    return null;
-  }
+  useEffect(() => {
+    if (isReady && fontsLoaded) {
+      SplashScreen.hideAsync().then(() => console.log("splash hidden"));
+    }
+  }, [isReady, fontsLoaded]);
+
+  if (!isReady || !fontsLoaded) return null;
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <Providers>
+      <Stack screenOptions={{ headerShown: false }} />
+      <StatusBar hidden />
+    </Providers>
   );
 }
