@@ -14,17 +14,17 @@ export default function IndexScreen() {
                 <View
                     className="bg-white items-center self-center justify-center py-3 px-20 rounded-lg border border-secondary-500"
                     style={boxShadow().button}>
-                    <Text className="font-cairo-semibold">قدها</Text>
+                    <Text className="font-cairo-bold">قدها</Text>
                 </View>
                 <ViewWrapper>
                     <Text className="text-center text-xl font-cairo-bold mb-4 text-primary-500">مرحبًا بك في عالم التحدي!</Text>
-                    <Text className="text-center font-cairo-semibold">
-                        هنا تبدأ رحلتك لاختبار ذكائك ومعرفتك في مختلف المجالات كوّن حسابك
+                    <Text className="text-center font-cairo-bold">
+                        هنا تبدأ رحلتك لاختبار ذكائك ومعرفتك في مختلف المجالات
                     </Text>
-                    <Text className="text-center font-cairo-semibold">
+                    <Text className="text-center font-cairo-bold">
                         كوّن حسابك لتتبع نتائجك، اجمع النقاط، وتنافس مع أصدقائك على الصدارة.
                     </Text>
-                    <Text className="text-center font-cairo-semibold mt-6">
+                    <Text className="text-center font-cairo-bold mt-6">
                         ابدأ الآن واختر طريقتك:
                     </Text>
                     <View className="flex-row gap-3 items-center justify-center mt-4">

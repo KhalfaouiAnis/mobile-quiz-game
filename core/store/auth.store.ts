@@ -15,8 +15,8 @@ import { TokenService } from "../services/token-manager";
 import { httpClient } from "../api/httpClient";
 
 interface AuthState {
-  user: User | null;
   isReady: boolean;
+  user: User | null;
   _hasHydrated: boolean;
   hasLaunched: boolean;
   authType: "STANDARD" | "GOOGLE" | "FACEBOOK" | "APPLE";
@@ -45,6 +45,8 @@ const useAuthStore = create<AuthState>()(
         TokenService.clearTokens();
         set({
           user: null,
+          authType: "STANDARD",
+          isReady: true,
         });
         queryClient.clear();
       },
@@ -62,17 +64,23 @@ const useAuthStore = create<AuthState>()(
           const currentTime = Date.now() / 1000;
 
           if (decoded.exp > currentTime) {
-            set({ isReady: true, hasLaunched });
+            if (!get().user) {
+              const { data } = await httpClient.get("/auth/me");
+              set({ isReady: true, user: data, hasLaunched });
+            } else {
+              set({ isReady: true });
+            }
           } else {
             httpClient
               .get("/auth/me")
               .then(({ data }) =>
                 set({ user: data, hasLaunched, isReady: true })
-              );
+              )
+              .catch(() => get().signOut());
           }
         } catch (e) {
           console.error("App bootstrap failed", e);
-          set({ isReady: true, user: null });
+          get().signOut();
         }
       },
       setHasHydrated: () => set({ _hasHydrated: true }),

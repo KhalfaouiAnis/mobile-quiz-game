@@ -8,7 +8,7 @@ import { Alert, Platform, TouchableOpacity } from 'react-native';
 export default function AppleButton({ onSuccess }: { onSuccess?: (user: any) => void }) {
     const router = useRouter();
 
-    if (Platform.OS !== 'ios') return null;
+    // if (Platform.OS !== 'ios') return null;
 
     const handlePress = async () => {
         // try {

@@ -6,7 +6,7 @@ export default function ViewWrapper({ children }: { children: ReactNode }) {
     return (
         <ScrollView style={boxShadow().button}
             className="relative bg-white border border-secondary-500 py-6 px-8 rounded-3xl"
-            contentContainerClassName="items-center pb-8"
+            contentContainerClassName="items-center"
         >
             {children}
         </ScrollView>

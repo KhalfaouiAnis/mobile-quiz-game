@@ -8,11 +8,11 @@ import {
 } from 'react-native-reanimated';
 
 import { Providers } from '@/core/providers';
-
-import "../global.css";
-import useAuthStore from '@/core/store/auth.store';
+import useAuthStore, { authStore } from '@/core/store/auth.store';
 import { injectLogout } from '@/core/api/httpClient';
 import { useAppStore } from '@/core/store/app.store';
+
+import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,17 +29,30 @@ export default function RootLayout() {
   const { isReady, initialize } = useAuthStore();
   const { loadFonts, fontsLoaded } = useAppStore()
 
-  useEffect(() => {
+ useEffect(() => {
     loadFonts()
-    injectLogout(() => useAuthStore.setState({ user: null }));
-    initialize();
-  }, []);
+  }, [loadFonts]);
 
   useEffect(() => {
-    if (isReady && fontsLoaded) {
-      SplashScreen.hideAsync().then(() => console.log("splash hidden"));
-    }
+    initialize()
+  }, [initialize]);
+
+  useEffect(() => {
+    const hideSplash = async () => {
+      if (isReady && fontsLoaded) {
+        requestAnimationFrame(async () => {
+          await SplashScreen.hideAsync();
+          console.log("Splash hidden cleanly");
+        });
+      }
+    };
+
+    hideSplash();
   }, [isReady, fontsLoaded]);
+
+  useEffect(() => {
+    injectLogout(() => authStore?.getState().signOut());
+  }, []);
 
   if (!isReady || !fontsLoaded) return null;
 

@@ -14,7 +14,7 @@ module.exports = {
           500: "#FFF900",
         },
         success: "#32BA7C",
-        red: "#F1190E",
+        error: "#F1190E",
       },
       textColor: {
         secondary: {

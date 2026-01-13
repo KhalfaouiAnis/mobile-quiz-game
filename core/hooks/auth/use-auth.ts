@@ -1,12 +1,15 @@
 import {
   attemptLogin,
   createAccount,
+  requestPasswordReset,
   verifyOTP,
 } from "@/core/services/authentication/standard";
 import { authStore } from "@/core/store/auth.store";
 import {
   LoginInterface,
   LoginSchema,
+  RequestResetPasswordInterface,
+  RequestResetPasswordSchema,
   ResetPasswordInterface,
   ResetPasswordSchema,
   SignupInterface,
@@ -18,6 +21,7 @@ import { mmkvStorage } from "@/core/store/storage";
 import {
   ACC_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
+  RESET_PASSWORD_TOKEN,
 } from "@/core/constants";
 
 export function useSignIn() {
@@ -27,13 +31,15 @@ export function useSignIn() {
     handleSubmit,
     formState: { errors, isSubmitting },
     control,
-  } = useFormHook(LoginSchema, { defaultValues: { phone: "", password: "" } });
+  } = useFormHook(LoginSchema, {
+    defaultValues: { email: undefined, username: undefined, password: "" },
+  });
 
-  const onSubmit = async ({ phone, password }: LoginInterface) => {
+  const onSubmit = async ({ email, username, password }: LoginInterface) => {
     try {
       const {
         data: { accessToken, refreshToken, user },
-      } = await attemptLogin(phone, password);
+      } = await attemptLogin(password, email, username);
       mmkvStorage.set(ACC_TOKEN_STORAGE_KEY, accessToken);
       mmkvStorage.set(REFRESH_TOKEN_STORAGE_KEY, refreshToken);
       authStore.setState({ user });
@@ -56,9 +62,8 @@ export function useSignUp() {
   } = useFormHook(SignupSchema, {
     defaultValues: {
       email: undefined,
+      username: undefined,
       password: "",
-      fullname: "",
-      phone: "",
     },
   });
 
@@ -76,6 +81,30 @@ export function useSignUp() {
   return { control, handleSubmit, onSubmit, errors, isSubmitting };
 }
 
+export function useRequestPasswordReset() {
+  const router = useRouter();
+
+  const {
+    control,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+  } = useFormHook(RequestResetPasswordSchema, {
+    defaultValues: { email: undefined },
+  });
+
+  const onSubmit = async (payload: RequestResetPasswordInterface) => {
+    try {
+      const { data } = await requestPasswordReset(payload.email);
+      if (data.otp_sent && data.token) {
+        mmkvStorage.set(RESET_PASSWORD_TOKEN, data.token);
+      }
+    } catch (error) {}
+    router.replace("/otp_verification_success");
+  };
+
+  return { control, errors, isSubmitting, handleSubmit, onSubmit };
+}
+
 export function useResetPassword() {
   const router = useRouter();
 
@@ -84,7 +113,7 @@ export function useResetPassword() {
     formState: { errors, isSubmitting },
     handleSubmit,
   } = useFormHook(ResetPasswordSchema, {
-    defaultValues: { phone: "", password: "", confirmPassword: "" },
+    defaultValues: { email: "", password: "", confirmPassword: "" },
   });
 
   const onSubmit = (data: ResetPasswordInterface) => {

@@ -6,15 +6,13 @@ export default function Index() {
 
   if (!isReady || !_hasHydrated) return null;
 
-  return <Redirect href={"/(main)/(profile)"} />
-
-  // if (!hasLaunched) {
-  //   return <Redirect href="/(welcome)" />;
-  // }
+  if (!hasLaunched) {
+    return <Redirect href="/(welcome)" />;
+  }
 
   // if (!user) {
   //   return <Redirect href="/(auth)" />;
   // }
 
-  // return <Redirect href="/(main)" />;
+  return <Redirect href="/(main)" />;
 }

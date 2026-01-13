@@ -14,6 +14,11 @@ export const httpClient = axios.create({
 httpClient.interceptors.request.use(async (config) => {
   const token = TokenService.getAccessToken();
   if (token) config.headers.Authorization = `Bearer ${token}`;
+
+  if (config.data instanceof FormData) {
+    config.headers["Content-Type"] = "multipart/form-data";
+  }
+
   return config;
 });
 
@@ -27,6 +32,13 @@ httpClient.interceptors.response.use(
 
       try {
         const refreshToken = TokenService.getRefreshToken();
+
+        if (!refreshToken) {
+          TokenService.clearTokens();
+          onUnauthorized();
+          return;
+        }
+        
         const { data } = await axios.post(
           process.env.EXPO_PUBLIC_API_URL + "/api/v1/auth/refresh",
           {

@@ -1,24 +1,56 @@
+import { MainCard } from "@/core/components/ui/layout/main/main-card";
+import { MainHeader } from "@/core/components/ui/layout/main/main-header";
 import Container from "@/core/components/ui/shared/container";
-import { boxShadow } from "@/core/utils/cn";
-import {  Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 export default function Index() {
     return (
-        <Container backgroundColor="#FFF900"
-            header={
-                <View
-                    className="items-center justify-center py-3 px-20 rounded-lg bg-secondary-500"
-                    style={boxShadow(0, 0, 50, 0, "rgba(141,247,251,1)").button}>
-                    <Text className="font-semibold">قدها</Text>
-                </View>
-            }
-        >
-            <View className="flex-1 items-center justify-center gap-y-8 bg-primary-500">
-                <View
-                    className="bg-white items-center justify-center py-3 px-20 rounded-lg border border-secondary-500"
-                    style={boxShadow().button}>
-                    <Text className="font-semibold">قدها</Text>
-                </View>
+        <Container header={<MainHeader />}>
+            <View className="flex-1 flex-row items-center flex-wrap gap-2 bg-primary-500">
+                <MainCard
+                    title="an liaabet kadaha"
+                    infoPopup
+                    content={
+                        <View className="p-2">
+                            <Text></Text>
+                            <Text></Text>
+                            <Text></Text>
+                        </View>
+                    }
+                />
+                <MainCard
+                    title="an liaabet kadaha"
+                    infoPopup
+                    content={
+                        <View className="p-2">
+                            <Text></Text>
+                            <Text></Text>
+                            <Text></Text>
+                        </View>
+                    }
+                />
+                <MainCard
+                    title="an liaabet kadaha"
+                    infoPopup
+                    content={
+                        <View className="p-2">
+                            <Text></Text>
+                            <Text></Text>
+                            <Text></Text>
+                        </View>
+                    }
+                />
+                <MainCard
+                    title="an liaabet kadaha"
+                    infoPopup
+                    content={
+                        <View className="p-2">
+                            <Text></Text>
+                            <Text></Text>
+                            <Text></Text>
+                        </View>
+                    }
+                />
             </View>
         </Container>
     );

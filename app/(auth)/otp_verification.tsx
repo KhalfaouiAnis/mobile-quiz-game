@@ -4,13 +4,18 @@ import Container from "@/core/components/ui/shared/container";
 import OTPVerificationInput from "@/core/components/ui/base/text/otp-verification-input";
 import ViewWrapper from "@/core/components/ui/shared/view-wrapper";
 import { useOTP } from "@/core/hooks/auth/use-auth";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
+import { useState } from "react";
 
 export default function OTPVerificationScreen() {
-    const { email } = useLocalSearchParams()
+    const { email } = useLocalSearchParams<{ email: string }>()
     const { verifyOtp } = useOTP()
-    const router = useRouter();
+    const [otp, setOtp] = useState("");
+
+    const handleVerifyOtp = async () => {
+        verifyOtp(email, otp)
+    }
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader />}>
@@ -19,13 +24,13 @@ export default function OTPVerificationScreen() {
                     <Text className="text-center text-xl font-cairo-bold text-primary-500">
                         تحقق من بريدك الإلكتروني
                     </Text>
-                    <Text numberOfLines={2} className="text-center text-lg font-cairo-semibold my-4">
+                    <Text numberOfLines={2} className="text-center text-lg font-cairo-bold my-4">
                         لقد أرسلنا رابط إعادة الضبط إلى ilhem..@gmail.com أدخل الرمز المكون من 5 أرقام المذكور في البريد الإلكتروني
                     </Text>
                     {/* <OTPVerificationInput numberOfElements={5} onComplete={async (otp) => await verifyOtp(email as string, otp)} /> */}
-                    <OTPVerificationInput numberOfElements={5} onComplete={console.log} />
+                    <OTPVerificationInput numberOfElements={5} onComplete={setOtp} />
                     <View className="w-1/4 mt-6 flex-1">
-                        <AppButton title="رمز التحقق" onPress={() => router.push("/otp_verification_success")} />
+                        <AppButton title="رمز التحقق" onPress={handleVerifyOtp} />
                     </View>
                 </ViewWrapper>
             </View>

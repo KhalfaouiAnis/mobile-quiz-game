@@ -30,4 +30,6 @@ const useConfigStore = create<ConfigState>()(
   )
 );
 
+export const configStore = useConfigStore;
+
 export default useConfigStore;

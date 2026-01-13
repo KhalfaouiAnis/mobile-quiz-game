@@ -7,11 +7,12 @@ import AuthHeader from "@/core/components/ui/layout/auth-header";
 import Container from "@/core/components/ui/shared/container";
 import { OrSeparator } from "@/core/components/ui/shared/or-separator";
 import ViewWrapper from "@/core/components/ui/shared/view-wrapper";
-import { Link, useRouter } from "expo-router";
+import { useSignIn } from "@/core/hooks/auth/use-auth";
+import { Link } from "expo-router";
 import { ScrollView, Text, View } from "react-native";
 
 export default function SignInScreen() {
-    const router = useRouter();
+    const { errors, handleSubmit, onSubmit, isSubmitting, control } = useSignIn();
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader />}>
@@ -20,20 +21,34 @@ export default function SignInScreen() {
                     <Text className="text-center text-xl font-cairo-bold mb-4 text-primary-500">تسجيل الدخول</Text>
                     <View className="w-full">
                         <View className="flex-row gap-8">
-                            <AppTextInput label="اسم المستخدم/البريد الالكتروني" />
-                            <AppTextInput label="كلمة المرور" secureTextEntry />
+                            <AppTextInput
+                                name="email"
+                                required
+                                control={control}
+                                error={errors.email?.message}
+                                label="اسم المستخدم/البريد الالكتروني" />
+                            <AppTextInput
+                                name="password"
+                                required
+                                control={control}
+                                error={errors.password?.message}
+                                label="كلمة المرور" secureTextEntry />
                         </View>
                         <View className="w-full items-end">
-                            <Link href="/forgot_password">هل نسيت كلمة المرور؟</Link>
+                            <Link className="font-cairo" href="/forgot_password">هل نسيت كلمة المرور؟</Link>
                         </View>
                     </View>
                     <View className="w-1/5 mt-2">
-                        <AppButton title="دخول" onPress={() => router.push("/(main)")} />
+                        <AppButton
+                            title="دخول"
+                            onPress={handleSubmit(onSubmit)}
+                            loading={isSubmitting}
+                        />
                     </View>
                     <View className="w-1/3">
                         <OrSeparator label="أو" />
                     </View>
-                    <View className="flex-row gap-3 items-center justify-center">
+                    <View className="flex-row gap-6 items-center justify-center">
                         <FacebookButton />
                         <AppleButton />
                         <GoogleButton />

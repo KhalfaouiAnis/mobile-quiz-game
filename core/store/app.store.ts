@@ -25,7 +25,7 @@ export const useAppStore = create<AppState>((set) => ({
         CairoBold: Cairo_Bold,
       });
 
-      await fontPromise; // Wait for fonts to finish
+      await fontPromise;
     } catch (e) {
       console.error("App bootstrap failed", e);
     } finally {

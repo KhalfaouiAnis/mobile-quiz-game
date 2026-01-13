@@ -1,41 +1,38 @@
 import { z } from "zod";
-import { UserRole } from "..";
 
 export const EmailSchema = z.object({
-  email: z.string().email("Please enter a valid email"),
+  email: z.email("Please enter a valid email"),
 });
 
 export const PasswordSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-export const LoginSchema = z.object({
-  phone: z
+export const SignupSchema = z.object({
+  username: z
     .string()
-    .min(6, "Please enter a valid phone number")
-    .max(15, "Please enter a valid phone number"),
-  password: z.string().min(6, "Password is required"),
+    .min(1)
+    .max(50)
+    .regex(/^[a-zA-Z0-9_]+$/)
+    .optional(),
+  email: EmailSchema.shape.email,
+  password: PasswordSchema.shape.password,
+  phone: z.string().optional(),
 });
 
-export const SignupSchema = z.object({
-  fullname: z.string().min(3, "Name must be at least 3 characters"),
-  phone: z
-  .string()
-  .min(6, "Please enter a valid phone number")
-  .max(15, "Please enter a valid phone number"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  email: z.string().email("Please enter a valid email").optional(),
-  role: z.optional(z.nativeEnum(UserRole)),
+export const LoginSchema = z.object({
+  username: z.string().optional(),
+  email: EmailSchema.shape.email.optional(),
+  password: PasswordSchema.shape.password,
 });
 
 export const RequestResetPasswordSchema = z.object({
-  email: z.optional(EmailSchema.shape.email),
-  phone: z.optional(SignupSchema.shape.phone),
+  email: EmailSchema.shape.email,
 });
 
 export const ResetPasswordSchema = z
   .object({
-    phone: z.string().optional(),
+    email: z.email(),
     password: z.string({ message: "Password is required" }).min(6),
     confirmPassword: z.string({ message: "Password is required" }).min(6),
   })
