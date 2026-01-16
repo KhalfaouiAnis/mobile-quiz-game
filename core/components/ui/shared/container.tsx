@@ -6,8 +6,8 @@ const Container = ({ children, backgroundColor, header }:
 ) => {
     const { bottom } = useSafeAreaInsets()
     return <SafeAreaView
-        edges={['left', 'right']}
-        style={{ marginBottom: bottom, backgroundColor, flex: 1, direction: "rtl", paddingTop: 2 }}
+        edges={['left', 'right', "bottom", "top"]}
+        style={{ marginBottom: bottom, backgroundColor: backgroundColor || "#00A6DA", flex: 1, direction: "rtl", paddingTop: 2 }}
     >
         {header && header}
         {children}

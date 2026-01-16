@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Pressable } from "react-native";
 
-export default function ArrowBack() {
+export default function ArrowBack({ iconName }: { iconName?: keyof typeof Ionicons.glyphMap }) {
     const handleNavigate = () => {
         if (router.canGoBack()) {
             router.back()
@@ -15,9 +15,9 @@ export default function ArrowBack() {
         <Pressable
             hitSlop={10}
             onPress={handleNavigate}
-            style={boxShadow(4,4,4,0, "rgb(000 000 000 / 0.70)").button}
+            style={boxShadow(4, 4, 4, 0, "rgb(000 000 000 / 0.70)").button}
             className='p-0.5 bg-white rounded-full self-start absolute right-6 top-0'>
-            <Ionicons name="chevron-forward" size={30} color="#00A6DA" />
+            <Ionicons name={iconName ? iconName : "chevron-forward"} size={30} color="#00A6DA" />
         </Pressable>
     )
 }

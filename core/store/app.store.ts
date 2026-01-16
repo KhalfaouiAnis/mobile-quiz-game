@@ -27,7 +27,7 @@ export const useAppStore = create<AppState>((set) => ({
 
       await fontPromise;
     } catch (e) {
-      console.error("App bootstrap failed", e);
+      console.error("Failed to load fonts", e);
     } finally {
       set({ fontsLoaded: true });
     }

@@ -16,7 +16,7 @@ const AuthHeader = ({ label, showLogo = true }: Props) => {
                     <Image source={IMAGES.Game1Logo} style={{ width: 200, height: 50, objectFit: "contain", borderRadius: 8 }} />
                 )}
                 {label && (
-                    <Text className='text-white text-center text-xl'>{label}</Text>
+                    <Text className='text-white text-center text-xl font-cairo-bold'>{label}</Text>
                 )}
             </View>
         </View>

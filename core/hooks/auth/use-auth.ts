@@ -2,7 +2,9 @@ import {
   attemptLogin,
   createAccount,
   requestPasswordReset,
+  resetPassword,
   verifyOTP,
+  verifyPasswordResetOTP,
 } from "@/core/services/authentication/standard";
 import { authStore } from "@/core/store/auth.store";
 import {
@@ -17,12 +19,7 @@ import {
 } from "@/core/types/schema/auth";
 import { useRouter } from "expo-router";
 import { useFormHook } from "../use-form-hook";
-import { mmkvStorage } from "@/core/store/storage";
-import {
-  ACC_TOKEN_STORAGE_KEY,
-  REFRESH_TOKEN_STORAGE_KEY,
-  RESET_PASSWORD_TOKEN,
-} from "@/core/constants";
+import { TokenService } from "@/core/services/token-manager";
 
 export function useSignIn() {
   const router = useRouter();
@@ -32,17 +29,17 @@ export function useSignIn() {
     formState: { errors, isSubmitting },
     control,
   } = useFormHook(LoginSchema, {
-    defaultValues: { email: undefined, username: undefined, password: "" },
+    defaultValues: { username: undefined, password: "" },
   });
 
-  const onSubmit = async ({ email, username, password }: LoginInterface) => {
+  const onSubmit = async ({ username, password }: LoginInterface) => {
     try {
       const {
-        data: { accessToken, refreshToken, user },
-      } = await attemptLogin(password, email, username);
-      mmkvStorage.set(ACC_TOKEN_STORAGE_KEY, accessToken);
-      mmkvStorage.set(REFRESH_TOKEN_STORAGE_KEY, refreshToken);
-      authStore.setState({ user });
+        data: { data },
+      } = await attemptLogin(username, password);
+      TokenService.setAccessToken(data?.accessToken!);
+      TokenService.setRefreshToken(data?.refreshToken!);
+      authStore?.setState({ user: data?.user });
       router.replace("/(main)");
     } catch (error) {
       console.log({ error });
@@ -69,10 +66,13 @@ export function useSignUp() {
 
   const onSubmit = async (data: SignupInterface) => {
     try {
-      await createAccount(data);
-      // await requestOTP(data.phone);
-      // router.navigate(`/otp_verification?phone=${data.phone}`);
-      router.replace("/signin");
+      const {
+        data: { email, otp_sent },
+      } = await createAccount(data);
+      if (otp_sent)
+        // await requestOTP(data.phone);
+        // router.navigate(`/otp_verification?phone=${data.phone}`);
+        router.replace("/(auth)/signin");
     } catch (error) {
       console.log({ error });
     }
@@ -94,15 +94,35 @@ export function useRequestPasswordReset() {
 
   const onSubmit = async (payload: RequestResetPasswordInterface) => {
     try {
-      const { data } = await requestPasswordReset(payload.email);
-      if (data.otp_sent && data.token) {
-        mmkvStorage.set(RESET_PASSWORD_TOKEN, data.token);
+      const {
+        data: { data },
+      } = await requestPasswordReset(payload.email);
+      if (data?.otp_sent && data.token) {
+        TokenService.setAccessToken(data.token);
+        router.replace("/otp_verification");
       }
     } catch (error) {}
-    router.replace("/otp_verification_success");
   };
 
   return { control, errors, isSubmitting, handleSubmit, onSubmit };
+}
+
+export function useResetPasswordOTP() {
+  const router = useRouter();
+  const verifyOtp = async (email: string, code: string) => {
+    try {
+      const {
+        data: { success },
+      } = await verifyPasswordResetOTP(email, code);
+      if (success) {
+        router.replace("/otp_verification_success");
+      }
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
+  return { verifyOtp };
 }
 
 export function useResetPassword() {
@@ -113,11 +133,18 @@ export function useResetPassword() {
     formState: { errors, isSubmitting },
     handleSubmit,
   } = useFormHook(ResetPasswordSchema, {
-    defaultValues: { email: "", password: "", confirmPassword: "" },
+    defaultValues: { email: "", newPassword: "", confirmPassword: "" },
   });
 
-  const onSubmit = (data: ResetPasswordInterface) => {
-    router.replace("/otp_verification_success");
+  const onSubmit = async (payload: ResetPasswordInterface) => {
+    try {
+      const {
+        data: { success },
+      } = await resetPassword(payload.newPassword, payload.confirmPassword);
+      if (success) {
+        router.replace("/otp_verification_success");
+      }
+    } catch (error) {}
   };
 
   return { control, errors, isSubmitting, handleSubmit, onSubmit };
@@ -128,13 +155,11 @@ export function useOTP() {
   const verifyOtp = async (email: string, code: string) => {
     try {
       const {
-        data: { accessToken, refreshToken, user },
+        data: { success },
       } = await verifyOTP(email, code);
-      mmkvStorage.set(ACC_TOKEN_STORAGE_KEY, accessToken);
-      mmkvStorage.set(REFRESH_TOKEN_STORAGE_KEY, refreshToken);
-
-      authStore.setState({ user });
-      router.replace("/otp_verification_success");
+      if (success) {
+        router.replace("/otp_verification_success");
+      }
     } catch (error) {
       console.log({ error });
     }

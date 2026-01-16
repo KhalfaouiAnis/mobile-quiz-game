@@ -1,10 +1,20 @@
 export type SubscriptionType = string;
 
+export interface SubscriptionPlan {
+  id: number;
+  iconUrl: any;
+  isActive: boolean;
+  title: string;
+  subTitle: string;
+  price: number;
+  features?: string[];
+}
+
 export interface User {
   user_id: number;
   username: string;
   email: string;
-  role: 'USER' | 'ADMIN';
+  role: "USER" | "ADMIN";
   games_played: number;
   total_score: number;
   created_at: Date;
@@ -30,7 +40,7 @@ export interface LoginRequest {
 }
 
 export interface AuthResponse {
-  user: Omit<User, 'password_hash'>;
+  user: Omit<User, "password_hash">;
   accessToken: string;
   refreshToken: string;
 }
@@ -40,7 +50,7 @@ export interface JWTPayload {
   userId: number;
   email: string;
   username: string;
-  role: 'USER' | 'ADMIN';
+  role: "USER" | "ADMIN";
   iat?: number;
   exp?: number;
 }
@@ -141,8 +151,8 @@ export interface SubCategoryWithCategory extends SubCategory {
 }
 
 // Question types
-export type QuestionType = 'single_choice' | 'multiple_choice' | 'true_false';
-export type Difficulty = 'easy' | 'medium' | 'hard';
+export type QuestionType = "single_choice" | "multiple_choice" | "true_false";
+export type Difficulty = "easy" | "medium" | "hard";
 
 export interface Question {
   question_id: number;
@@ -185,11 +195,15 @@ export interface GameSession {
   session_id: number;
   created_by: number;
   game_type_id: number;
-  question_time_limit: 'FIVE_SECONDS' | 'TEN_SECONDS' | 'FIFTEEN_SECONDS' | 'TWENTY_SECONDS';
+  question_time_limit:
+    | "FIVE_SECONDS"
+    | "TEN_SECONDS"
+    | "FIFTEEN_SECONDS"
+    | "TWENTY_SECONDS";
   max_categories: number;
   start_time?: Date | null;
   end_time?: Date | null;
-  status: 'pending' | 'active' | 'completed' | 'cancelled';
+  status: "pending" | "active" | "completed" | "cancelled";
   created_at: Date;
   updated_at: Date;
   deleted_at?: Date | null;
@@ -207,7 +221,7 @@ export interface GameSession {
 }
 
 // Package types
-export type Currency = 'KWD' | 'USD' | 'EUR' | 'INR';
+export type Currency = "KWD" | "USD" | "EUR" | "INR";
 
 export interface Package {
   package_id: number;
@@ -245,13 +259,12 @@ export interface Team {
 export interface TeamMember {
   team_id: number;
   user_id: number;
-  user?: Omit<User, 'password_hash'>;
+  user?: Omit<User, "password_hash">;
 }
 
 export interface TeamWithMembers extends Team {
   team_members: TeamMember[];
 }
-
 
 // Request/Response Types for Teams
 export interface CreateTeamRequest {
@@ -277,8 +290,8 @@ export interface TeamsResponse {
 // Request/Response Types for Questions
 export interface GetQuestionsRequest {
   sub_category_id: number;
-  difficulty?: 'easy' | 'medium' | 'hard';
-  question_type?: 'single_choice' | 'multiple_choice' | 'true_false';
+  difficulty?: "easy" | "medium" | "hard";
+  question_type?: "single_choice" | "multiple_choice" | "true_false";
   limit?: number;
   page?: number;
 }
@@ -297,14 +310,17 @@ export interface QuestionResponse {
 // Game Session Types
 export interface CreateGameSessionRequest {
   game_type_id: number;
-  question_time_limit?: 'FIVE_SECONDS' | 'TEN_SECONDS' | 'FIFTEEN_SECONDS' | 'TWENTY_SECONDS';
+  question_time_limit?:
+    | "FIVE_SECONDS"
+    | "TEN_SECONDS"
+    | "FIFTEEN_SECONDS"
+    | "TWENTY_SECONDS";
   sub_category_ids: number[]; // 6 sub-categories (can be from different categories)
   teams: Array<{
     name: string;
     player_count: number;
   }>; // Exactly 2 teams
 }
-
 
 export interface GameSessionResponse {
   game_session: GameSession;

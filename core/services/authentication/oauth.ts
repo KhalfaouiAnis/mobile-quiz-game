@@ -36,3 +36,23 @@ export const handleGoogleLoginRequest = async () => {
     throw error;
   }
 };
+
+export const handleFacebookLoginRequest = async () => {
+  // const data = await AccessToken.getCurrentAccessToken();
+  // if (!data?.accessToken) throw new Error("No access token");
+  // const res = await httpClient.post("/auth/facebook", {
+  //   accessToken: data?.accessToken,
+  // });
+  // return res.data;
+};
+
+export const handleAppleLoginRequest = async () => {
+  // const appleAuthRequestResponse = await appleAuth.performRequest({
+  //   requestedOperation: appleAuth.Operation.LOGIN,
+  //   requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+  // });
+  // const { identityToken } = appleAuthRequestResponse;
+  // if (!identityToken) throw new Error("No identity token");
+  // const res = await httpClient.post("/auth/apple", { idToken: identityToken });
+  // return res.data;
+};

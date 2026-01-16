@@ -20,7 +20,7 @@ export const Providers = ({ children }: PropsWithChildren) => {
                     </QueryClientProvider>
                 </ThemeProvider>
             </SafeAreaProvider>
-            <Toaster />
+            <Toaster styles={{ toastContainer: { direction: "rtl" } }} />
         </GestureHandlerRootView>
     )
 }

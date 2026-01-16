@@ -25,9 +25,9 @@ export default function NewPasswordScreen() {
                     </View>
                     <View className="flex-row gap-4 mt-6">
                         <AppTextInput
-                            name="password"
+                            name="newPassword"
                             control={control}
-                            error={errors.password?.message}
+                            error={errors.newPassword?.message}
                             required
                             label="كلمة المرور الجديدة" secureTextEntry />
                         <AppTextInput

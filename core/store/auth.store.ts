@@ -23,7 +23,7 @@ interface AuthState {
 
   initialize: () => Promise<void>;
   setUser: (user: User | null) => void;
-  signOut: () => void;
+  signOut: () => Promise<void>;
   setHasHydrated: () => void;
 }
 
@@ -53,7 +53,7 @@ const useAuthStore = create<AuthState>()(
       initialize: async () => {
         try {
           const hasLaunched = mmkvStorage.getBoolean(HAS_LAUNCHED);
-          const accessToken = mmkvStorage.getString(ACC_TOKEN_STORAGE_KEY);
+          const accessToken = TokenService.getAccessToken();
 
           if (!accessToken) {
             set({ isReady: true, hasLaunched, user: null });

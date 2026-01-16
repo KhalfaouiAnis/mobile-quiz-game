@@ -1,41 +1,63 @@
 import { httpClient } from "@/core/api/httpClient";
-import { User } from "@/core/types";
+import { ApiResponse, AuthResponse, User } from "@/core/types";
 import { SignupInterface } from "@/core/types/schema/auth";
+import axios from "axios";
+import { TokenService } from "../token-manager";
 
-export const attemptLogin = async (
-  password: string,
-  email?: string,
-  username?: string
-) => {
-  return httpClient.post<{
-    accessToken: string;
-    refreshToken: string;
-    user: User;
-  }>("/auth/login", {
-    email,
+export const attemptLogin = async (username: string, password: string) => {
+  return httpClient.post<ApiResponse<AuthResponse>>("/auth/login", {
     username,
     password,
   });
 };
 
 export const createAccount = async (data: SignupInterface) => {
-  return httpClient.post<{ user: User }>("/auth/register", data);
+  return httpClient.post<{ email: string; otp_sent: boolean }>(
+    "/auth/register",
+    data
+  );
 };
 
 export const requestPasswordReset = async (email: string) => {
-  return httpClient.post("/auth/forgot-password", { email });
+  return httpClient.post<
+    ApiResponse<{
+      token: string | null;
+      otp_sent: boolean;
+    }>
+  >("/auth/forgot-password", { email });
+};
+
+export const resetPassword = async (
+  newPassword: string,
+  confirmPassword: string
+) => {
+  return axios.post<ApiResponse>(
+    "/auth/reset-password",
+    {
+      newPassword,
+      confirmPassword,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${TokenService.getPasswordResetToken()}`,
+      },
+    }
+  );
 };
 
 export const requestOTP = async (email: string) => {
   return httpClient.post("/auth/request-otp", { email });
 };
 
+export const verifyPasswordResetOTP = async (email: string, otp: string) => {
+  return httpClient.post<ApiResponse>("/auth/verify-reset-otp", {
+    email,
+    otp,
+  });
+};
+
 export const verifyOTP = async (email: string, otp: string) => {
-  return httpClient.post<{
-    accessToken: string;
-    refreshToken: string;
-    user: User;
-  }>("/auth/verify-otp", {
+  return httpClient.post<ApiResponse>("/auth/verify-otp", {
     email,
     otp,
   });

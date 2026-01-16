@@ -21,8 +21,7 @@ export const SignupSchema = z.object({
 });
 
 export const LoginSchema = z.object({
-  username: z.string().optional(),
-  email: EmailSchema.shape.email.optional(),
+  username: z.string(),
   password: PasswordSchema.shape.password,
 });
 
@@ -33,10 +32,10 @@ export const RequestResetPasswordSchema = z.object({
 export const ResetPasswordSchema = z
   .object({
     email: z.email(),
-    password: z.string({ message: "Password is required" }).min(6),
+    newPassword: z.string({ message: "Password is required" }).min(6),
     confirmPassword: z.string({ message: "Password is required" }).min(6),
   })
-  .refine((formData) => formData.confirmPassword === formData.password, {
+  .refine((formData) => formData.confirmPassword === formData.newPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });

@@ -9,6 +9,7 @@ export const injectLogout = (callback: () => void) => {
 
 export const httpClient = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL + "/api/v1",
+  headers: { "X-Language": "ar", "Accept-Language": `ar,en;q=0.9` },
 });
 
 httpClient.interceptors.request.use(async (config) => {
@@ -16,7 +17,7 @@ httpClient.interceptors.request.use(async (config) => {
   if (token) config.headers.Authorization = `Bearer ${token}`;
 
   if (config.data instanceof FormData) {
-    config.headers["Content-Type"] = "multipart/form-data";
+    config.headers.delete("Content-Type");
   }
 
   return config;
@@ -38,7 +39,7 @@ httpClient.interceptors.response.use(
           onUnauthorized();
           return;
         }
-        
+
         const { data } = await axios.post(
           process.env.EXPO_PUBLIC_API_URL + "/api/v1/auth/refresh",
           {
@@ -56,6 +57,7 @@ httpClient.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
+
     return Promise.reject(error);
   }
 );

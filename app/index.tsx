@@ -10,9 +10,9 @@ export default function Index() {
     return <Redirect href="/(welcome)" />;
   }
 
-  // if (!user) {
-  //   return <Redirect href="/(auth)" />;
-  // }
+  if (!user) {
+    return <Redirect href="/(auth)" />;
+  }
 
   return <Redirect href="/(main)" />;
 }

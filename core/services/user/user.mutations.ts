@@ -1,5 +1,4 @@
 import { httpClient } from "@/core/api/httpClient";
-import { useUploadMedia } from "@/core/hooks/shared/use-upload-media";
 import useAuthStore from "@/core/store/auth.store";
 import { UpdateProfileInterface } from "@/core/types/schema/user";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

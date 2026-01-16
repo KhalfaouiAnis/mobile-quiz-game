@@ -22,10 +22,10 @@ export default function SignInScreen() {
                     <View className="w-full">
                         <View className="flex-row gap-8">
                             <AppTextInput
-                                name="email"
+                                name="username"
                                 required
                                 control={control}
-                                error={errors.email?.message}
+                                error={errors.username?.message}
                                 label="اسم المستخدم/البريد الالكتروني" />
                             <AppTextInput
                                 name="password"
@@ -41,7 +41,7 @@ export default function SignInScreen() {
                     <View className="w-1/5 mt-2">
                         <AppButton
                             title="دخول"
-                            onPress={handleSubmit(onSubmit)}
+                            onPress={handleSubmit(onSubmit, (err) => { console.log(err) })}
                             loading={isSubmitting}
                         />
                     </View>
