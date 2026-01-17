@@ -16,11 +16,11 @@ module.exports = {
         success: "#32BA7C",
         error: "#F1190E",
       },
-      textColor: {
-        secondary: {
-          500: "#A8A8A8",
-        },
-      },
+      // textColor: {
+      //   secondary: {
+      //     500: "#A8A8A8",
+      //   },
+      // },
       fontFamily: {
         cairo: ["CairoRegular", "sans-serif"],
         sans: ["CairoRegular", "sans-serif"],

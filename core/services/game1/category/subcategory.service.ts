@@ -36,22 +36,23 @@ export interface SubCategoriesByCategoryQueryParams {
 }
 
 export async function getSubcategoriesByCategoryId(
-  categoryId: number | undefined
+  categoryId: number | undefined,
 ): Promise<SubCategoriesByCategoryResponse> {
   const queryParams = new URLSearchParams();
 
   queryParams.append("page", "1");
-  queryParams.append("limit", "200");
+  queryParams.append("limit", "100");
 
   const url = `/subcategories/category/${categoryId}${
     queryParams.toString() ? `?${queryParams.toString()}` : ""
   }`;
+
   const response = await httpClient.get(url);
   return response.data;
 }
 
 export async function getSubcategoryById(
-  subcategory_id: number
+  subcategory_id: number,
 ): Promise<{ success: boolean; data: { subcategory: SubCategoryByCategory } }> {
   const response = await httpClient.get(`/subcategories/${subcategory_id}`);
   return response.data;

@@ -3,8 +3,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Pressable } from "react-native";
 
-export default function ArrowBack({ iconName }: { iconName?: keyof typeof Ionicons.glyphMap }) {
+export default function ArrowBack({ iconName, onPress }: { iconName?: keyof typeof Ionicons.glyphMap, onPress?: () => void }) {
     const handleNavigate = () => {
+        if (onPress && typeof onPress === "function") {
+            onPress()
+            return;
+        }
         if (router.canGoBack()) {
             router.back()
         } else {

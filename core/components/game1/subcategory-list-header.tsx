@@ -1,14 +1,21 @@
+import { queryClient } from "@/core/api/react-query";
 import { VIEW_SCALE_FACTOR } from "@/core/constants";
+import { useGameOneCategoryStore } from "@/core/store/category.store";
+import { ApiResponse, CategoriesResponse } from "@/core/types";
 import { boxShadow } from "@/core/utils/cn";
 import { Text, View } from "react-native";
 
-export default function SubcategoryListHeader({ title }: { title: string }) {
+export default function SubcategoryListHeader() {
+    const { selectedCategoryId } = useGameOneCategoryStore();
+    const categories = queryClient.getQueryData<ApiResponse<CategoriesResponse>>(['game1__categories'])
+    const selectedCategory = categories?.data?.categories.find(cat => cat.category_id === selectedCategoryId);
+
     return (
         <View
-            style={[boxShadow(4, 4, 4, 0, "rgb(000 000 000 / 0.75)").button, { width: 420 * VIEW_SCALE_FACTOR }]}
-            className="items-center py-1 px-20 border border-secondary-500"
+            className="items-center py-1 border border-secondary-500 rounded-md"
+            style={[boxShadow(4, 4, 4, 0, "rgb(000 000 000 / 0.75)").button, { width: 420 * VIEW_SCALE_FACTOR, paddingHorizontal: 80 * VIEW_SCALE_FACTOR }]}
         >
-            <Text className="font-bagel-regular text-primary-500 text-2xl">{title}</Text>
+            <Text className="font-bagel-regular text-primary-500 text-2xl">{selectedCategory?.name}</Text>
         </View>
     )
 }

@@ -82,20 +82,6 @@ export interface Category {
   is_deleted: boolean;
 }
 
-export interface CreateCategoryRequest {
-  name: string;
-  image_url?: string | undefined;
-  order?: number;
-  is_active?: boolean;
-}
-
-export interface UpdateCategoryRequest {
-  name?: string;
-  image_url?: string | undefined;
-  order?: number;
-  is_active?: boolean;
-}
-
 export interface CategoryResponse {
   category: Category;
 }
@@ -118,21 +104,6 @@ export interface SubCategory {
   updated_at: Date;
   deleted_at?: Date | null;
   is_deleted: boolean;
-}
-
-export interface CreateSubCategoryRequest {
-  category_id: number;
-  name: string;
-  image_url?: string | undefined;
-  order?: number;
-  is_active?: boolean;
-}
-
-export interface UpdateSubCategoryRequest {
-  name?: string;
-  image_url?: string | undefined;
-  order?: number;
-  is_active?: boolean;
 }
 
 export interface SubCategoryResponse {

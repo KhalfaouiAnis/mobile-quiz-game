@@ -1,7 +1,7 @@
 import {
   getCategories,
   getCategoryById,
-} from "@/core/services/game1/category.service";
+} from "@/core/services/game1/category/category.service";
 import { useQuery } from "@tanstack/react-query";
 
 export const useCategoriesQuery = () => {

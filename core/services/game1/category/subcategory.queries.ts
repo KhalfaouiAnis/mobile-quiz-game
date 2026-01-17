@@ -9,7 +9,7 @@ export const useSubCategoriesQuery = () => {
   const { selectedCategoryId } = useGameOneCategoryStore();
   return useQuery({
     queryKey: ["game1__subcategories", selectedCategoryId],
-    queryFn: () => getSubcategoriesByCategoryId(selectedCategoryId),
+    queryFn: async () => await getSubcategoriesByCategoryId(selectedCategoryId),
     staleTime: 1000 * 60 * 60,
   });
 };
