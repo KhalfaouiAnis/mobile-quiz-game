@@ -1,14 +1,12 @@
 import { queryClient } from "@/core/api/react-query";
 import { VIEW_SCALE_FACTOR } from "@/core/constants";
-import { useGameOneCategoryStore } from "@/core/store/category.store";
 import { ApiResponse, CategoriesResponse } from "@/core/types";
 import { boxShadow } from "@/core/utils/cn";
 import { Text, View } from "react-native";
 
-export default function SubcategoryListHeader() {
-    const { selectedCategoryId } = useGameOneCategoryStore();
+export default function SubcategoryListHeader({ activeCatId }: { activeCatId: number | null }) {
     const categories = queryClient.getQueryData<ApiResponse<CategoriesResponse>>(['game1__categories'])
-    const selectedCategory = categories?.data?.categories.find(cat => cat.category_id === selectedCategoryId);
+    const selectedCategory = categories?.data?.categories.find(cat => cat.id === activeCatId);
 
     return (
         <View

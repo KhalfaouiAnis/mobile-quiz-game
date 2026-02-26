@@ -20,6 +20,11 @@ import {
 import { useRouter } from "expo-router";
 import { useFormHook } from "../use-form-hook";
 import { TokenService } from "@/core/services/token-manager";
+import {
+  UpdateProfileInterface,
+  UpdateProfileSchema,
+} from "@/core/types/schema/user";
+import { updateProfile } from "@/core/services/user/user.service";
 
 export function useSignIn() {
   const router = useRouter();
@@ -73,6 +78,33 @@ export function useSignUp() {
         // await requestOTP(data.phone);
         // router.navigate(`/otp_verification?phone=${data.phone}`);
         router.replace("/(auth)/signin");
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
+  return { control, handleSubmit, onSubmit, errors, isSubmitting };
+}
+
+export function useUpdateProfile() {
+  const router = useRouter();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useFormHook(UpdateProfileSchema, {
+    defaultValues: {
+      email: "",
+      password: undefined,
+      confirmPassword: undefined,
+    },
+  });
+
+  const onSubmit = async (payload: UpdateProfileInterface) => {
+    try {
+      await updateProfile(payload);
+      router.replace("/(profile)/");
     } catch (error) {
       console.log({ error });
     }

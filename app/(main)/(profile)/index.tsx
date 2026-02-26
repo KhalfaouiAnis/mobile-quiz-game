@@ -8,9 +8,11 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import LogoutModal from "@/core/components/ui/layout/profile/logout-modal";
+import Switch from "@/core/components/ui/base/button/switch";
 
 export default function Index() {
     const [showModal, setShowModal] = useState(false);
+    const [notifications, setNotifications] = useState(true)
 
     return (
         <Container header={<ProfileHeader />}>
@@ -73,7 +75,7 @@ export default function Index() {
                                 <Text className="font-cairo-medium">إشعارات</Text>
                             </View>
                             <View>
-                                <Ionicons name="chevron-back" size={24} color="#00A6DA" />
+                                <Switch value={notifications} onValueChange={setNotifications} />
                             </View>
                         </View>
                         <Pressable

@@ -45,7 +45,7 @@ export default function SignInScreen() {
                             loading={isSubmitting}
                         />
                     </View>
-                    <View className="w-1/3">
+                    <View className="w-1/3 my-1">
                         <OrSeparator label="أو" />
                     </View>
                     <View className="flex-row gap-6 items-center justify-center">

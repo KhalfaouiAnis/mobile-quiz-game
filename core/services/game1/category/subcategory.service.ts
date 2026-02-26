@@ -1,5 +1,5 @@
 import { httpClient } from "@/core/api/httpClient";
-import { Category } from "@/core/types";
+import { Category, SubCategory } from "@/core/types";
 
 export interface SubCategoryByCategory {
   sub_category_id: number;
@@ -18,7 +18,7 @@ export interface SubCategoriesByCategoryResponse {
   success: boolean;
   message: string;
   data: {
-    subcategories: SubCategoryByCategory[];
+    subcategories: SubCategory[];
     total: number;
     page: number;
     limit: number;
@@ -36,7 +36,7 @@ export interface SubCategoriesByCategoryQueryParams {
 }
 
 export async function getSubcategoriesByCategoryId(
-  categoryId: number | undefined,
+  categoryId: number | null,
 ): Promise<SubCategoriesByCategoryResponse> {
   const queryParams = new URLSearchParams();
 

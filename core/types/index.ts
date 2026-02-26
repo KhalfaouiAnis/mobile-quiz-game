@@ -1,14 +1,20 @@
 export type SubscriptionType = string;
 
 export interface SubscriptionPlan {
-  id: number;
   iconUrl: any;
-  isActive: boolean;
   title: string;
   subTitle: string;
   price: number;
   features?: string[];
 }
+
+export type Subscription_TYPES =
+  | "family_tier"
+  | "ultimate_tier"
+  | "premium_tier"
+  | "basic_tier"
+  | "student_tier"
+  | "free_tier";
 
 export interface User {
   user_id: number;
@@ -71,7 +77,7 @@ export interface ApiResponse<T = any> {
 
 // Category types
 export interface Category {
-  category_id: number;
+  id: number;
   name: string;
   image_url?: string | null;
   order: number;
@@ -94,7 +100,7 @@ export interface CategoriesResponse {
 }
 
 export interface SubCategory {
-  sub_category_id: number;
+  id: number;
   category_id: number;
   name: string;
   image_url?: string | null;
@@ -126,13 +132,21 @@ export type QuestionType = "single_choice" | "multiple_choice" | "true_false";
 export type Difficulty = "easy" | "medium" | "hard";
 
 export interface Question {
-  question_id: number;
+  id: number;
   sub_category_id: number;
   content: string;
   file_url?: string | null;
-  question_type: QuestionType;
   difficulty: Difficulty;
   points: number;
+  point_value?: number;
+  is_answered?: boolean;
+  grid_row: number;
+  grid_col: number;
+  subcategory?: {
+    id: number;
+    name: string;
+    image_url: string | null;
+  };
   created_at: Date;
   updated_at: Date;
   deleted_at?: Date | null;
@@ -150,9 +164,33 @@ export interface Answer {
   is_deleted: boolean;
 }
 
+export interface AnswerSubmissionRequest {
+  team_id: number;
+  question_id: number;
+  session_id: number;
+  is_correct: boolean;
+  is_boosted: boolean;
+}
+
+export interface AwardPointsRequest {
+  session_id: number;
+  question_id: number;
+  team_ids: number[];
+  points: number;
+}
+
+export interface AnswerSubmissionResponse {
+  is_correct: boolean;
+  points_available: number;
+  correct_answer_ids: number[];
+  correct_answers: Answer[];
+  selected_answers: Answer[];
+  explanation: string | null;
+}
+
 export interface QuestionWithAnswers extends Question {
   answers: Answer[];
-  subcategory?: SubCategory;
+  // subcategory?: SubCategory;
 }
 
 // Game types
@@ -216,10 +254,11 @@ export interface UserPurchase {
 
 // Team Types
 export interface Team {
-  team_id: number;
+  id: number;
   session_id: number;
   name: string;
   is_current_turn: boolean;
+  is_boost_used: boolean;
   score: number;
   created_at: Date;
   updated_at: Date;
@@ -286,11 +325,11 @@ export interface CreateGameSessionRequest {
     | "TEN_SECONDS"
     | "FIFTEEN_SECONDS"
     | "TWENTY_SECONDS";
-  sub_category_ids: number[]; // 6 sub-categories (can be from different categories)
+  sub_category_ids: number[];
   teams: Array<{
     name: string;
     player_count: number;
-  }>; // Exactly 2 teams
+  }>;
 }
 
 export interface GameSessionResponse {
@@ -345,4 +384,10 @@ export interface SessionAnalytics {
   average_response_time: number;
   most_answered_category: string;
   least_answered_category: string;
+}
+
+export interface GameBoard {
+  sessionId: number;
+  grid: Question[];
+  teams: Team[];
 }

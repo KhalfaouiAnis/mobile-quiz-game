@@ -44,6 +44,11 @@
       "expo-audio"
     ],
     "android": {
+      "systemBars": {
+        "statusBar": {
+          "hidden": true
+        }
+      },
       "windowSoftInputMode": "adjustResize",
       "predictiveBackGestureEnabled": false,
       "softwareKeyboardLayoutMode": "pan",

@@ -58,8 +58,8 @@ export default function RootLayout() {
 
   return (
     <Providers>
+      <StatusBar hidden={true} />
       <Stack screenOptions={{ headerShown: false }} />
-      <StatusBar hidden />
     </Providers>
   );
 }

@@ -17,5 +17,6 @@ export const useCategoryDetailQuery = (category_id: number) => {
     queryKey: ["game1__category", "detail", category_id],
     queryFn: () => getCategoryById(category_id),
     staleTime: 1000 * 60 * 2,
+    enabled: !!category_id
   });
 };

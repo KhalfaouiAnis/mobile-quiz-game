@@ -1,49 +1,25 @@
-import { httpClient } from "@/core/api/httpClient";
 import useAuthStore from "@/core/store/auth.store";
 import { UpdateProfileInterface } from "@/core/types/schema/user";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateProfile } from "./user.service";
+import { User } from "@/core/types";
 
-export const useUpdateProfile = () => {
-  const { totalProgress, setFileProgress, upload } = useUploadMedia();
+export const useUpdateProfileMutation = () => {
   const queryClient = useQueryClient();
-  const { setUser, user } = useAuthStore((state) => state);
+  const { setUser } = useAuthStore((state) => state);
 
   const mutation = useMutation({
-    mutationFn: async (data: UpdateProfileInterface) => {
-      const { avatar, ...profileData } = data;
-      let avatarData = null;
-
-      if (avatar && "uri" in avatar) {
-        const uploadResponse = await upload([
-          {
-            file: { ...avatar, name: `avatar_${user?.id}` },
-            media_type: "IMAGE",
-            signingParams: { mediaType: "profile_pic" },
-          },
-        ]);
-        if (uploadResponse) {
-          avatarData = {
-            public_id: uploadResponse[0].public_id,
-            original_url: uploadResponse[0].original_url,
-            media_type: "IMAGE",
-          };
-        }
-      }
-
-      const { data: finalResponse } = await httpClient.patch("/users", {
-        ...profileData,
-        avatar: avatarData,
-      });
+    mutationFn: async (payload: UpdateProfileInterface) => {
+      const { data: finalResponse } = await updateProfile(payload);
 
       return finalResponse;
     },
     onSuccess: (updatedUser) => {
-      setUser(updatedUser);
+      setUser(updatedUser.data as User);
       queryClient.invalidateQueries({ queryKey: ["user"] });
-      setFileProgress({});
     },
-    onError: () => setFileProgress({}),
+    onError: () => {},
   });
 
-  return { ...mutation, uploadProgress: totalProgress };
+  return { ...mutation };
 };

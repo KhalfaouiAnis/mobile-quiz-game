@@ -3,13 +3,15 @@ import { IMAGES } from "@/core/constants/images";
 import { boxShadow } from "@/core/utils/cn";
 import { Image, Pressable, Text, View } from "react-native";
 import ActivePlanBadge from "./active-plan-badge";
-import { SubscriptionPlan } from "@/core/types";
+import { Package } from "@/core/types";
 
-type Props = Partial<SubscriptionPlan> & {
+type Props = Partial<Package> & {
+    iconUrl: any;
+    isActive: boolean
     onPress: () => void
 }
 
-export default function SubscriptionCard({ iconUrl, isActive, title, subTitle, price }: Props) {
+export default function SubscriptionCard({ iconUrl, isActive, name, description, price }: Props) {
     return (
         <Pressable
             style={[boxShadow(4, 4, 4, 0).button, {
@@ -31,12 +33,12 @@ export default function SubscriptionCard({ iconUrl, isActive, title, subTitle, p
                     source={iconUrl}
                     style={{ width: 48 * VIEW_SCALE_FACTOR, height: 48 * VIEW_SCALE_FACTOR, objectFit: "contain" }} />
             </View>
-            <View className="ms-6 me-10">
+            <View className="flex-1 ms-6 me-10">
                 <View className="flex-row items-center">
-                    <Text className="font-cairo-bold">{title}</Text>
+                    <Text className="font-cairo-bold">{name}</Text>
                     {isActive && <ActivePlanBadge />}
                 </View>
-                <Text className="font-bagel-regular text-gray-600">{subTitle}</Text>
+                <Text className="flex-1 font-bagel-regular text-gray-600" numberOfLines={1} ellipsizeMode="tail">{description}</Text>
             </View>
             <View className="ms-auto">
                 <Text className="font-bagel-regular text-lg text-primary-500">{price} $</Text>

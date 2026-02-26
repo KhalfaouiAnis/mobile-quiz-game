@@ -11,7 +11,7 @@ export function boxShadow(
   offsetY: number = 4,
   blurRadius: number = 4,
   spreadDistance: number = 0,
-  color: string = "rgb(000 000 000 / 0.25)"
+  color: string = "rgba(000 000 000 / 0.25)"
 ) {
   return StyleSheet.create({
     button: {

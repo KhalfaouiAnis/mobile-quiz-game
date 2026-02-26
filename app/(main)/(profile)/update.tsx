@@ -3,12 +3,12 @@ import AppTextInput from "@/core/components/ui/base/text/app-text-field";
 import AuthHeader from "@/core/components/ui/layout/auth-header";
 import Container from "@/core/components/ui/shared/container";
 import ViewWrapper from "@/core/components/ui/shared/view-wrapper";
-import { useSignUp } from "@/core/hooks/auth/use-auth";
+import { useUpdateProfile } from "@/core/hooks/auth/use-auth";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function UpdateProfileScreen() {
-    const { errors, handleSubmit, onSubmit, isSubmitting, control } = useSignUp();
+    const { errors, handleSubmit, onSubmit, isSubmitting, control } = useUpdateProfile();
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader showLogo={false} label="تعديل الملف الشخصي" />}>
@@ -26,7 +26,7 @@ export default function UpdateProfileScreen() {
                             error={errors.password?.message}
                             label="كلمة المرور" secureTextEntry />
                         <AppTextInput
-                            name="password"
+                            name="confirmPassword"
                             control={control}
                             error={errors.password?.message}
                             label="تأكيد كلمة المرور" secureTextEntry />

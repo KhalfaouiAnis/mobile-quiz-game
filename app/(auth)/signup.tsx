@@ -25,16 +25,20 @@ export default function SignupScreen() {
                             name="email"
                             control={control}
                             required
+                            keyboardType="email-address"
                             error={errors.email?.message}
-                            label="البريد الالكتروني" />
+                            label="البريد الالكتروني"
+                             />
                     </View>
                     <View className="flex-row gap-4 mt-6">
                         <AppTextInput
+                            phone
                             name="phone"
                             control={control}
-                            required
+                            label="رقم الهاتف" 
+                            keyboardType="number-pad" 
                             error={errors.phone?.message}
-                            label="رقم الهاتف" keyboardType="number-pad" />
+                            />
                         <AppTextInput
                             name="password"
                             control={control}
