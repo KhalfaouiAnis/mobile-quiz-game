@@ -19,7 +19,7 @@ export default function CategoryListing({ setActiveCatId }: { setActiveCatId: Di
         return (
             <Pressable
                 onPress={() => setActiveCatId(item.id!)}
-                className="px-2 rounded-2xl items-center justify-center border border-primary-500"
+                className="px-2 rounded-2xl items-center justify-center"
                 style={[boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").button, { width: 100 * VIEW_SCALE_FACTOR, height: 72 * VIEW_SCALE_FACTOR }]}
             >
                 <Image
@@ -51,7 +51,7 @@ export default function CategoryListing({ setActiveCatId }: { setActiveCatId: Di
                         ListEmptyComponent={<EmptyList />}
                         showsHorizontalScrollIndicator={false}
                         keyExtractor={cat => cat?.id?.toString()}
-                        contentContainerClassName="gap-6 mx-2 border border-secondary-500 py-2 px-6"
+                        contentContainerClassName="gap-6 mx-2 border border-secondary-500 py-1 px-6"
                         getItemLayout={(_, index) => ({ length: CATEGORY_ITEM_HIGHT, offset: CATEGORY_ITEM_HIGHT * index, index })}
                     />
                 )

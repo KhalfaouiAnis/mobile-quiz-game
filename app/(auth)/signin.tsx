@@ -22,17 +22,19 @@ export default function SignInScreen() {
                     <View className="w-full">
                         <View className="flex-row gap-8">
                             <AppTextInput
-                                name="username"
                                 required
+                                name="username"
                                 control={control}
                                 error={errors.username?.message}
-                                label="اسم المستخدم/البريد الالكتروني" />
+                                label="اسم المستخدم/البريد الالكتروني"
+                            />
                             <AppTextInput
-                                name="password"
                                 required
+                                name="password"
                                 control={control}
                                 error={errors.password?.message}
-                                label="كلمة المرور" secureTextEntry />
+                                label="كلمة المرور" secureTextEntry
+                            />
                         </View>
                         <View className="w-full items-end">
                             <Link className="font-cairo" href="/forgot_password">هل نسيت كلمة المرور؟</Link>

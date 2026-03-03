@@ -8,21 +8,21 @@ import GameSetup from "./game-setup";
 import EmptyList from "./empty-list";
 import { useRef, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { Game1SetupValues } from "@/core/types/schema/game1";
+import { CreateGame1SessionRequest } from "@/core/types/schema/game1";
 import { SubCategory } from "@/core/types";
 import { boxShadow } from "@/core/utils/cn";
 import { Image } from "expo-image";
 import { IMAGES } from "@/core/constants/images";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function SubcategoryListing({ activeCatId }: { activeCatId: number | null }) {
-    const { control, setValue } = useFormContext<Game1SetupValues>()
+    const { control, setValue, getValues } = useFormContext<CreateGame1SessionRequest>()
     const { data, isLoading } = useSubCategoriesQuery(activeCatId)
     const listRef = useRef<FlatList | null>(null);
     const [isAtBottom, setIsAtBottom] = useState(false);
 
-    const sub_category_ids = useWatch({ control, name: "sub_category_ids" })
-
     const toggleSubcategory = (id: number) => {
+        const sub_category_ids = getValues("sub_category_ids")
         const current = [...sub_category_ids];
         const index = current.indexOf(id);
         if (index > -1) {
@@ -32,12 +32,13 @@ export default function SubcategoryListing({ activeCatId }: { activeCatId: numbe
         }
         setValue("sub_category_ids", current, { shouldValidate: true });
     };
+    const sub_category_ids = useWatch({ control, name: "sub_category_ids" })
 
     function renderSubategoryItem({ item }: { item: Partial<SubCategory> }) {
         return (
             <Pressable
                 onPress={() => toggleSubcategory(item.id!)}
-                className="px-2 rounded-2xl items-center justify-center border border-primary-500"
+                className="relative px-2 rounded-2xl items-center justify-center"
                 style={[boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").button, { width: 100 * VIEW_SCALE_FACTOR, height: 72 * VIEW_SCALE_FACTOR }]}
             >
                 <Image
@@ -46,6 +47,11 @@ export default function SubcategoryListing({ activeCatId }: { activeCatId: numbe
                     contentFit="cover"
                 />
                 <Text className="font-cairo-bold text-sm" ellipsizeMode="tail" numberOfLines={1}>{item.name}</Text>
+                {sub_category_ids.indexOf(item.id!) > -1 && (
+                    <View className="absolute top-2 right-0">
+                        <Ionicons name="checkmark-circle-outline" size={24 * VIEW_SCALE_FACTOR} color={"green"} />
+                    </View>
+                )}
             </Pressable>
         )
     }
@@ -63,7 +69,6 @@ export default function SubcategoryListing({ activeCatId }: { activeCatId: numbe
             setIsAtBottom(false);
         }
     }
-
 
     return (
         <View className="relative flex-1 w-full items-center bg-white rounded-t-3xl mt-2 pt-1 px-4">

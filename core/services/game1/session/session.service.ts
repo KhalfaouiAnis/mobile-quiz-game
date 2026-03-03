@@ -4,15 +4,15 @@ import {
   AnswerSubmissionRequest,
   AnswerSubmissionResponse,
   ApiResponse,
-  AwardPointsRequest,
-  CreateGameSessionRequest,
   GameBoard,
   GameSession,
+  LastAciveSessionStats,
   QuestionResponse,
   Team,
 } from "@/core/types";
+import { CreateGame1SessionRequest } from "@/core/types/schema/game1";
 
-export const createSession = async (data: CreateGameSessionRequest) => {
+export const createSession = async (data: CreateGame1SessionRequest) => {
   return httpClient.post<
     ApiResponse<{
       game_session: {
@@ -42,12 +42,19 @@ export const fetchUserSessions = async (userId: number) => {
   );
 };
 
+
+export const getLatestActiveSession = async () => {
+  const { data } =
+    await httpClient.get<ApiResponse<LastAciveSessionStats>>(`/sessions/last-game`);
+  return data?.data;
+};
+
 export const fetchSessionGameBoard = async (sessionId: number) => {
   const { data } = await httpClient.get<ApiResponse<GameBoard>>(
     `/sessions/${sessionId}/game-board`,
   );
 
-  return data;
+  return data?.data;
 };
 
 export const getQuestionById = async (questionId: number) => {
@@ -57,8 +64,8 @@ export const getQuestionById = async (questionId: number) => {
 };
 
 export const getCorrectAnswer = async (questionId: number) => {
-  const { data } = await httpClient.get<ApiResponse<Answer>>(
-    `/answers/question/${questionId}/correct`,
+  const { data } = await httpClient.get<ApiResponse<{ answer_text: string, file_url?: string }>>(
+    `/answers/question/${questionId}`,
   );
   return data;
 };
@@ -68,16 +75,4 @@ export const submitAnswer = async (payload: AnswerSubmissionRequest) => {
     "/answers/submit",
     payload,
   );
-};
-
-export const awardPoints = async (payload: AwardPointsRequest) => {
-  return httpClient.post<
-    ApiResponse<{
-      awards: {
-        team_id: number;
-        points_awarded: number;
-        team_score: number;
-      }[];
-    }>
-  >(`sessions/${payload.session_id}/award-points`, payload);
 };

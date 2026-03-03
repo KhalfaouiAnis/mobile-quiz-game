@@ -172,13 +172,6 @@ export interface AnswerSubmissionRequest {
   is_boosted: boolean;
 }
 
-export interface AwardPointsRequest {
-  session_id: number;
-  question_id: number;
-  team_ids: number[];
-  points: number;
-}
-
 export interface AnswerSubmissionResponse {
   is_correct: boolean;
   points_available: number;
@@ -227,6 +220,12 @@ export interface GameSession {
     name: string;
     description: string | null;
   };
+}
+
+export interface LastAciveSessionStats {
+  remainingQuestions: number;
+  completionPercentage: number;
+  sessionId: number;
 }
 
 // Package types
@@ -315,21 +314,6 @@ export interface QuestionsResponse {
 
 export interface QuestionResponse {
   question: QuestionWithAnswers;
-}
-
-// Game Session Types
-export interface CreateGameSessionRequest {
-  game_type_id: number;
-  question_time_limit?:
-    | "FIVE_SECONDS"
-    | "TEN_SECONDS"
-    | "FIFTEEN_SECONDS"
-    | "TWENTY_SECONDS";
-  sub_category_ids: number[];
-  teams: Array<{
-    name: string;
-    player_count: number;
-  }>;
 }
 
 export interface GameSessionResponse {

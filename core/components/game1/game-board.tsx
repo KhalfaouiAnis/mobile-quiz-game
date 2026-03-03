@@ -6,20 +6,20 @@ import { GameBoard, Question } from "@/core/types";
 import { useRouter } from "expo-router";
 
 export default function Game1Board({ grid, sessionId }: GameBoard) {
-    const router = useRouter()
     const gridData = useGameGrid(grid);
+    const router = useRouter()
 
     return (
         <View className="flex-1 py-1 items-center">
             <View className="flex-row">
                 {
-                    gridData.map((column) => (
-                        <View key={column.subcategoryName} className="mx-2 items-center">
+                    gridData.map((column, index) => (
+                        <View key={column.subcategoryName + "__" + index} className="mx-2 items-center">
                             <Game1BoardSubcategory name={column.subcategoryName} image_url={column.subcategoryImage} />
-                            {column.questions.map((question: Question) => (
+                            {column.questions.map((question: Question, idx) => (
                                 <QuestionCell
                                     question={question}
-                                    key={question.id}
+                                    key={question.id + "__" + idx}
                                     onPress={() => router.push(`/(main)/game1/${sessionId}/${question.id}`)}
                                 />
                             ))}

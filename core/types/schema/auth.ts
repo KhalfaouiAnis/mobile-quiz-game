@@ -17,7 +17,7 @@ export const SignupSchema = z.object({
     .optional(),
   email: EmailSchema.shape.email,
   password: PasswordSchema.shape.password,
-  phone: z.string().optional(),
+  phone: z.string().min(8).max(8).optional(),
 });
 
 export const LoginSchema = z.object({

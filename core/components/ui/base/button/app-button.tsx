@@ -8,17 +8,20 @@ interface ButtonProps {
     rounded?: boolean;
     semiRounded?: boolean;
     danger?: boolean;
+    disabled?: boolean;
 }
 
-export default function AppButton({ title, onPress, loading, rounded = true, semiRounded = false, danger = false }: ButtonProps) {
+export default function AppButton({ title, onPress, loading, disabled, rounded = true, semiRounded = false, danger = false }: ButtonProps) {
     function br() {
         if (rounded) return 24;
         if (semiRounded) return 12;
         return 7
     }
+    
     return (
         <Pressable
             onPress={onPress}
+            disabled={disabled}
             style={[
                 boxShadow().button,
                 {

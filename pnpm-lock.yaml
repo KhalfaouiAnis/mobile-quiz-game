@@ -95,6 +95,9 @@ importers:
       react-native:
         specifier: npm:react-native-tvos@0.81-stable
         version: react-native-tvos@0.81.5-2(@babel/core@7.28.5)(@types/react@19.1.17)(react-native-tvos@0.81.5-2)(react@19.1.0)
+      react-native-circular-progress-indicator:
+        specifier: ^4.4.2
+        version: 4.4.2(react-native-gesture-handler@2.28.0(react-native-tvos@0.81.5-2)(react@19.1.0))(react-native-reanimated@4.1.6(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react-native-worklets@0.5.1(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react@19.1.0))(react@19.1.0))(react-native-svg@15.15.1(react-native-tvos@0.81.5-2)(react@19.1.0))(react-native-tvos@0.81.5-2)(react@19.1.0)
       react-native-confirmation-code-field:
         specifier: ^8.0.1
         version: 8.0.1(react-native-tvos@0.81.5-2)(react@19.1.0)
@@ -1317,6 +1320,9 @@ packages:
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
     engines: {node: '>=6.5'}
+
+  abs-svg-path@0.1.1:
+    resolution: {integrity: sha512-d8XPSGjfyzlXC3Xx891DJRyZfqk5JU0BJrDQcsWomFIV1/BIzPW5HDH5iDdWpqWaav0YVIEzT1RHTwWr0FFshA==}
 
   accepts@1.3.8:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
@@ -2831,6 +2837,9 @@ packages:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
 
+  normalize-svg-path@1.1.0:
+    resolution: {integrity: sha512-r9KHKG2UUeB5LoTouwDzBy2VxXlHsiM6fyLQvnJa0S5hrhzqElH/CH7TUGhT1fVvIYBIKf3OpY4YJ4CK+iaqHg==}
+
   npm-package-arg@11.0.3:
     resolution: {integrity: sha512-sHGJy8sOC1YraBywpzQlIKBE4pBbGbiF95U6Auspzyem956E0+FtDtsx1ZxlOJkQCZ1AFXAY/yuvtFYrOxF+Bw==}
     engines: {node: ^16.14.0 || >=18.0.0}
@@ -2907,6 +2916,9 @@ packages:
   parse-png@2.1.0:
     resolution: {integrity: sha512-Nt/a5SfCLiTnQAjx3fHlqp8hRgTL3z7kTQZzvIMS9uCAepnCyjpdEc6M/sz69WqMBdaDBw9sF1F1UaHROYzGkQ==}
     engines: {node: '>=10'}
+
+  parse-svg-path@0.1.2:
+    resolution: {integrity: sha512-JyPSBnkTJ0AI8GGJLfMXvKq42cj5c006fnLz6fXy6zfoVjJizi8BNTpu8on8ziI1cKy9d9DGNuY17Ce7wuejpQ==}
 
   parseurl@1.3.3:
     resolution: {integrity: sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==}
@@ -3108,6 +3120,14 @@ packages:
   react-is@19.2.3:
     resolution: {integrity: sha512-qJNJfu81ByyabuG7hPFEbXqNcWSU3+eVus+KJs+0ncpGfMyYdvSmxiJxbWR65lYi1I+/0HBcliO029gc4F+PnA==}
 
+  react-native-circular-progress-indicator@4.4.2:
+    resolution: {integrity: sha512-BlgshzIIIk0TP/CZY+5oyRsHl2Sb2l6cK5tzfmrVETfn6pN8dhOKrV0i3Z6i0SM8wRgncdUUSRBpCPAexh7JoQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-native: '>=0.59.0'
+      react-native-reanimated: '>=2.2.0'
+      react-native-svg: '>=12.1.1'
+
   react-native-confirmation-code-field@8.0.1:
     resolution: {integrity: sha512-pwrhQtspFEp0y/gxZRp8hrra+UjAYfwAsW5Sn3yYtdUZVyRjAZPBnUb3rOc+z5L5o2ml03z5P3uvTK0yQwXsmA==}
     peerDependencies:
@@ -3180,6 +3200,14 @@ packages:
       react: '*'
       react-native: '*'
       react-native-worklets: '>=0.5.0'
+
+  react-native-redash@18.1.5:
+    resolution: {integrity: sha512-0Dy04RcN8tqHv9p3osr3WtsPxWwiXUwt+soFUYsKQEbn+LodSnB8LHnmd0eWemCYXzBPJRNt7YgPA9XTBYoGWQ==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+      react-native-gesture-handler: '*'
+      react-native-reanimated: '>=2.0.0'
 
   react-native-safe-area-context@5.6.2:
     resolution: {integrity: sha512-4XGqMNj5qjUTYywJqpdWZ9IG8jgkS3h06sfVjfw5yZQZfWnRFXczi0GnYyFyCc2EBps/qFmoCH8fez//WumdVg==}
@@ -3540,6 +3568,9 @@ packages:
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  svg-arc-to-cubic-bezier@3.2.0:
+    resolution: {integrity: sha512-djbJ/vZKZO+gPoSDThGNpKDO+o+bAeA4XQKovvkNCqnIS2t+S4qnLAGQhyyrulhCFRl1WWzAp0wUDV8PpTVU3g==}
 
   tailwind-merge@3.3.1:
     resolution: {integrity: sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g==}
@@ -5413,6 +5444,8 @@ snapshots:
     dependencies:
       event-target-shim: 5.0.1
 
+  abs-svg-path@0.1.1: {}
+
   accepts@1.3.8:
     dependencies:
       mime-types: 2.1.35
@@ -7034,6 +7067,10 @@ snapshots:
 
   normalize-path@3.0.0: {}
 
+  normalize-svg-path@1.1.0:
+    dependencies:
+      svg-arc-to-cubic-bezier: 3.2.0
+
   npm-package-arg@11.0.3:
     dependencies:
       hosted-git-info: 7.0.2
@@ -7114,6 +7151,8 @@ snapshots:
   parse-png@2.1.0:
     dependencies:
       pngjs: 3.4.0
+
+  parse-svg-path@0.1.2: {}
 
   parseurl@1.3.3: {}
 
@@ -7284,6 +7323,16 @@ snapshots:
 
   react-is@19.2.3: {}
 
+  react-native-circular-progress-indicator@4.4.2(react-native-gesture-handler@2.28.0(react-native-tvos@0.81.5-2)(react@19.1.0))(react-native-reanimated@4.1.6(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react-native-worklets@0.5.1(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react@19.1.0))(react@19.1.0))(react-native-svg@15.15.1(react-native-tvos@0.81.5-2)(react@19.1.0))(react-native-tvos@0.81.5-2)(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-native: react-native-tvos@0.81.5-2(@babel/core@7.28.5)(@types/react@19.1.17)(react-native-tvos@0.81.5-2)(react@19.1.0)
+      react-native-reanimated: 4.1.6(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react-native-worklets@0.5.1(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react@19.1.0))(react@19.1.0)
+      react-native-redash: 18.1.5(react-native-gesture-handler@2.28.0(react-native-tvos@0.81.5-2)(react@19.1.0))(react-native-reanimated@4.1.6(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react-native-worklets@0.5.1(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react@19.1.0))(react@19.1.0))(react-native-tvos@0.81.5-2)(react@19.1.0)
+      react-native-svg: 15.15.1(react-native-tvos@0.81.5-2)(react@19.1.0)
+    transitivePeerDependencies:
+      - react-native-gesture-handler
+
   react-native-confirmation-code-field@8.0.1(react-native-tvos@0.81.5-2)(react@19.1.0):
     optionalDependencies:
       react: 19.1.0
@@ -7353,6 +7402,16 @@ snapshots:
       react-native-is-edge-to-edge: 1.2.1(react-native-tvos@0.81.5-2)(react@19.1.0)
       react-native-worklets: 0.5.1(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react@19.1.0)
       semver: 7.7.2
+
+  react-native-redash@18.1.5(react-native-gesture-handler@2.28.0(react-native-tvos@0.81.5-2)(react@19.1.0))(react-native-reanimated@4.1.6(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react-native-worklets@0.5.1(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react@19.1.0))(react@19.1.0))(react-native-tvos@0.81.5-2)(react@19.1.0):
+    dependencies:
+      abs-svg-path: 0.1.1
+      normalize-svg-path: 1.1.0
+      parse-svg-path: 0.1.2
+      react: 19.1.0
+      react-native: react-native-tvos@0.81.5-2(@babel/core@7.28.5)(@types/react@19.1.17)(react-native-tvos@0.81.5-2)(react@19.1.0)
+      react-native-gesture-handler: 2.28.0(react-native-tvos@0.81.5-2)(react@19.1.0)
+      react-native-reanimated: 4.1.6(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react-native-worklets@0.5.1(@babel/core@7.28.5)(react-native-tvos@0.81.5-2)(react@19.1.0))(react@19.1.0)
 
   react-native-safe-area-context@5.6.2(react-native-tvos@0.81.5-2)(react@19.1.0):
     dependencies:
@@ -7738,6 +7797,8 @@ snapshots:
       supports-color: 7.2.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  svg-arc-to-cubic-bezier@3.2.0: {}
 
   tailwind-merge@3.3.1: {}
 

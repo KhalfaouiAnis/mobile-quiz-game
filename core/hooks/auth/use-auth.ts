@@ -66,6 +66,7 @@ export function useSignUp() {
       email: undefined,
       username: undefined,
       password: "",
+      phone: "",
     },
   });
 
@@ -75,8 +76,8 @@ export function useSignUp() {
         data: { email, otp_sent },
       } = await createAccount(data);
       if (otp_sent)
-        // await requestOTP(data.phone);
-        // router.navigate(`/otp_verification?phone=${data.phone}`);
+        // await requestOTP(email);
+        // router.navigate(`/otp_verification?phone=${email}`);
         router.replace("/(auth)/signin");
     } catch (error) {
       console.log({ error });
