@@ -3,12 +3,13 @@ import { Team } from "../types";
 
 interface GameState {
   teams: Record<number, Partial<Team>>;
+  questionTimeLimit: number;
   optimisticAnsweredIds: Set<number>;
   team1BoostActive: boolean;
   team2BoostActive: boolean;
 
   actions: {
-    initGame: (teamsData: Team[]) => void;
+    initGame: (teamsData: Team[], timeLimit: number) => void;
     addScore: (
       teamIndex: number,
       basePoints: number,
@@ -22,11 +23,12 @@ interface GameState {
 
 export const useGame1Store = create<GameState>()((set) => ({
   teams: {},
+  questionTimeLimit: 15,
   team1BoostActive: false,
   team2BoostActive: false,
   optimisticAnsweredIds: new Set(),
   actions: {
-    initGame: (teamsData) => {
+    initGame: (teamsData, timeLimit) => {
       const teams = teamsData.reduce(
         (acc, team, index) => {
           acc[index] = team;
@@ -35,7 +37,7 @@ export const useGame1Store = create<GameState>()((set) => ({
         {} as Record<number, Partial<Team>>,
       );
 
-      set({ teams });
+      set({ teams, questionTimeLimit: timeLimit });
     },
     addScore: (teamIndex, basePoints, applyBoost) => {
       set((state) => {

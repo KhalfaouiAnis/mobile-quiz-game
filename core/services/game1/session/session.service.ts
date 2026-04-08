@@ -1,6 +1,5 @@
 import { httpClient } from "@/core/api/httpClient";
 import {
-  Answer,
   AnswerSubmissionRequest,
   AnswerSubmissionResponse,
   ApiResponse,
@@ -42,10 +41,18 @@ export const fetchUserSessions = async (userId: number) => {
   );
 };
 
-
 export const getLatestActiveSession = async () => {
   const { data } =
-    await httpClient.get<ApiResponse<LastAciveSessionStats>>(`/sessions/last-game`);
+    await httpClient.get<ApiResponse<LastAciveSessionStats>>(
+      `/sessions/last-game`,
+    );
+  return data?.data;
+};
+
+export const getOverallProgress = async () => {
+  const { data } = await httpClient.get<
+    ApiResponse<{ remaining: number; progress: number }>
+  >(`/sessions/overall-progress`);
   return data?.data;
 };
 
@@ -64,9 +71,9 @@ export const getQuestionById = async (questionId: number) => {
 };
 
 export const getCorrectAnswer = async (questionId: number) => {
-  const { data } = await httpClient.get<ApiResponse<{ answer_text: string, file_url?: string }>>(
-    `/answers/question/${questionId}`,
-  );
+  const { data } = await httpClient.get<
+    ApiResponse<{ answer_text: string; file_url?: string }>
+  >(`/answers/question/${questionId}`);
   return data;
 };
 
@@ -74,5 +81,12 @@ export const submitAnswer = async (payload: AnswerSubmissionRequest) => {
   return httpClient.post<ApiResponse<AnswerSubmissionResponse>>(
     "/answers/submit",
     payload,
+  );
+};
+
+export const updateTeamScore = async (id: number, score: number) => {
+  return httpClient.put<ApiResponse<AnswerSubmissionResponse>>(
+    `/teams/${id}/score`,
+    { score },
   );
 };

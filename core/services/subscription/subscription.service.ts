@@ -1,19 +1,29 @@
 import { httpClient } from "@/core/api/httpClient";
-import { ApiResponse, Package, UserPurchase } from "@/core/types";
+import { ApiResponse, Package, User, UserPurchase } from "@/core/types";
 
 export const fetchUserPurchases = async () => {
-  return httpClient.get<ApiResponse<(Package & UserPurchase)[]>>(
-    "/subscriptions/purchases",
-  );
+  const { data } = await httpClient.get<
+    ApiResponse<(Package & UserPurchase)[]>
+  >("/subscriptions/purchases");
+  return data;
 };
 
 export const fetchSubscriptionPackages = async () => {
-  return httpClient.get<ApiResponse<Package[]>>("/subscriptions/packages");
+  const { data } = await httpClient.get<ApiResponse<Package[]>>(
+    "/subscriptions/packages",
+  );
+
+  return data;
 };
 
 export const purchasePackage = async (packageId: number) => {
-  return httpClient.post<ApiResponse<Package[]>>(
-    "/subscriptions/purchase",
-    packageId,
-  );
+  const { data } = await httpClient.post<
+    ApiResponse<{
+      purchase: UserPurchase;
+      user: User;
+      package: Package;
+    }>
+  >("/subscriptions/purchase", { packageId });
+
+  return data;
 };

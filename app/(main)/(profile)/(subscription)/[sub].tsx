@@ -14,16 +14,25 @@ import { useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { packageIcon } from ".";
 import { Subscription_TYPES } from "@/core/types";
+import { useSubscriptionMutations } from "@/core/services/subscription/subscription.mutations";
 
 export default function Index() {
     const { sub } = useLocalSearchParams<{ sub: string }>();
     const [showModal, setShowModal] = useState(false);
+    const { usePurchasePackage: { mutate, isPending } } = useSubscriptionMutations()
     const { data: packages, isLoading: loadingPackages } = usePackagesQuery()
     const { data: purchases, isLoading: loadingPurchases } = usePurchasesQuery()
 
-    const currentPlan = packages?.data?.data?.find(plan => plan.package_id === Number(sub))
+    const currentPlan = packages?.data?.find(plan => plan.id === Number(sub))
+    const isActive = purchases?.data?.find(pur => new Date(pur.expires_at).getTime() > new Date().getTime() && currentPlan?.id === pur.id)
 
-    const isActive = purchases?.data.data?.find(pur => new Date(pur.expires_at).getTime() > new Date().getTime() && currentPlan?.package_id === pur.purchase_id)
+    const handlePurchase = () => {
+        mutate(Number(sub), {
+            onSuccess() {
+                setShowModal(true)
+            }
+        })
+    }
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader showLogo={false} label="إدارة الاشتراك" />}>
@@ -58,7 +67,7 @@ export default function Index() {
                             <Text className="flex-1 font-bagel-regular text-gray-600" numberOfLines={1} ellipsizeMode="tail">{currentPlan?.description}</Text>
                         </View>
                         <View className="ms-auto">
-                            <Text className="font-bagel-regular text-lg text-primary-500">{currentPlan?.price} $</Text>
+                            <Text className="font-bagel-regular text-lg text-[#1977F2]">{currentPlan?.price} $</Text>
                             <Text className="font-bagel-regular text-xs text-gray-600">في الشهر</Text>
                         </View>
                     </View>
@@ -69,7 +78,9 @@ export default function Index() {
                 <View className="w-1/4">
                     <AppButton
                         title="اختر الاشتراك"
-                        onPress={() => setShowModal(true)}
+                        disabled={isPending}
+                        loading={isPending}
+                        onPress={handlePurchase}
                     />
                 </View>
             </ScrollView>

@@ -3,6 +3,7 @@ import {
   fetchSessionGameBoard,
   getCorrectAnswer,
   getLatestActiveSession,
+  getOverallProgress,
   getQuestionById,
 } from "./session.service";
 
@@ -27,6 +28,13 @@ export const useGame1SessionQueries = () => {
       staleTime: 60 * 60 * 10,
     });
 
+  const useOverallProgress = () =>
+    useQuery({
+      queryKey: ["game1__overall_progress"],
+      queryFn: () => getOverallProgress(),
+      staleTime: 60 * 60 * 10,
+    });
+
   const useCorerctAnswer = (question_id: number) =>
     useQuery({
       queryKey: ["game1__answer", question_id],
@@ -34,6 +42,7 @@ export const useGame1SessionQueries = () => {
     });
 
   return {
+    useOverallProgress,
     useCorerctAnswer,
     useLastSession,
     useGameBoard,

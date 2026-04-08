@@ -4,7 +4,7 @@ import { SignupInterface } from "@/core/types/schema/auth";
 import axios from "axios";
 import { TokenService } from "../token-manager";
 
-export const attemptLogin = async (username: string, password: string) => {
+export const attemptLogin = (username: string, password: string) => {
   return httpClient.post<ApiResponse<AuthResponse>>("/auth/login", {
     username,
     password,

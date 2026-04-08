@@ -1,45 +1,61 @@
-import { useState, useEffect, useRef } from "react";
+import { useAudioPlayer } from "expo-audio";
+import { useState, useEffect } from "react";
+import { SOUND_EFFECTS } from "../constants/audio";
 
-export const useGameTimer = (initialSeconds: number, onTimeUp?: () => void) => {
-  const [seconds, setSeconds] = useState(initialSeconds);
+interface Props {
+  duration: number;
+  onTimeUp?: () => void;
+  externalPause?: boolean;
+}
+
+export const useGameTimer = ({duration, externalPause, onTimeUp}:Props) => {
+  let interval: ReturnType<typeof setInterval> | null = null;
+  const audioPlayer = useAudioPlayer(SOUND_EFFECTS.Countdown);
+  const [seconds, setSeconds] = useState(duration);
   const [isActive, setIsActive] = useState(true);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const start = () => setIsActive(true);
   const pause = () => setIsActive(false);
 
   const restart = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
+    if (interval) clearInterval(interval);
 
     setIsActive(false);
-    setSeconds(initialSeconds);
+    setSeconds(duration);
     setTimeout(() => setIsActive(true), 10);
   };
 
   useEffect(() => {
+    if (externalPause) {
+      pause();
+    }
+  }, [externalPause]);
+
+  useEffect(() => {
     if (isActive && seconds > 0) {
-      const endTime = Date.now() + seconds * 1000;
-      timerRef.current = setInterval(() => {
-        const remaining = Math.round((endTime - Date.now()) / 1000);
-        if (remaining <= 0) {
-          setSeconds(0);
-          clearInterval(timerRef.current!);
-        } else {
-          setSeconds(remaining);
-        }
+      interval = setInterval(() => {
+        setSeconds((prev) => Math.max(prev - 1, 0));
       }, 1000);
-    } else if (seconds === 0) {
-      setIsActive(false);
-      if (onTimeUp) onTimeUp();
+    } else {
+      audioPlayer.pause();
     }
 
     return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
+      if (interval) clearInterval(interval);
     };
-  }, [isActive, seconds]);
+  }, [isActive]);
+
+  useEffect(() => {
+    if (seconds < 5 && seconds > 0) {
+      audioPlayer.play();
+    }
+    if (seconds === 0 && isActive) {
+      setIsActive(false);
+      audioPlayer.seekTo(0);
+      audioPlayer.pause();
+      onTimeUp?.();
+    }
+  }, [seconds, isActive]);
 
   return { seconds, isActive, start, pause, restart };
 };

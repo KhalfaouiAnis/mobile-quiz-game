@@ -3,6 +3,7 @@ import { TEXT_SCALE_FACOTR } from '@/core/constants';
 import { useGame1Store } from '@/core/store/game1.store';
 import { Question } from '@/core/types';
 import { boxShadow } from '@/core/utils/cn';
+import { moderateScale, scale, verticalScale } from '@/core/utils/sizes';
 import { memo } from 'react';
 import { Text, Pressable } from 'react-native';
 
@@ -20,17 +21,19 @@ const QuestionCell = memo(({ question, onPress }: Props) => {
         <Pressable
             onPress={onPress}
             disabled={isAnsweredLocal || question.is_answered}
-            className="py-1 px-3 my-1 rounded-xl relative bg-primary-500 disabled:bg-gray-400"
-            style={[
-                boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button,
-            ]}
+            className="items-center justify-center rounded-xl relative bg-primary-500 disabled:bg-gray-400"
+            style={{
+                boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow,
+                height: verticalScale(44),
+                width: scale(100),
+            }}
         >
             <Text className="text-white font-bagel-regular"
                 style={{
-                    textShadowColor: "#000000",
                     textShadowRadius: 1,
+                    textShadowColor: "#000000",
                     textShadowOffset: { width: 1, height: 1 },
-                    fontSize: 25 * TEXT_SCALE_FACOTR
+                    fontSize: moderateScale(32) * TEXT_SCALE_FACOTR
                 }}>
                 {question.points}
             </Text>

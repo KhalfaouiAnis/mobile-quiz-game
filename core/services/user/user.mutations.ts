@@ -6,13 +6,12 @@ import { User } from "@/core/types";
 
 export const useUpdateProfileMutation = () => {
   const queryClient = useQueryClient();
-  const { setUser } = useAuthStore((state) => state);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const mutation = useMutation({
     mutationFn: async (payload: UpdateProfileInterface) => {
-      const { data: finalResponse } = await updateProfile(payload);
-
-      return finalResponse;
+      const { data } = await updateProfile(payload);
+      return data;
     },
     onSuccess: (updatedUser) => {
       setUser(updatedUser.data as User);
@@ -22,4 +21,22 @@ export const useUpdateProfileMutation = () => {
   });
 
   return { ...mutation };
+};
+
+export const useProfileMutations = () => {
+  const queryClient = useQueryClient();
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const useUpdateProfile = useMutation({
+    mutationFn: async (payload: UpdateProfileInterface) => {
+      const { data } = await updateProfile(payload);
+      return data;
+    },
+    onSuccess: (updatedUser) => {
+      setUser(updatedUser.data as User);
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+  });
+
+  return { useUpdateProfile };
 };

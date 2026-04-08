@@ -1,13 +1,17 @@
-import { VIEW_SCALE_FACTOR } from '@/core/constants';
 import { useGameTimer } from '@/core/hooks/use-game-timer';
-import LinearGradient, { } from "react-native-linear-gradient"
-import { Ionicons } from '@expo/vector-icons';
+import LinearGradient from "react-native-linear-gradient"
+import { VIEW_SCALE_FACTOR } from '@/core/constants';
 import { View, Text, Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-const GameTimer = ({ duration = 30 }) => {
-    const { seconds, isActive, pause, start, restart } = useGameTimer(duration, () => {
-        console.log("Time is up!");
-    });
+interface Props {
+    duration: number,
+    onTimeUp?: () => void,
+    externalPause?: boolean
+}
+
+const GameTimer = ({ duration = 15, onTimeUp, externalPause }: Props) => {
+    const { seconds, isActive, pause, start, restart } = useGameTimer({ duration, externalPause, onTimeUp });
 
     const textColor = seconds <= 5 ? 'text-red-500' : 'text-black';
 
@@ -25,10 +29,11 @@ const GameTimer = ({ duration = 30 }) => {
             </View>
             <Pressable
                 hitSlop={10}
+                disabled={(duration - seconds) === duration}
                 onPress={isActive ? pause : start}
                 className="rounded-full absolute -top-3"
             >
-                <Ionicons name={isActive ? 'pause-circle' : "play-circle"} size={36 * VIEW_SCALE_FACTOR} color="#00A6DA" />
+                <Ionicons name={isActive ? 'pause-circle' : "play-circle"} size={36 * VIEW_SCALE_FACTOR} color={(duration - seconds) === duration ? "#e5e7eb" : "#00A6DA"} />
             </Pressable>
 
             <Pressable
@@ -36,7 +41,7 @@ const GameTimer = ({ duration = 30 }) => {
                 onPress={restart}
                 className="rounded-full absolute -bottom-3"
             >
-                <Ionicons style={{transform: "rotateX:-90"}} name="refresh-circle" size={36 * VIEW_SCALE_FACTOR} color="#00A6DA" />
+                <Ionicons style={{ transform: "rotateX:-90" }} name="refresh-circle" size={36 * VIEW_SCALE_FACTOR} color="#00A6DA" />
             </Pressable>
         </View>
     );

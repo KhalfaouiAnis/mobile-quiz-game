@@ -1,8 +1,10 @@
 import DecreaseIcon from "@/assets/svg/decrease";
 import IncreaseIcon from "@/assets/svg/increase";
 import { TEXT_SCALE_FACOTR, VIEW_SCALE_FACTOR } from "@/core/constants";
+import { SOUND_EFFECTS } from "@/core/constants/audio";
 import { CreateGame1SessionRequest } from "@/core/types/schema/game1";
 import { boxShadow } from "@/core/utils/cn";
+import { useAudioPlayer } from "expo-audio";
 import { Control, Controller, Path } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
 
@@ -18,6 +20,8 @@ interface Props {
 }
 
 export default function ScoreStepper({ control, name, step = 100, colors: { border, icon, text } }: Props) {
+    const audioPlayer = useAudioPlayer(SOUND_EFFECTS.DoubleScore);
+
     return (
         <Controller
             name={name}
@@ -27,7 +31,15 @@ export default function ScoreStepper({ control, name, step = 100, colors: { bord
 
                 const handleDecreaseScore = () => {
                     if ((currentScore - step) < 0) return;
+                    audioPlayer.seekTo(0);
+                    audioPlayer.play()
                     onChange(currentScore - step)
+                }
+
+                const handleIncreaseScore = () => {
+                    audioPlayer.seekTo(0);
+                    audioPlayer.play();
+                    onChange(currentScore + step)
                 }
 
                 return (
@@ -41,7 +53,7 @@ export default function ScoreStepper({ control, name, step = 100, colors: { bord
                         }}
                         className="bg-white items-center justify-between border-2 rounded-xl  flex-1 flex-row"
                     >
-                        <Pressable hitSlop={10} onPress={() => onChange(currentScore + step)}>
+                        <Pressable hitSlop={10} onPress={handleIncreaseScore}>
                             <IncreaseIcon size={24 * VIEW_SCALE_FACTOR} color={icon} />
                         </Pressable>
                         <Text

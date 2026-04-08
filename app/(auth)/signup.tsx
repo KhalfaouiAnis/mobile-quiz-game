@@ -7,7 +7,7 @@ import { useSignUp } from "@/core/hooks/auth/use-auth";
 import { Text, View } from "react-native";
 
 export default function SignupScreen() {
-    const { errors, handleSubmit, onSubmit, isSubmitting, control } = useSignUp();
+    const { handleSubmit, onSubmit, isSubmitting, control } = useSignUp();
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader />}>
@@ -19,31 +19,28 @@ export default function SignupScreen() {
                             name="username"
                             control={control}
                             required
-                            error={errors.username?.message}
                             label="اسم المستخدم" />
                         <AppTextInput
                             name="email"
                             control={control}
                             required
                             keyboardType="email-address"
-                            error={errors.email?.message}
                             label="البريد الالكتروني"
-                             />
+                        />
                     </View>
-                    <View className="flex-row gap-4 mt-6">
+                    <View className="flex-row gap-4 mt-8">
                         <AppTextInput
                             phone
                             name="phone"
+                            required={false}
                             control={control}
-                            label="رقم الهاتف" 
-                            keyboardType="number-pad" 
-                            error={errors.phone?.message}
-                            />
+                            label="رقم الهاتف"
+                            keyboardType="number-pad"
+                        />
                         <AppTextInput
                             name="password"
                             control={control}
                             required
-                            error={errors.password?.message}
                             label="كلمة المرور" secureTextEntry />
                     </View>
                     <View className="w-1/4 mt-6">

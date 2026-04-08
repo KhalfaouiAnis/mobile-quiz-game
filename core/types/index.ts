@@ -9,15 +9,12 @@ export interface SubscriptionPlan {
 }
 
 export type Subscription_TYPES =
-  | "family_tier"
   | "ultimate_tier"
   | "premium_tier"
-  | "basic_tier"
-  | "student_tier"
-  | "free_tier";
+  | "basic_tier";
 
 export interface User {
-  user_id: number;
+  id: number;
   username: string;
   email: string;
   role: "USER" | "ADMIN";
@@ -31,6 +28,7 @@ export interface User {
   apple_id?: string | null;
   facebook_id?: string | null;
   is_active?: boolean;
+  avatar_url?: string;
 }
 
 export interface CreateUserRequest {
@@ -59,12 +57,6 @@ export interface JWTPayload {
   role: "USER" | "ADMIN";
   iat?: number;
   exp?: number;
-}
-
-// Database query result types
-export interface QueryResult<T> {
-  rows: T[];
-  rowCount: number | null;
 }
 
 // API Response types
@@ -154,8 +146,9 @@ export interface Question {
 }
 
 export interface Answer {
-  answer_id: number;
+  id: number;
   question_id: number;
+  file_url?: string | null;
   answer_text: string;
   is_correct: boolean;
   created_at: Date;
@@ -186,22 +179,10 @@ export interface QuestionWithAnswers extends Question {
   // subcategory?: SubCategory;
 }
 
-// Game types
-export interface GameType {
-  game_type_id: number;
-  name: string;
-  description?: string;
-}
-
 export interface GameSession {
-  session_id: number;
+  id: number;
   created_by: number;
-  game_type_id: number;
-  question_time_limit:
-    | "FIVE_SECONDS"
-    | "TEN_SECONDS"
-    | "FIFTEEN_SECONDS"
-    | "TWENTY_SECONDS";
+  question_time_limit: number;
   max_categories: number;
   start_time?: Date | null;
   end_time?: Date | null;
@@ -215,11 +196,6 @@ export interface GameSession {
     username: string;
     email: string;
   };
-  game_type?: {
-    game_type_id: number;
-    name: string;
-    description: string | null;
-  };
 }
 
 export interface LastAciveSessionStats {
@@ -232,7 +208,7 @@ export interface LastAciveSessionStats {
 export type Currency = "KWD" | "USD" | "EUR" | "INR";
 
 export interface Package {
-  package_id: number;
+  id: number;
   name: string;
   price: number;
   currency: Currency;
@@ -244,7 +220,7 @@ export interface Package {
 }
 
 export interface UserPurchase {
-  purchase_id: number;
+  id: number;
   user_id: number;
   package_id: number;
   purchase_date: Date;
@@ -265,112 +241,12 @@ export interface Team {
   is_deleted: boolean;
 }
 
-export interface TeamMember {
-  team_id: number;
-  user_id: number;
-  user?: Omit<User, "password_hash">;
-}
-
-export interface TeamWithMembers extends Team {
-  team_members: TeamMember[];
-}
-
-// Request/Response Types for Teams
-export interface CreateTeamRequest {
-  session_id: number;
-  name: string;
-}
-
-export interface UpdateTeamRequest {
-  name?: string;
-}
-
-export interface TeamResponse {
-  team: TeamWithMembers;
-}
-
-export interface TeamsResponse {
-  teams: TeamWithMembers[];
-  total: number;
-  page: number;
-  limit: number;
-}
-
-// Request/Response Types for Questions
-export interface GetQuestionsRequest {
-  sub_category_id: number;
-  difficulty?: "easy" | "medium" | "hard";
-  question_type?: "single_choice" | "multiple_choice" | "true_false";
-  limit?: number;
-  page?: number;
-}
-
-export interface QuestionsResponse {
-  questions: QuestionWithAnswers[];
-  total: number;
-  page: number;
-  limit: number;
-}
-
 export interface QuestionResponse {
   question: QuestionWithAnswers;
 }
 
-export interface GameSessionResponse {
-  game_session: GameSession;
-}
-
-export interface SessionDetails {
-  session_id: number;
-  game_type_id: number;
-  created_by: number;
-  status: string;
-  max_teams: number;
-  questions_per_team: number;
-  time_per_question: number;
-  max_categories?: number;
-  created_at: Date;
-  updated_at: Date;
-  started_at?: Date | null;
-  ended_at?: Date | null;
-  teams: Array<{
-    team_id: number;
-    name: string;
-    score: number;
-    is_current_turn: boolean;
-    created_at: Date;
-  }>;
-  categories: Array<{
-    category_id: number;
-    name: string;
-  }>;
-}
-
-export interface SessionLeaderboard {
-  team_id: number;
-  team_name: string;
-  score: number;
-  games_played: number;
-  total_score: number;
-  average_score: number;
-  rank: number;
-}
-
-export interface SessionAnalytics {
-  session_id: number;
-  total_teams: number;
-  total_questions: number;
-  total_answers: number;
-  average_score: number;
-  highest_score: number;
-  lowest_score: number;
-  completion_rate: number;
-  average_response_time: number;
-  most_answered_category: string;
-  least_answered_category: string;
-}
-
 export interface GameBoard {
+  questionTimeLimit: number;
   sessionId: number;
   grid: Question[];
   teams: Team[];

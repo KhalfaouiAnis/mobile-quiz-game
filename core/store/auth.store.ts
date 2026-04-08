@@ -1,9 +1,5 @@
 import { queryClient } from "@/core/api/react-query";
-import {
-  ACC_TOKEN_STORAGE_KEY,
-  AUTH_STORAGE_KEY,
-  HAS_LAUNCHED,
-} from "@/core/constants";
+import { AUTH_STORAGE_KEY, HAS_LAUNCHED } from "@/core/constants";
 
 import { User } from "@/core/types";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
@@ -74,7 +70,7 @@ const useAuthStore = create<AuthState>()(
             httpClient
               .get("/auth/me")
               .then(({ data }) =>
-                set({ user: data, hasLaunched, isReady: true })
+                set({ user: data, hasLaunched, isReady: true }),
               )
               .catch(() => get().signOut());
           }
@@ -96,8 +92,8 @@ const useAuthStore = create<AuthState>()(
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated();
       },
-    }
-  )
+    },
+  ),
 );
 
 export const authStore = useAuthStore;

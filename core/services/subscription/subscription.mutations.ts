@@ -1,15 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
 import { purchasePackage } from "./subscription.service";
 
-export const usePurchasePackage = () => {
-  const mutation = useMutation({
+export const useSubscriptionMutations = () => {
+  const usePurchasePackage = useMutation({
     mutationFn: async (packageId: number) => {
-      const { data } = await purchasePackage(packageId);
-      return data.data;
+      return purchasePackage(packageId);
     },
-    onSuccess: () => {},
     onError: (err) => console.log(err),
   });
 
-  return { ...mutation };
+  return {
+    usePurchasePackage,
+  };
 };

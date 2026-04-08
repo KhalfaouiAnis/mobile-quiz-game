@@ -1,11 +1,12 @@
-import { boxShadow } from "@/core/utils/cn";
 import { ReactNode } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
+import { boxShadow } from "@/core/utils/cn";
 
 export default function ViewWrapper({ children }: { children: ReactNode }) {
     return (
-        <ScrollView style={boxShadow().button}
+        <ScrollView
             className="relative bg-white border border-secondary-500 py-6 px-8 rounded-3xl"
+            style={boxShadow(4, 16, 32, 0, "rgba(000 000 000 / 0.70)").button}
             contentContainerClassName="items-center"
         >
             {children}

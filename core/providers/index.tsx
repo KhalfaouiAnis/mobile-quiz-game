@@ -1,26 +1,38 @@
 import { ThemeProvider } from '@react-navigation/native';
 import { PropsWithChildren } from 'react';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from "sonner-native";
 
 import { queryClient } from '@/core/api/react-query';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { useNavigationTheme } from '../lib/theme/use-navigation-theme';
+import { Dimensions } from 'react-native';
+import { useNavigationTheme } from '@/core/lib/theme/use-navigation-theme';
+import { SpatialNavigationProvider } from './SpatialNavigationProvider';
 
 export const Providers = ({ children }: PropsWithChildren) => {
     const theme = useNavigationTheme();
 
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <SafeAreaProvider>
+        <SpatialNavigationProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
                 <ThemeProvider value={theme}>
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 </ThemeProvider>
-            </SafeAreaProvider>
-            <Toaster styles={{ toastContainer: { direction: "rtl" } }} />
-        </GestureHandlerRootView>
+                <Toaster
+                    position='top-center'
+                    styles={{
+                        toastContainer: {
+                            end: 50,
+                            start: 50,
+                            direction: "rtl",
+                            position: 'absolute',
+                            width: Dimensions.get("window").width - 100,
+                        }
+                    }}
+                />
+            </GestureHandlerRootView>
+        </SpatialNavigationProvider>
     )
 }

@@ -5,9 +5,10 @@ import { boxShadow } from "@/core/utils/cn";
 import { Image } from "expo-image";
 import { Pressable, Text, View } from "react-native";
 import { SOUND_EFFECTS } from "@/core/constants/audio";
+import { moderateScale, scale, verticalScale } from "@/core/utils/sizes";
 
 export default function DoublePoints({ borderColor, onPress, boosterDisabled }: { borderColor?: string, onPress: any, boosterDisabled?: boolean }) {
-    const audioPlayer = useAudioPlayer(SOUND_EFFECTS.DoubleScore);
+    const audioPlayer = useAudioPlayer(SOUND_EFFECTS.BoostUp);
 
     const handlePress = () => {
         audioPlayer.seekTo(0)
@@ -19,10 +20,14 @@ export default function DoublePoints({ borderColor, onPress, boosterDisabled }: 
         <Pressable
             onPress={handlePress}
             disabled={boosterDisabled}
-            style={[
-                { width: 82 * VIEW_SCALE_FACTOR, borderColor, },
-                boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button]}
-            className="items-center justify-center py-2 mt-2 flex-row gap-1.5 bg-white border-2 rounded-lg"
+            style={
+                {
+                    height: verticalScale(60) * VIEW_SCALE_FACTOR,
+                    width: scale(103) * VIEW_SCALE_FACTOR,
+                    borderColor,
+                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow
+                }}
+            className="items-center justify-center py-2 flex-row gap-1.5 bg-white border-2 rounded-lg"
         >
             <View
                 className="items-center justify-center rounded-[10px] px-1 ms-2"
@@ -35,7 +40,7 @@ export default function DoublePoints({ borderColor, onPress, boosterDisabled }: 
                     className="font-bagel-regular text-white"
                     style={{
                         textShadowRadius: 1,
-                        fontSize: 28 * TEXT_SCALE_FACOTR,
+                        fontSize: moderateScale(28) * TEXT_SCALE_FACOTR,
                         textShadowColor: "rgba(0, 0, 0, 0.55)",
                         textShadowOffset: { width: 4, height: 4 }
 
@@ -46,7 +51,7 @@ export default function DoublePoints({ borderColor, onPress, boosterDisabled }: 
             </View>
             <Image
                 source={IMAGES.AwardCoins}
-                style={{ width: 30 * VIEW_SCALE_FACTOR, height: 30 * VIEW_SCALE_FACTOR }}
+                style={{ width: scale(34) * VIEW_SCALE_FACTOR, height: verticalScale(34) * VIEW_SCALE_FACTOR }}
                 contentFit="contain"
             />
         </Pressable>

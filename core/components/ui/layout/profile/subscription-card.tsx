@@ -11,9 +11,10 @@ type Props = Partial<Package> & {
     onPress: () => void
 }
 
-export default function SubscriptionCard({ iconUrl, isActive, name, description, price }: Props) {
+export default function SubscriptionCard({ iconUrl, isActive, name, description, price, onPress }: Props) {
     return (
         <Pressable
+            onPress={onPress}
             style={[boxShadow(4, 4, 4, 0).button, {
                 borderWidth: isActive ? 1 : undefined,
                 borderColor: isActive ? "#F1190E" : undefined,
@@ -41,7 +42,7 @@ export default function SubscriptionCard({ iconUrl, isActive, name, description,
                 <Text className="flex-1 font-bagel-regular text-gray-600" numberOfLines={1} ellipsizeMode="tail">{description}</Text>
             </View>
             <View className="ms-auto">
-                <Text className="font-bagel-regular text-lg text-primary-500">{price} $</Text>
+                <Text className="font-bagel-regular text-lg text-[#1977F2]">{price} $</Text>
                 <Text className="font-bagel-regular text-xs text-gray-600">في الشهر</Text>
             </View>
         </Pressable>

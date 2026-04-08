@@ -21,10 +21,17 @@ import { useRouter } from "expo-router";
 import { useFormHook } from "../use-form-hook";
 import { TokenService } from "@/core/services/token-manager";
 import {
+  UpdatePasswordInterface,
+  UpdatePasswordSchema,
   UpdateProfileInterface,
   UpdateProfileSchema,
 } from "@/core/types/schema/user";
-import { updateProfile } from "@/core/services/user/user.service";
+import {
+  updatePassword,
+  updateProfile,
+} from "@/core/services/user/user.service";
+import { toast } from "sonner-native";
+import { isAxiosError } from "axios";
 
 export function useSignIn() {
   const router = useRouter();
@@ -39,14 +46,17 @@ export function useSignIn() {
 
   const onSubmit = async ({ username, password }: LoginInterface) => {
     try {
-      const {
-        data: { data },
-      } = await attemptLogin(username, password);
-      TokenService.setAccessToken(data?.accessToken!);
-      TokenService.setRefreshToken(data?.refreshToken!);
-      authStore?.setState({ user: data?.user });
-      router.replace("/(main)");
+      const { data } = await attemptLogin(username, password);
+      if (data.data) {
+        TokenService.setAccessToken(data.data.accessToken);
+        TokenService.setRefreshToken(data.data.refreshToken);
+        authStore?.setState({ user: data.data.user });
+        router.replace("/(main)");
+      }
     } catch (error) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message);
+      }
       console.log({ error });
     }
   };
@@ -63,10 +73,10 @@ export function useSignUp() {
     formState: { errors, isSubmitting },
   } = useFormHook(SignupSchema, {
     defaultValues: {
-      email: undefined,
-      username: undefined,
+      email: "",
+      username: "",
       password: "",
-      phone: "",
+      phone: undefined,
     },
   });
 
@@ -97,15 +107,42 @@ export function useUpdateProfile() {
   } = useFormHook(UpdateProfileSchema, {
     defaultValues: {
       email: "",
-      password: undefined,
-      confirmPassword: undefined,
+      username: "",
+      avatar_url: "",
     },
   });
 
   const onSubmit = async (payload: UpdateProfileInterface) => {
     try {
       await updateProfile(payload);
-      router.replace("/(profile)/");
+      router.replace("/(profile)");
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
+  return { control, handleSubmit, onSubmit, errors, isSubmitting };
+}
+
+export function useUpdatePassword(data: any) {
+  const router = useRouter();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useFormHook(UpdatePasswordSchema, {
+    values: {
+      email: data.email,
+      currentPassword: "",
+      newPassword: "",
+    },
+  });
+
+  const onSubmit = async (payload: UpdatePasswordInterface) => {
+    try {
+      await updatePassword(payload);
+      router.replace("/(profile)");
     } catch (error) {
       console.log({ error });
     }

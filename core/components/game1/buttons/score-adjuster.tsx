@@ -18,6 +18,9 @@ interface Props {
 export default function ScoreAdjuster({ team, colors: { border, icon, text } }: Props) {
     const { addScore } = useGame1Actions();
 
+    const increaseScore = () => {
+    }
+
     return (
         <View
             style={[

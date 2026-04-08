@@ -5,7 +5,7 @@ import { CircularProgressProps } from 'react-native-circular-progress-indicator/
 export default function CircularProgressIndicator({ value, radius = 32, ...props }: CircularProgressProps) {
     return (
         <CircularProgress
-            inActiveStrokeColor={'#f3f4f6'}
+            inActiveStrokeColor={'#ECF0F3'}
             progressValueColor={'#1f2937'}
             activeStrokeColor={'#A4DD60'}
             inActiveStrokeOpacity={0.5}
@@ -19,4 +19,3 @@ export default function CircularProgressIndicator({ value, radius = 32, ...props
         />
     );
 }
-

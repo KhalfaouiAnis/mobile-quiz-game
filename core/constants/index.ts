@@ -14,16 +14,6 @@ export const RESET_PASSWORD_TOKEN = "RESET_PASSWORD_TOKEN";
 export const TEXT_SCALE_FACOTR = Platform.isTVOS ? 10 : 1;
 export const VIEW_SCALE_FACTOR = Platform.isTVOS ? 10 : 1;
 
-// name: string;
-// created_at: Date;
-// package_id: number;
-// price: Decimal;
-// currency: $Enums.Currency;
-// description: string | null;
-// question_count: number;
-// game_limit: number;
-// subscription_type: string;
-
 export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
   {
     iconUrl: IMAGES.ProPlan,
@@ -64,4 +54,23 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
       "محتوى وأسئلة حصرية تُحدث أسبوعيًا",
     ],
   },
+];
+
+export const COMMON_TEAM_NAMES = [
+  { id: "1", teamName: "Team A" },
+  { id: "2", teamName: "Team B" },
+  { id: "3", teamName: "Team C" },
+  { id: "4", teamName: "Team D" },
+  { id: "5", teamName: "Team E" },
+  { id: "6", teamName: "Team F" },
+  { id: "7", teamName: "Team G" },
+  { id: "8", teamName: "Team H" },
+];
+
+export const GAME1_QUESTION_TIME = [
+  { label: "25 ثانية", value: 25 },
+  { label: "45 ثانية", value: 45 },
+  { label: "60 ثانية", value: 60 },
+  { label: "75 ثانية", value: 75 },
+  { label: "90 ثانية", value: 90 },
 ];

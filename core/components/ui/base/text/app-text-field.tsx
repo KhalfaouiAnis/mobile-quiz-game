@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Pressable, Text, TextInput, TextInputProps, View } from "react-native";
 import { Control, FieldPath, FieldValues, useController } from "react-hook-form";
 import { TEXT_SCALE_FACOTR } from "@/core/constants";
+import { hideSystemBars } from "@/core/lib/navigation-bar";
 
 type Props<TForm extends FieldValues> = TextInputProps & {
     name: FieldPath<TForm>;
@@ -20,14 +21,14 @@ type Props<TForm extends FieldValues> = TextInputProps & {
     }[]
 }
 
-export default function AppTextInput<TForm extends FieldValues>({ control, name, label, error, required, phone, boxShadow, ...props }: Props<TForm>) {
-    const { field: { onChange, value } } = useController({ control, name });
+export default function AppTextInput<TForm extends FieldValues>({ control, name, label, required, phone, boxShadow, ...props }: Props<TForm>) {
+    const { field: { onChange, value }, fieldState: { error } } = useController({ control, name });
     const [showPassword, setShowPassword] = useState(false)
 
     return (
         <View
             className="relative flex-row items-center justify-between border-2 border-primary-500 px-3  flex-1 rounded-2xl"
-            style={[{ boxShadow: boxShadow, direction: "rtl" }]}>
+            style={{ boxShadow, direction: "rtl" }}>
             {label && (
                 <View className="bg-white flex-row  absolute -top-3 right-6 z-10 px-2">
                     <Text className="text-gray-400 font-cairo text-xs">{label}</Text>
@@ -47,10 +48,11 @@ export default function AppTextInput<TForm extends FieldValues>({ control, name,
                     </View>
                 )}
                 <TextInput
-                    numberOfLines={1}
                     style={{ writingDirection: "rtl", textAlign: "right", height: '100%', flex: 1, color: "black" }}
                     onChangeText={onChange}
                     value={value as string}
+                    onBlur={hideSystemBars}
+                    numberOfLines={1}
                     {...props}
                     secureTextEntry={props.secureTextEntry && !showPassword}
                 />
@@ -60,7 +62,13 @@ export default function AppTextInput<TForm extends FieldValues>({ control, name,
                     <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color={error ? "#F1190E" : "#677185"} />
                 </Pressable>
             )}
-            {error && <Text className="absolute right-0 -bottom-6 text-error text-sm ms-2 font-bagel-regular">{error}</Text>}
+            {error && <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={{ maxWidth: 300 * TEXT_SCALE_FACOTR }}
+                className="absolute right-0 -bottom-6 text-error text-sm ms-2 font-bagel-regular">
+                {error.message}
+            </Text>}
         </View>
     )
 }

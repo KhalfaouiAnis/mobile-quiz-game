@@ -42,9 +42,7 @@ httpClient.interceptors.response.use(
 
         const { data } = await axios.post(
           process.env.EXPO_PUBLIC_API_URL + "/api/v1/auth/refresh",
-          {
-            token: refreshToken,
-          }
+          { token: refreshToken },
         );
 
         TokenService.setAccessToken(data.accessToken);
@@ -59,5 +57,5 @@ httpClient.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );

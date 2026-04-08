@@ -5,6 +5,7 @@ import {
   createSession,
   submitAnswer,
   updateSessionStatus,
+  updateTeamScore,
 } from "./session.service";
 import { CreateGame1SessionRequest } from "@/core/types/schema/game1";
 
@@ -16,7 +17,6 @@ export const useGame1SessionMutations = () => {
       const { data } = await createSession(payload);
       return data.data;
     },
-    onSuccess: () => {},
     onError: (err) => console.log(err),
   });
 
@@ -63,7 +63,33 @@ export const useGame1SessionMutations = () => {
         ]) || [];
       return { previousDrafts };
     },
-    onSuccess: () => {},
+    onError: (err) => console.log(err),
+  });
+
+  const updateGame1TeamScore = useMutation({
+    mutationFn: async (payload: {
+      session_id: number;
+      id: number;
+      score: number;
+    }) => {
+      const { data } = await updateTeamScore(payload.id, payload.score);
+
+      return data.data;
+    },
+
+    onMutate: async (data) => {
+      await queryClient.cancelQueries({
+        queryKey: ["game1__session", "game_board", data.session_id],
+      });
+
+      const previousDrafts =
+        queryClient.getQueryData<GameBoard>([
+          "game1__session",
+          "game_board",
+          data.session_id,
+        ]) || [];
+      return { previousDrafts };
+    },
     onError: (err) => console.log(err),
   });
 
@@ -71,6 +97,7 @@ export const useGame1SessionMutations = () => {
     submitGame1Answer,
     createGame1Session,
     cancelGame1Session,
+    updateGame1TeamScore,
     updateGame1SessionStatus,
   };
 };

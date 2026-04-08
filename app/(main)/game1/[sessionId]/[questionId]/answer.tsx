@@ -10,11 +10,11 @@ import { View, Text, ActivityIndicator, ScrollView, Dimensions } from 'react-nat
 
 export default function AnswerScreen() {
     const { questionId, sessionId } = useLocalSearchParams<{ sessionId: string, questionId: string }>();
+    const answeredQuestionsIds = useGame1Store(store => store.optimisticAnsweredIds)
     const { submitGame1Answer: { mutate, isPending } } = useGame1SessionMutations()
-    const { addScore, markAnswered } = useGame1Actions();
     const team1BoostActive = useGame1Store(store => store.team1BoostActive)
     const team2BoostActive = useGame1Store(store => store.team2BoostActive)
-    const answeredQuestionsIds = useGame1Store(store => store.optimisticAnsweredIds)
+    const { addScore, markAnswered, deactivateBoosts } = useGame1Actions();
     const queryClient = useQueryClient();
     const { teams } = useGame1Store()
 
@@ -24,18 +24,30 @@ export default function AnswerScreen() {
     const questionData = queryClient.getQueryData<GameBoard>(["game1__session", "game_board", Number(sessionId)])
         ?.grid.find(q => q?.id === Number(questionId));
 
-    const handleSubmitAnswer = async (teamIndex: number, is_correct: boolean, is_boosted: boolean = false) => {
+    const handleSubmitAnswer = async ({ teamIndex, is_correct, is_boosted = false }: { teamIndex: number, is_correct: boolean, is_boosted: boolean }) => {
         mutate({
             question_id: Number(questionId),
             session_id: Number(sessionId),
             team_id: teams[teamIndex].id!,
             is_boosted,
             is_correct,
-        })
-        if (questionData) {
-            addScore(teamIndex, questionData.points, is_boosted);
-            markAnswered(Number(questionId));
-        }
+        },
+            {
+                onSuccess() {
+                    queryClient.invalidateQueries({ queryKey: ["game1__session", "game_board", Number(sessionId)] })
+                    if (questionData) {
+                        if (is_correct) {
+                            addScore(teamIndex, questionData.points, is_boosted);
+                        }
+                        if (is_boosted) {
+                            deactivateBoosts()
+                        }
+                        markAnswered(Number(questionId));
+                    }
+                    router.push(`/(main)/game1/${sessionId}`);
+                }
+            }
+        )
     }
 
     return (
@@ -44,14 +56,14 @@ export default function AnswerScreen() {
                 <View className='gap-4'>
                     <Text className="text-lg text-center font-cairo-medium">الإجابة:</Text>
                     {
-                        isLoading || !data?.data?.answer_text ? (
+                        isLoading ? (
                             <ActivityIndicator size="large" color="#00A6DA" />
                         ) : (
                             <View className='gap-3'>
                                 <Text className="text-3xl text-center font-cairo-medium pb-2" numberOfLines={2} ellipsizeMode="tail">
-                                    ✅ {data?.data.answer_text}
+                                    ✅ {data?.data?.answer_text}
                                 </Text>
-                                {data.data.file_url && (
+                                {data?.data?.file_url && (
                                     <Image
                                         contentFit="cover"
                                         source={{ uri: data.data.file_url }}
@@ -67,10 +79,8 @@ export default function AnswerScreen() {
                         <AppButton
                             danger
                             semiRounded
-                            rounded={false}
-                            loading={isPending}
                             title={teams[0].name || ""}
-                            onPress={() => handleSubmitAnswer(0, true, team1BoostActive)}
+                            onPress={() => handleSubmitAnswer({ teamIndex: 0, is_correct: true, is_boosted: team1BoostActive })}
                             disabled={isPending || answeredQuestionsIds.has(Number(questionId))}
                         />
                     </View>
@@ -78,7 +88,7 @@ export default function AnswerScreen() {
                         <AppButton
                             title="لا أحد"
                             rounded={false}
-                            onPress={() => handleSubmitAnswer(1, false, false)}
+                            onPress={() => handleSubmitAnswer({ teamIndex: 0, is_correct: false, is_boosted: team1BoostActive || team2BoostActive })}
                             disabled={isPending || answeredQuestionsIds.has(Number(questionId))}
                         />
                     </View>
@@ -86,9 +96,8 @@ export default function AnswerScreen() {
                         <AppButton
                             danger
                             semiRounded
-                            rounded={false}
                             title={teams[1].name || ""}
-                            onPress={() => handleSubmitAnswer(1, true, team2BoostActive)}
+                            onPress={() => handleSubmitAnswer({ teamIndex: 1, is_correct: true, is_boosted: team2BoostActive })}
                             disabled={isPending || answeredQuestionsIds.has(Number(questionId))}
                         />
                     </View>

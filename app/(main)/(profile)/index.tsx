@@ -17,14 +17,15 @@ export default function Index() {
     return (
         <Container header={<ProfileHeader />}>
             <ScrollView
-                className="mt-4"
+                className="mt-1"
                 showsVerticalScrollIndicator={false}
                 contentContainerClassName="items-center my-2 pb-6 px-6"
             >
                 <Pressable
+                    style={boxShadow().button}
                     onPress={() => router.navigate("/(profile)/update")}
                     className="bg-white w-1/2 flex-row gap-6 items-center justify-between py-3 px-4 rounded-lg border border-secondary-500"
-                    style={boxShadow().button}>
+                >
                     <ProfileLinkIcon>
                         <Ionicons name="person-outline" size={24} color="#00A6DA" />
                     </ProfileLinkIcon>

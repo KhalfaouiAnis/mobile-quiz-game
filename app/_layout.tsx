@@ -6,15 +6,17 @@ import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
-
+import * as NavigationBar from 'expo-navigation-bar';
 import { Providers } from '@/core/providers';
 import useAuthStore, { authStore } from '@/core/store/auth.store';
 import { injectLogout } from '@/core/api/httpClient';
 import { useAppStore } from '@/core/store/app.store';
 
 import "../global.css";
+import { isTV } from '@/core/utils/platform';
 
 SplashScreen.preventAutoHideAsync();
+NavigationBar.setVisibilityAsync("hidden");
 
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
@@ -29,7 +31,7 @@ export default function RootLayout() {
   const { isReady, initialize } = useAuthStore();
   const { loadFonts, fontsLoaded } = useAppStore()
 
- useEffect(() => {
+  useEffect(() => {
     loadFonts()
   }, [loadFonts]);
 
@@ -59,7 +61,14 @@ export default function RootLayout() {
   return (
     <Providers>
       <StatusBar hidden={true} />
-      <Stack screenOptions={{ headerShown: false }} />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: !isTV,
+          animation: isTV ? 'fade' : 'default',
+          contentStyle: { backgroundColor: '#000' },
+        }}
+      />
     </Providers>
   );
 }

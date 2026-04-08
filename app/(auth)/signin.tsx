@@ -12,7 +12,7 @@ import { Link } from "expo-router";
 import { ScrollView, Text, View } from "react-native";
 
 export default function SignInScreen() {
-    const { errors, handleSubmit, onSubmit, isSubmitting, control } = useSignIn();
+    const { handleSubmit, onSubmit, isSubmitting, control } = useSignIn();
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader />}>
@@ -25,15 +25,14 @@ export default function SignInScreen() {
                                 required
                                 name="username"
                                 control={control}
-                                error={errors.username?.message}
                                 label="اسم المستخدم/البريد الالكتروني"
                             />
                             <AppTextInput
                                 required
+                                secureTextEntry
                                 name="password"
                                 control={control}
-                                error={errors.password?.message}
-                                label="كلمة المرور" secureTextEntry
+                                label="كلمة المرور"
                             />
                         </View>
                         <View className="w-full items-end">
@@ -43,8 +42,8 @@ export default function SignInScreen() {
                     <View className="w-1/5 mt-2">
                         <AppButton
                             title="دخول"
-                            onPress={handleSubmit(onSubmit, (err) => { console.log(err) })}
                             loading={isSubmitting}
+                            onPress={handleSubmit(onSubmit)}
                         />
                     </View>
                     <View className="w-1/3 my-1">

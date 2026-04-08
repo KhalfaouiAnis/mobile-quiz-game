@@ -13,7 +13,8 @@ export default function Index() {
         resolver: zodResolver(CreateGame1SessionSchema),
         defaultValues: {
             sub_category_ids: [],
-            teams: [{ name: "", score: 0 }, { name: "", score: 0 }],
+            question_time_limit: 15,
+            teams: [],
         },
     });
 

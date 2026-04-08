@@ -31,18 +31,18 @@ export default function Index() {
                 (loadingPurchases || loadingPackages) ? <ActivityIndicator size="large" /> : (
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        contentContainerClassName="items-center gap-4 my-2 mx-24 p-3 rounded-3xl border-[10px] border-secondary-500 bg-white"
+                        contentContainerClassName="items-center gap-8 my-2 mx-24 p-3 rounded-3xl border-[10px] border-secondary-500 bg-white"
                     >
-                        {packages?.data?.data?.map((plan, index) => {
-                            const isActive = purchases?.data.data?.find(pur => new Date(pur.expires_at).getTime() > new Date().getTime() && plan.package_id === pur.purchase_id)
+                        {packages?.data?.map((plan, index) => {
+                            const isActive = purchases?.data?.find(pur => new Date(pur.expires_at).getTime() > new Date().getTime() && plan.id === pur.package_id)
                             return (
                                 <SubscriptionCard
                                     name={plan.name}
                                     price={plan.price}
                                     isActive={!!isActive}
                                     description={plan.description}
-                                    key={plan.package_id + `__${index}`}
-                                    onPress={() => setSelectedPlanId(plan.package_id)}
+                                    key={plan.id + `__${index}`}
+                                    onPress={() => setSelectedPlanId(plan.id)}
                                     iconUrl={packageIcon(plan.subscription_type as Subscription_TYPES)}
                                 />
                             )
@@ -50,7 +50,8 @@ export default function Index() {
                         <View className="w-1/4">
                             <AppButton
                                 title="اختر الاشتراك"
-                                onPress={() => router.navigate(`/(main)/(profile)/(subscription)/1`)}
+                                disabled={!selectedPlanId}
+                                onPress={() => router.navigate(`/(main)/(profile)/(subscription)/${selectedPlanId}`)}
                             // onPress={() => setShowModal(true)}
                             />
                         </View>

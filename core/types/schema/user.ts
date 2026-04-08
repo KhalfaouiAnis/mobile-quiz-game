@@ -1,23 +1,17 @@
 import { z } from "zod";
 
-export const ExistingAvatarSchema = z.object({
-  id: z.string().optional(),
-  public_id: z.string(),
-  original_url: z.string(),
-  media_type: z.string(),
-  transformed_url: z.string().optional(),
+export const UpdateProfileSchema = z.object({
+  email: z.email().optional(),
+  username: z.string().min(6).optional(),
+  avatar_url: z.string().optional(),
 });
 
-export const UpdateProfileSchema = z
+export const UpdatePasswordSchema = z
   .object({
-    email: z.email(),
-    password: z.string({ message: "Password is required" }).min(6),
-    confirmPassword: z.string({ message: "Password is required" }).min(6),
+    email: z.email().min(6),
+    currentPassword: z.string({ message: "CurrentPassword is required" }).min(6),
+    newPassword: z.string({ message: "Password is required" }).min(6),
   })
-  .refine((schema) => schema.confirmPassword === schema.password, {
-    path: ["confirmPassword"],
-    error: "Passwords don't match"
-  });
 
 export type UpdateProfileInterface = z.infer<typeof UpdateProfileSchema>;
-export type ExistingAvatarType = z.infer<typeof ExistingAvatarSchema>;
+export type UpdatePasswordInterface = z.infer<typeof UpdatePasswordSchema>;

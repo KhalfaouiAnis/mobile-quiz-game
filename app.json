@@ -35,13 +35,21 @@
           }
         }
       ],
+      [
+        "expo-navigation-bar",
+        {
+          "visibility": "hidden",
+          "behavior": "overlay-swipe"
+        }
+      ],
       "expo-router",
       "expo-font",
       "expo-build-properties",
       "expo-web-browser",
       "@react-native-google-signin/google-signin",
       "expo-video",
-      "expo-audio"
+      "expo-audio",
+      "react-native-compressor"
     ],
     "android": {
       "systemBars": {
@@ -51,7 +59,7 @@
       },
       "windowSoftInputMode": "adjustResize",
       "predictiveBackGestureEnabled": false,
-      "softwareKeyboardLayoutMode": "pan",
+      "softwareKeyboardLayoutMode": "resize",
       "edgeToEdgeEnabled": true,
       "splash": {
         "image": "./assets/images/splash.png"
