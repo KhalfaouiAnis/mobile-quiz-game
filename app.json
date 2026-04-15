@@ -46,7 +46,27 @@
       "expo-font",
       "expo-build-properties",
       "expo-web-browser",
-      "@react-native-google-signin/google-signin",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "androidClientId": "your-android-client-id.googleusercontent.com",
+          "iosClientId": "your-ios-client-id.googleusercontent.com",
+          "iosUrlScheme": "com.googleusercontent.apps.ios-url-schema"
+        }
+      ],
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "1277409807481340",
+          "clientToken": "your-client-token",
+          "displayName": "Xcars",
+          "scheme": "fb{your-app-id}",
+          "advertiserIDCollectionEnabled": false,
+          "autoLogAppEventsEnabled": false,
+          "installAutoInitEnabled": true
+        }
+      ],
+      "expo-apple-authentication",
       "expo-video",
       "expo-audio",
       "react-native-compressor"
@@ -73,6 +93,7 @@
       "package": "com.aniskhalfaoui.kahoot"
     },
     "ios": {
+      "usesAppleSignIn": true,
       "splash": {
         "image": "./assets/images/splash.png"
       }

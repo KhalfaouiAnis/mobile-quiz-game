@@ -1,9 +1,8 @@
-import AppButton from "@/core/components/ui/base/button/app-button";
-import AuthHeader from "@/core/components/ui/layout/auth-header";
-import ProfileLinkIcon from "@/core/components/ui/layout/profile/profile-link-icon";
-import Container from "@/core/components/ui/shared/container";
-import { TEXT_SCALE_FACOTR } from "@/core/constants";
-import { boxShadow } from "@/core/utils/cn";
+import AppButton from "@/src/components/shared/button/AppButton";
+import AuthHeader from "@/src/components/layout/AuthHeader";
+import Container from "@/src/components/shared/Container";
+import ProfileLinkIcon from "@/src/components/layout/profile/ProfileLinkIcon";
+import { boxShadow } from "@/src/utils/cn";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
@@ -13,7 +12,7 @@ export default function Guest() {
         <Container header={<AuthHeader showLogo={false} />}>
             <View className='-mt-2 flex-row items-center justify-center gap-6'>
                 <View className='relative bg-white p-4 rounded-full border-2 border-secondary-500'>
-                    <Feather name="user" size={60 * TEXT_SCALE_FACOTR} color="#00A6DA" />
+                    <Feather name="user" size={60} color="#00A6DA" />
                 </View>
                 <Text className='text-white font-cairo-semibold text-3xl'>
                     زائر

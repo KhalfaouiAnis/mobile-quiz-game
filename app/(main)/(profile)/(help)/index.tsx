@@ -1,10 +1,10 @@
-import AuthHeader from "@/core/components/ui/layout/auth-header";
-import Container from "@/core/components/ui/shared/container";
-import ViewWrapper from "@/core/components/ui/shared/view-wrapper";
-import { boxShadow } from "@/core/utils/cn";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
+import AuthHeader from "@/src/components/layout/AuthHeader";
+import Container from "@/src/components/shared/Container";
+import ViewWrapper from "@/src/components/shared/ViewWrapper";
+import { boxShadow } from "@/src/utils/cn";
 
 export default function Index() {
     return (

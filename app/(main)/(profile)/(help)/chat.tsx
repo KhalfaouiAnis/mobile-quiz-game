@@ -1,7 +1,7 @@
-import AuthHeader from "@/core/components/ui/layout/auth-header";
-import Container from "@/core/components/ui/shared/container";
-import ViewWrapper from "@/core/components/ui/shared/view-wrapper";
 import { View } from "react-native";
+import AuthHeader from "@/src/components/layout/AuthHeader";
+import Container from "@/src/components/shared/Container";
+import ViewWrapper from "@/src/components/shared/ViewWrapper";
 
 export default function Chat() {
     return (

@@ -1,11 +1,14 @@
-import AppButton from "@/core/components/ui/base/button/app-button";
-import Container from "@/core/components/ui/shared/container";
-import ViewWrapper from "@/core/components/ui/shared/view-wrapper";
-import { boxShadow } from "@/core/utils/cn";
+import AppButton from "@/src/components/shared/button/AppButton";
+import Container from "@/src/components/shared/Container";
+import ViewWrapper from "@/src/components/shared/ViewWrapper";
+
+import { boxShadow } from "@/src/utils/cn";
 import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 export default function IndexScreen() {
+    const { t } = useTranslation();
     const router = useRouter();
 
     return (
@@ -17,20 +20,20 @@ export default function IndexScreen() {
                     <Text className="font-cairo-bold">قدها</Text>
                 </View>
                 <ViewWrapper>
-                    <Text className="text-center text-xl font-cairo-bold mb-4 text-primary-500">مرحبًا بك في عالم التحدي!</Text>
+                    <Text className="text-center text-xl font-cairo-bold mb-4 text-primary-500">{t("welcome.auth")}</Text>
                     <Text className="text-center font-cairo-bold">
-                        هنا تبدأ رحلتك لاختبار ذكائك ومعرفتك في مختلف المجالات
+                        {t("welcome.get_started")}
                     </Text>
                     <Text className="text-center font-cairo-bold">
-                        كوّن حسابك لتتبع نتائجك، اجمع النقاط، وتنافس مع أصدقائك على الصدارة.
+                        {t("welcome.created_you_account")}
                     </Text>
                     <Text className="text-center font-cairo-bold mt-6">
-                        ابدأ الآن واختر طريقتك:
+                        {t("welcome.start_here")}
                     </Text>
                     <View className="flex-row gap-3 items-center justify-center mt-4">
-                        <AppButton title="تسجيل الدخول" onPress={() => router.push("/(auth)/signin")} />
-                        <AppButton title="انشاء حساب" onPress={() => router.push("/(auth)/signup")} />
-                        <AppButton title="مسح QR للعبة التحدي" onPress={() => { }} />
+                        <AppButton title={t("welcome.signin")} onPress={() => router.push("/(auth)/signin")} />
+                        <AppButton title={t("welcome.signup")} onPress={() => router.push("/(auth)/signup")} />
+                        <AppButton title={t("welcome.scan_qr")} onPress={() => { }} />
                     </View>
                 </ViewWrapper>
             </View>

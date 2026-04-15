@@ -5,15 +5,13 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import { FONT_SIZE, SPACING, BORDER_RADIUS, scale, SCREEN } from '@/core/constants/dimensions';
-import { COLORS } from '@/core/constants/colors';
-import { Focusable } from '@/core/components/base/Focusable';
-import { isTV } from '@/core/utils/platform';
-import { TVScreen } from '@/core/components/base/TVScreen';
-import { TVModal } from '@/core/components/base/TVModal';
+import { FONT_SIZE, SPACING, BORDER_RADIUS, scale, SCREEN } from '@/src/constants/dimensions';
+import { Focusable } from '@/src/components/base/Focusable';
+import { isTV } from '@/src/utils/platform';
+import { TVScreen } from '@/src/components/base/TVScreen';
+import { TVModal } from '@/src/components/base/TVModal';
 
-// ─── Data ────────────────────────────────────────────────────────────────────
-
+// ─── Data
 type GameShape = 'rect' | 'pill' | 'oval' | 'circle';
 
 interface GameType {
@@ -35,42 +33,42 @@ const GAME_TYPES: GameType[] = [
         nameAr: 'التحدي',
         nameEn: 'THE CHALLENGE',
         shape: 'rect',
-        bg: COLORS.white,
-        textColor: COLORS.textDark,
-        borderColor: COLORS.cyan,
+        bg: "",
+        textColor: "",
+        borderColor: "",
     },
     {
         id: 'join_challenge',
         nameAr: 'الانضمام الى اللعبة',
         shape: 'pill',
-        bg: COLORS.cyan,
-        textColor: COLORS.white,
+        bg: "",
+        textColor: "",
         badge: 'N',
-        badgeColor: COLORS.green,
+        badgeColor: "",
     },
     {
         id: 'godha',
         nameAr: 'قدها',
         shape: 'oval',
-        bg: COLORS.white,
-        textColor: COLORS.textDark,
-        borderColor: COLORS.cyan,
+        bg: "",
+        textColor: "",
+        borderColor: "",
         featured: true,
     },
     {
         id: 'join_liar',
         nameAr: 'الانضمام الى اللعبة',
         shape: 'pill',
-        bg: COLORS.cyan,
-        textColor: COLORS.white,
+        bg: "",
+        textColor: "",
     },
     {
         id: 'liar',
         nameAr: 'THE Liar',
         shape: 'circle',
-        bg: COLORS.white,
-        textColor: COLORS.textDark,
-        borderColor: COLORS.cyan,
+        bg: "",
+        textColor: "",
+        borderColor: "",
     },
 ];
 
@@ -111,8 +109,7 @@ const INFO_CARDS: InfoCard[] = [
     },
 ];
 
-// ─── Sub-components ──────────────────────────────────────────────────────────
-
+// ─── Sub-components
 /** The pill / rect / oval / circle shape that identifies each game */
 const GameShape: React.FC<{ game: GameType; focused: boolean }> = ({
     game,
@@ -138,7 +135,7 @@ const GameShape: React.FC<{ game: GameType; focused: boolean }> = ({
                 shapeStyle,
                 { backgroundColor: game.bg },
                 game.borderColor
-                    ? { borderWidth: 2.5, borderColor: focused ? COLORS.yellow : game.borderColor }
+                    ? { borderWidth: 2.5, borderColor: focused ? "" : game.borderColor }
                     : null,
                 game.featured && styles.shapeFeatured,
                 focused && styles.shapeFocused,
@@ -146,7 +143,7 @@ const GameShape: React.FC<{ game: GameType; focused: boolean }> = ({
         >
             {/* Badge (e.g. "N" for new) */}
             {game.badge && (
-                <View style={[styles.badge, { backgroundColor: game.badgeColor ?? COLORS.green }]}>
+                <View style={[styles.badge, { backgroundColor: game.badgeColor ?? "" }]}>
                     <Text style={styles.badgeText}>{game.badge}</Text>
                 </View>
             )}
@@ -154,7 +151,7 @@ const GameShape: React.FC<{ game: GameType; focused: boolean }> = ({
             <Text
                 style={[
                     styles.shapeNameAr,
-                    { color: focused && game.shape === 'pill' ? COLORS.yellow : game.textColor },
+                    { color: focused && game.shape === 'pill' ? "" : game.textColor },
                 ]}
                 numberOfLines={2}
                 textBreakStrategy="simple"
@@ -180,9 +177,9 @@ const GameCard: React.FC<{
     <Focusable
         focusKey={`HOME_GAME_${game.id.toUpperCase()}`}
         onSelect={() => onCreateGame(game.id)}
-        autoFocus={isTV && index === 2} // default focus on center "قدها"
+        autoFocus={isTV && index === 2}
         showFocusRing={false}
-        style={[styles.gameCardOuter, game.featured && styles.gameCardFeatured]}
+        style={[styles.gameCardOuter, game.featured && styles.gameCardFeatured] as any}
     >
         {({ focused }) => (
             <>
@@ -237,7 +234,7 @@ const InfoCard: React.FC<{ card: InfoCard }> = ({ card }) => (
                     </View>
                     <Text style={styles.pointsIcon}>👤</Text>
                     <Text style={styles.pointsIcon}>×</Text>
-                    <View style={[styles.pointsBadge, { backgroundColor: COLORS.red }]}>
+                    <View style={[styles.pointsBadge, { backgroundColor: "" }]}>
                         <Text style={styles.pointsBadgeText}>▶</Text>
                     </View>
                     <Text style={styles.pointsLabel}> بلوك  —  دبل نقاطك</Text>
@@ -247,8 +244,7 @@ const InfoCard: React.FC<{ card: InfoCard }> = ({ card }) => (
     </View>
 );
 
-// ─── Screen ──────────────────────────────────────────────────────────────────
-
+// ─── Screen
 export default function HomeScreen() {
     const [selectedGame, setSelectedGame] = useState<string | null>(null);
     const [showModal, setShowModal] = useState(false);
@@ -261,7 +257,7 @@ export default function HomeScreen() {
     const gameLabel = GAME_TYPES.find((g) => g.id === selectedGame)?.nameAr ?? '';
 
     return (
-        <TVScreen focusKey="HOME_SCREEN" backgroundColor={COLORS.yellow} disableOverscan>
+        <TVScreen focusKey="HOME_SCREEN" backgroundColor={""} disableOverscan>
             {/* ── Yellow header ────────────────────────────────────────── */}
             <View style={styles.header}>
                 {/* Right side (RTL): avatar + name */}
@@ -334,7 +330,7 @@ const styles = StyleSheet.create({
     // ── Header ──────────────────────────────────────────────────────
     header: {
         height: scale(isTV ? 80 : 62),
-        backgroundColor: COLORS.yellow,
+        backgroundColor: "",
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -348,16 +344,16 @@ const styles = StyleSheet.create({
     headerName: {
         fontSize: FONT_SIZE.lg,
         fontWeight: '800',
-        color: COLORS.textDark,
+        color: "",
         writingDirection: 'rtl',
     },
     avatarCircle: {
         width: scale(isTV ? 56 : 44),
         height: scale(isTV ? 56 : 44),
         borderRadius: 999,
-        backgroundColor: COLORS.white,
+        backgroundColor: "",
         borderWidth: 2.5,
-        borderColor: COLORS.cyan,
+        borderColor: "",
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -371,7 +367,7 @@ const styles = StyleSheet.create({
     // ── Content area (cyan) ─────────────────────────────────────────
     contentArea: {
         flex: 1,
-        backgroundColor: COLORS.screenBg,
+        backgroundColor: "",
         paddingHorizontal: SPACING.md,
         paddingTop: SPACING.sm,
         paddingBottom: SPACING.sm,
@@ -430,7 +426,7 @@ const styles = StyleSheet.create({
         transform: [{ scale: 1.08 }],
     },
     shapeFocused: {
-        shadowColor: COLORS.yellow,
+        shadowColor: "",
         shadowOffset: { width: 0, height: 0 },
         shadowRadius: 12,
         shadowOpacity: 0.8,
@@ -459,28 +455,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 2,
-        borderColor: COLORS.white,
+        borderColor: "",
     },
     badgeText: {
         fontSize: scale(10),
         fontWeight: '900',
-        color: COLORS.white,
+        color: "",
     },
 
     // ── Create game button ───────────────────────────────────────────
     createBtn: {
-        backgroundColor: COLORS.yellow,
+        backgroundColor: "",
         paddingVertical: SPACING.xs,
         paddingHorizontal: SPACING.md,
         borderRadius: BORDER_RADIUS.md,
         minWidth: CARD_WIDTH * 0.82,
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: COLORS.yellowDark,
+        borderColor: "",
     },
     createBtnFocused: {
-        backgroundColor: COLORS.yellowDark,
-        shadowColor: COLORS.textDark,
+        backgroundColor: "",
+        shadowColor: "",
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 6,
         shadowOpacity: 0.25,
@@ -489,7 +485,7 @@ const styles = StyleSheet.create({
     createBtnText: {
         fontSize: FONT_SIZE.sm,
         fontWeight: '800',
-        color: COLORS.textDark,
+        color: "",
         writingDirection: 'rtl',
     },
 
@@ -501,7 +497,7 @@ const styles = StyleSheet.create({
     },
     infoCard: {
         flex: 1,
-        backgroundColor: COLORS.white,
+        backgroundColor: "",
         borderRadius: BORDER_RADIUS.md,
         flexDirection: 'row',
         overflow: 'hidden',
@@ -513,7 +509,7 @@ const styles = StyleSheet.create({
     },
     infoAccent: {
         width: scale(6),
-        backgroundColor: COLORS.red,
+        backgroundColor: "",
     },
     infoContent: {
         flex: 1,
@@ -530,18 +526,18 @@ const styles = StyleSheet.create({
         width: scale(8),
         height: scale(8),
         borderRadius: 999,
-        backgroundColor: COLORS.red,
+        backgroundColor: "",
     },
     infoTitle: {
         fontSize: FONT_SIZE.sm,
         fontWeight: '800',
-        color: COLORS.textDark,
+        color: "",
         writingDirection: 'rtl',
         textAlign: 'right',
     },
     infoDesc: {
         fontSize: scale(isTV ? 16 : 10),
-        color: COLORS.textMid,
+        color: "",
         textAlign: 'right',
         writingDirection: 'rtl',
         lineHeight: scale(isTV ? 24 : 15),
@@ -558,7 +554,7 @@ const styles = StyleSheet.create({
         width: scale(isTV ? 56 : 44),
         height: scale(isTV ? 56 : 44),
         borderRadius: BORDER_RADIUS.md,
-        backgroundColor: COLORS.cyanLight,
+        backgroundColor: "",
         alignSelf: 'center',
     },
     phoneIcon: {
@@ -576,7 +572,7 @@ const styles = StyleSheet.create({
         marginTop: SPACING.xs,
     },
     pointsBadge: {
-        backgroundColor: COLORS.cyan,
+        backgroundColor: "",
         paddingHorizontal: SPACING.xs,
         paddingVertical: 2,
         borderRadius: BORDER_RADIUS.sm,
@@ -584,16 +580,16 @@ const styles = StyleSheet.create({
     pointsBadgeText: {
         fontSize: scale(isTV ? 13 : 9),
         fontWeight: '800',
-        color: COLORS.white,
+        color: "",
     },
     pointsIcon: {
         fontSize: scale(isTV ? 16 : 12),
-        color: COLORS.textDark,
+        color: "",
     },
     pointsLabel: {
         fontSize: scale(isTV ? 14 : 10),
         fontWeight: '700',
-        color: COLORS.cyanDark,
+        color: "",
         writingDirection: 'rtl',
     },
 });

@@ -1,8 +1,8 @@
-import AppButton from "@/core/components/ui/base/button/app-button";
-import AuthHeader from "@/core/components/ui/layout/auth-header";
-import Container from "@/core/components/ui/shared/container";
-import ViewWrapper from "@/core/components/ui/shared/view-wrapper";
-import { IMAGES } from "@/core/constants/images";
+import AppButton from "@/src/components/shared/button/AppButton";
+import AuthHeader from "@/src/components/layout/AuthHeader";
+import Container from "@/src/components/shared/Container";
+import ViewWrapper from "@/src/components/shared/ViewWrapper";
+import { IMAGES } from "@/src/constants/images";
 import { useRouter } from "expo-router";
 import { Image, Text, View } from "react-native";
 

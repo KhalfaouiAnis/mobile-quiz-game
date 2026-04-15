@@ -1,19 +1,12 @@
-import useAuthStore from "@/core/store/auth.store";
-import { Redirect, Stack } from "expo-router";
+import { Redirect, Stack } from 'expo-router';
+import { useAuthStore } from '@/src/stores/auth.store';
 
 export default function AuthLayout() {
-    const { user } = useAuthStore();
+    const status = useAuthStore((s) => s.status);
 
-    if (user) {
-        return <Redirect href="/(main)" />;
-    }
+    if (status === "authenticated") return <Redirect href="/(main)/" />;
 
     return (
-        <Stack
-            screenOptions={{
-                headerShown: false,
-                contentStyle: { backgroundColor: 'transparent' }
-            }}
-        />
-    )
+        <Stack screenOptions={{ headerShown: false }} />
+    );
 }

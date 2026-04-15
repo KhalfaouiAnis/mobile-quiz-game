@@ -1,16 +1,14 @@
-import AppButton from "@/core/components/ui/base/button/app-button";
-import AppTextInput from "@/core/components/ui/base/text/app-text-field";
-import AuthHeader from "@/core/components/ui/layout/auth-header";
-import Container from "@/core/components/ui/shared/container";
-import ViewWrapper from "@/core/components/ui/shared/view-wrapper";
-import { useUpdatePassword } from "@/core/hooks/auth/use-auth";
-import useAuthStore from "@/core/store/auth.store";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import AppButton from "@/src/components/shared/button/AppButton";
+import AuthHeader from "@/src/components/layout/AuthHeader";
+import Container from "@/src/components/shared/Container";
+import ViewWrapper from "@/src/components/shared/ViewWrapper";
+import AppTextInput from "@/src/components/shared/text/AppTextInput";
+import { useUpdateProfile } from "@/src/hooks/user/useUpdateProfile";
 
 export default function UpdateProfileScreen() {
-    const user = useAuthStore(state => state.user)
-    const { errors, handleSubmit, onSubmit, isSubmitting, control } = useUpdatePassword({ email: user?.email });
+    const { errors, handleSubmit, onSubmit, isSubmitting, control } = useUpdateProfile();
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader showLogo={false} label="تعديل الملف الشخصي" />}>
@@ -26,16 +24,16 @@ export default function UpdateProfileScreen() {
                         <AppTextInput
                             required
                             control={control}
-                            name="currentPassword"
-                            error={errors.currentPassword?.message}
-                            label="كلمة المرور الحالية"
+                            name="newPassword"
+                            error={errors.newPassword?.message}
+                            label="كلمة المرور الجديدة"
                             secureTextEntry />
                         <AppTextInput
                             required
                             control={control}
-                            name="newPassword"
-                            error={errors.newPassword?.message}
-                            label="كلمة المرور الجديدة"
+                            name="confirmPassword"
+                            error={errors.confirmPassword?.message}
+                            label="تاكيد كلمة المرور الجديدة"
                             secureTextEntry />
                     </View>
                 </ViewWrapper>

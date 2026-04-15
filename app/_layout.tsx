@@ -1,19 +1,17 @@
+import '../src/i18n';
+import "../global.css";
+
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from 'react';
-import {
-  configureReanimatedLogger,
-  ReanimatedLogLevel,
-} from 'react-native-reanimated';
+import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
 import * as NavigationBar from 'expo-navigation-bar';
-import { Providers } from '@/core/providers';
-import useAuthStore, { authStore } from '@/core/store/auth.store';
-import { injectLogout } from '@/core/api/httpClient';
-import { useAppStore } from '@/core/store/app.store';
+import { Providers } from '@/src/providers';
+import { useAppStore } from '@/src/stores/app.store';
 
-import "../global.css";
-import { isTV } from '@/core/utils/platform';
+import { isTV } from '@/src/utils/platform';
+import { useBootstrapAuth } from '@/src/hooks/useBootstrapAuth';
 
 SplashScreen.preventAutoHideAsync();
 NavigationBar.setVisibilityAsync("hidden");
@@ -28,16 +26,12 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-  const { isReady, initialize } = useAuthStore();
+  const { isReady } = useBootstrapAuth();
   const { loadFonts, fontsLoaded } = useAppStore()
 
   useEffect(() => {
     loadFonts()
   }, [loadFonts]);
-
-  useEffect(() => {
-    initialize()
-  }, [initialize]);
 
   useEffect(() => {
     const hideSplash = async () => {
@@ -51,10 +45,6 @@ export default function RootLayout() {
 
     hideSplash();
   }, [isReady, fontsLoaded]);
-
-  useEffect(() => {
-    injectLogout(() => authStore?.getState().signOut());
-  }, []);
 
   if (!isReady || !fontsLoaded) return null;
 

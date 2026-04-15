@@ -1,0 +1,8 @@
+{
+  "welcome": {
+    "account_created": "Your account have been created successfully, please go to your profile and buy a subscription in order to start playing"
+  },
+  "common": {
+    "profile_pic_changed": "Your profile picture have been updated, this change could take up to 5 minutes to take effect."
+  }
+}

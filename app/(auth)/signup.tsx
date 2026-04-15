@@ -1,57 +1,87 @@
-import AppButton from "@/core/components/ui/base/button/app-button";
-import AppTextInput from "@/core/components/ui/base/text/app-text-field";
-import AuthHeader from "@/core/components/ui/layout/auth-header";
-import Container from "@/core/components/ui/shared/container";
-import ViewWrapper from "@/core/components/ui/shared/view-wrapper";
-import { useSignUp } from "@/core/hooks/auth/use-auth";
-import { Text, View } from "react-native";
+import AppButton from "@/src/components/shared/button/AppButton";
+import AuthHeader from "@/src/components/layout/AuthHeader";
+import Container from "@/src/components/shared/Container";
+import ViewWrapper from "@/src/components/shared/ViewWrapper";
+import AppTextInput from "@/src/components/shared/text/AppTextInput";
+
+import { useSignup } from "@/src/hooks/mutations/useSignup";
+import { type SignupFormData, signupSchema } from "@/src/schemas/auth.schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { ScrollView, Text, View } from "react-native";
+import { toast } from "sonner-native";
 
 export default function SignupScreen() {
-    const { handleSubmit, onSubmit, isSubmitting, control } = useSignUp();
+    const { t } = useTranslation()
+    const signup = useSignup();
+
+    const { control, handleSubmit } = useForm<SignupFormData>({
+        resolver: zodResolver(signupSchema),
+        defaultValues: { username: '', email: '', password: '', phone: '' },
+    });
+
+    const onSubmit = (data: SignupFormData) => {
+        signup.mutate(data, {
+            onError: (err: any) => {
+                const msg = err?.response?.data?.message ?? 'Sign up failed';
+                toast.error(Array.isArray(msg) ? msg.join('\n') : msg)
+            },
+        });
+    };
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader />}>
-            <View className="flex-1 justify-center px-8 py-4">
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerClassName="justify-center px-8 py-4 gap-y-6"
+            >
                 <ViewWrapper>
-                    <Text className="text-center text-xl font-cairo-bold text-primary-500">انشاء حساب</Text>
+                    <Text className="text-center text-xl font-cairo-bold text-primary-500">{t("welcome.signup")}</Text>
                     <View className="flex-row gap-4 mt-6">
                         <AppTextInput
+                            required
                             name="username"
                             control={control}
-                            required
-                            label="اسم المستخدم" />
+                            label={t("welcome.username")}
+                        />
                         <AppTextInput
+                            required
                             name="email"
                             control={control}
-                            required
+                            autoComplete="email"
+                            label={t("welcome.email")}
                             keyboardType="email-address"
-                            label="البريد الالكتروني"
                         />
                     </View>
-                    <View className="flex-row gap-4 mt-8">
+                    <View className="flex-row gap-4 mt-10">
                         <AppTextInput
                             phone
                             name="phone"
                             required={false}
                             control={control}
-                            label="رقم الهاتف"
+                            autoComplete="tel"
+                            label={t("welcome.phone")}
                             keyboardType="number-pad"
                         />
                         <AppTextInput
-                            name="password"
-                            control={control}
                             required
-                            label="كلمة المرور" secureTextEntry />
+                            name="password"
+                            secureTextEntry
+                            control={control}
+                            label={t("welcome.password")}
+                        />
                     </View>
-                    <View className="w-1/4 mt-6">
+                    <View className="w-1/4 mt-10">
                         <AppButton
-                            title="أنشِئ حساب"
+                            title={t("welcome.signup")}
+                            loading={signup.isPending}
+                            disabled={signup.isPending}
                             onPress={handleSubmit(onSubmit)}
-                            loading={isSubmitting}
                         />
                     </View>
                 </ViewWrapper>
-            </View>
+            </ScrollView>
         </Container>
     )
 }

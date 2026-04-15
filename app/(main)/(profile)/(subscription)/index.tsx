@@ -1,19 +1,22 @@
-import AppButton from "@/core/components/ui/base/button/app-button";
-import AuthHeader from "@/core/components/ui/layout/auth-header";
-import PaymentSucceedModal from "@/core/components/ui/layout/profile/payment-succeed-modal";
-import SubscriptionCard from "@/core/components/ui/layout/profile/subscription-card";
-import Container from "@/core/components/ui/shared/container";
-import AppModal from "@/core/components/ui/shared/modal/app-modal";
-import { IMAGES } from "@/core/constants/images";
-import { usePackagesQuery, usePurchasesQuery } from "@/core/services/subscription/subscription.queries";
-import { Subscription_TYPES } from "@/core/types";
 import { router } from "expo-router";
 import { useState } from "react";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 
+import AppButton from "@/src/components/shared/button/AppButton";
+import AuthHeader from "@/src/components/layout/AuthHeader";
+import Container from "@/src/components/shared/Container";
+import AppModal from "@/src/components//shared/modal/AppModal";
+import PaymentSucceedModal from "@/src/components/layout/profile/PaymentSucceedModal";
+import SubscriptionCard from "@/src/components/layout/profile/SubscriptionCard";
+
+import { IMAGES } from "@/src/constants/images";
+import { usePackagesQuery } from "@/src/hooks/queries/packages/usePackages";
+import { useSubscriptionsQuery } from "@/src/hooks/queries/packages/useSubscriptions";
+import { type Subscription_TYPES } from "@/src/types/index.types";
+
 export function packageIcon(subscription_type: Subscription_TYPES) {
     if (subscription_type === "ultimate_tier") return IMAGES.ProPlan
-    if (subscription_type === "free_tier") return IMAGES.BasicPlan
+    if (subscription_type === "basic_tier") return IMAGES.BasicPlan
     if (subscription_type === "premium_tier") return IMAGES.StandardPlan
 
     return IMAGES.BasicPlan
@@ -21,20 +24,20 @@ export function packageIcon(subscription_type: Subscription_TYPES) {
 
 export default function Index() {
     const [showModal, setShowModal] = useState(false);
-    const { data: purchases, isLoading: loadingPurchases } = usePurchasesQuery()
+    const { data: subscriptions, isLoading: loadingSubscriptions } = useSubscriptionsQuery()
     const { data: packages, isLoading: loadingPackages } = usePackagesQuery()
     const [selectedPlanId, setSelectedPlanId] = useState<number>()
 
     return (
         <Container header={<AuthHeader showLogo={false} label="إدارة الاشتراك" />}>
             {
-                (loadingPurchases || loadingPackages) ? <ActivityIndicator size="large" /> : (
+                (loadingSubscriptions || loadingPackages) ? <ActivityIndicator size="large" /> : (
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        contentContainerClassName="items-center gap-8 my-2 mx-24 p-3 rounded-3xl border-[10px] border-secondary-500 bg-white"
+                        contentContainerClassName="items-center gap-8 my-2 mx-24 p-3 rounded-3xl border-[10px] border-secondary-500 bg-white pb-12"
                     >
-                        {packages?.data?.map((plan, index) => {
-                            const isActive = purchases?.data?.find(pur => new Date(pur.expires_at).getTime() > new Date().getTime() && plan.id === pur.package_id)
+                        {packages?.map((plan, index) => {
+                            const isActive = subscriptions?.active?.packageId === plan.id
                             return (
                                 <SubscriptionCard
                                     name={plan.name}

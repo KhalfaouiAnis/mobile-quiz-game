@@ -1,5 +1,5 @@
-import Container from "@/core/components/ui/shared/container";
-import { boxShadow } from "@/core/utils/cn";
+import Container from "@/src/components/shared/Container";
+import { boxShadow } from "@/src/utils/cn";
 import {  Text, View } from "react-native";
 
 export default function Success() {

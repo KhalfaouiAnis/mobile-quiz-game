@@ -2,7 +2,7 @@
 
 module.exports = {
   // darkMode: "media",
-  content: ["./app/**/*.tsx", "./core/components/**/*.tsx"],
+  content: ["./app/**/*.tsx", "./src/components/**/*.tsx"],
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
@@ -15,12 +15,18 @@ module.exports = {
         },
         success: "#32BA7C",
         error: "#F1190E",
+        game: {
+          bg: "#0F0F13",
+          surface: "#1A1A24",
+          card: "#22222F",
+          border: "#2E2E40",
+          purple: "#7C3AED",
+          purpleL: "#A78BFA",
+          green: "#22C55E",
+          red: "#EF4444",
+          amber: "#F59E0B",
+        },
       },
-      // textColor: {
-      //   secondary: {
-      //     500: "#A8A8A8",
-      //   },
-      // },
       fontFamily: {
         cairo: ["CairoRegular", "sans-serif"],
         sans: ["CairoRegular", "sans-serif"],

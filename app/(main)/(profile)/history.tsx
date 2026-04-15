@@ -1,19 +1,17 @@
-import AuthHeader from "@/core/components/ui/layout/auth-header";
-import PieChartProgress from "@/core/components/ui/shared/pieChart-progress";
-import CircularProgressIndicator from "@/core/components/ui/shared/circular-progress-indicator";
-import Container from "@/core/components/ui/shared/container";
-import { VIEW_SCALE_FACTOR } from "@/core/constants";
-import { useGame1SessionQueries } from "@/core/services/game1/session/session.queries";
-import { boxShadow } from "@/core/utils/cn";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
+import AuthHeader from "@/src/components/layout/AuthHeader";
+import Container from "@/src/components/shared/Container";
+import CircularProgressIndicator from "@/src/components/shared/CircularProgressIndicator";
+import { useGadhaProgress } from "@/src/hooks/queries/gameGadha/useGadhaProgress";
+import PieChartProgressIndicator from "@/src/components/shared/PieChartProgressIndicator";
+import { boxShadow } from "@/src/utils/cn";
+
 export default function GameHistoryScreen() {
-    const { useLastSession, useOverallProgress } = useGame1SessionQueries()
-    const { data, isPending } = useLastSession()
-    const { data: game1, isPending: game1Pending } = useOverallProgress()
+    const { data: gadha, isPending: gadhaPending } = useGadhaProgress()
     const router = useRouter()
 
     return (
@@ -24,14 +22,14 @@ export default function GameHistoryScreen() {
                         <Text className="font-cairo-bold text-xl text-white">الاختبار الأخير</Text>
                         <Pressable
                             style={{ width: 100, height: 30 }}
-                            disabled={!data?.sessionId || isPending}
-                            onPress={() => router.navigate(`/(main)/game1/${data?.sessionId}`)}
+                            disabled={!gadha?.sessionId || gadhaPending}
+                            onPress={() => router.navigate(`/(main)/(gadha)/board/${gadha?.sessionId}`)}
                             className="bg-white items-center justify-center rounded-3xl mt-2 mb-1 disabled:bg-gray-200"
                         >
-                            {isPending ? <ActivityIndicator size="small" color="#F1190E" /> : <Text className="font-cairo-bold text-error">مواصلة اللعب</Text>}
+                            {gadhaPending ? <ActivityIndicator size="small" color="#F1190E" /> : <Text className="font-cairo-bold text-error">مواصلة اللعب</Text>}
                         </Pressable>
                     </View>
-                    <PieChartProgress percentage={isPending ? 0 : (data?.completionPercentage || 0)} />
+                    <PieChartProgressIndicator percentage={gadhaPending ? 0 : (gadha?.completionPercentage || 0)} />
                 </View>
                 <View className="flex-1 self-start"><Text className="font-cairo-bold text-2xl text-white">ألعاب غير مكتملة</Text></View>
                 <ScrollView
@@ -47,9 +45,9 @@ export default function GameHistoryScreen() {
                         </View>
                         <Text className="font-cairo-semibold">
                             الاسئلة المتبقية :
-                            {game1Pending ? <ActivityIndicator size="small" /> : game1?.remaining}
+                            {gadhaPending ? <ActivityIndicator size="small" /> : gadha?.remainingQuestions}
                         </Text>
-                        <CircularProgressIndicator value={game1Pending ? 0 : (game1?.progress || 0)} />
+                        <CircularProgressIndicator value={gadhaPending ? 0 : (gadha?.completionPercentage || 0)} />
                     </View>
                     <View
                         style={boxShadow().button}
@@ -72,13 +70,13 @@ export default function GameHistoryScreen() {
                     </View>
                 </ScrollView>
                 <View className="mt-6 flex-row items-center gap-3">
-                    <Pressable className="items-center border-2 border-secondary-500 p-1" style={{ width: 110 * VIEW_SCALE_FACTOR }}>
+                    <Pressable className="items-center border-2 border-secondary-500 p-1" style={{ width: 110 }}>
                         <View className="p-2.5 items-center bg-secondary-500 rounded-full">
                             <Ionicons name="home" size={24} color="#00A6DA" />
                         </View>
                         <Text className="font-cairo text-white">الصفحة الرئيسية</Text>
                     </Pressable>
-                    <Pressable className="items-center border-2 border-secondary-500 p-1" style={{ width: 110 * VIEW_SCALE_FACTOR }}>
+                    <Pressable className="items-center border-2 border-secondary-500 p-1" style={{ width: 110 }}>
                         <View className="p-2.5 items-center bg-secondary-500 rounded-full">
                             <Ionicons name="settings" size={24} color="#00A6DA" />
                         </View>

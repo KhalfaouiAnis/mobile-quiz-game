@@ -1,18 +1,22 @@
-import ProfileHeader from "@/core/components/ui/layout/profile/profile-header";
-import ProfileLinkIcon from "@/core/components/ui/layout/profile/profile-link-icon";
-import AppModal from "@/core/components/ui/shared/modal/app-modal";
-import Container from "@/core/components/ui/shared/container";
-import { boxShadow } from "@/core/utils/cn";
-import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
 import { useState } from "react";
+import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import LogoutModal from "@/core/components/ui/layout/profile/logout-modal";
-import Switch from "@/core/components/ui/base/button/switch";
+import ProfileLinkIcon from "@/src/components/layout/profile/ProfileLinkIcon";
+import GenericModal from "@/src/components/shared/modal/GenericModalContent";
+import ProfileHeader from "@/src/components/layout/profile/ProfileHeader";
+import AppModal from "@/src/components/shared/modal/AppModal";
+import Switch from "@/src/components/shared/button/switch";
+import Container from "@/src/components/shared/Container";
+import { useAuth } from "@/src/hooks/useAuth";
+import { boxShadow } from "@/src/utils/cn";
 
 export default function Index() {
     const [showModal, setShowModal] = useState(false);
     const [notifications, setNotifications] = useState(true)
+    const { logout, isLoggingOut } = useAuth()
+
+    const handleSignout = () => logout()
 
     return (
         <Container header={<ProfileHeader />}>
@@ -114,7 +118,11 @@ export default function Index() {
             <AppModal
                 visible={showModal}
                 onClose={() => setShowModal(false)}
-                content={<LogoutModal cancel={() => setShowModal(false)} />}
+                content={<GenericModal
+                    description="هل تريد حقا تسجيل الخروج؟"
+                    cancelButton={{ title: "الغاء", action: () => setShowModal(false) }}
+                    actionButton={{ title: "خروج", action: handleSignout, loading: isLoggingOut }}
+                />}
             />
         </Container>
     );

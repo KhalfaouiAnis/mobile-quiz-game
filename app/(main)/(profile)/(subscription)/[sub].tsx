@@ -1,30 +1,29 @@
-import AppButton from "@/core/components/ui/base/button/app-button";
-import AuthHeader from "@/core/components/ui/layout/auth-header";
-import ActivePlanBadge from "@/core/components/ui/layout/profile/active-plan-badge";
-import PaymentSucceedModal from "@/core/components/ui/layout/profile/payment-succeed-modal";
-import SubscriptionFeature from "@/core/components/ui/layout/profile/subscription-feature";
-import Container from "@/core/components/ui/shared/container";
-import AppModal from "@/core/components/ui/shared/modal/app-modal";
-import { VIEW_SCALE_FACTOR } from "@/core/constants";
-import { IMAGES } from "@/core/constants/images";
-import { usePackagesQuery, usePurchasesQuery } from "@/core/services/subscription/subscription.queries";
-import { boxShadow } from "@/core/utils/cn";
-import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
+import { useLocalSearchParams } from "expo-router";
 import { Image, ScrollView, Text, View } from "react-native";
+import AppButton from "@/src/components/shared/button/AppButton";
+import AuthHeader from "@/src/components/layout/AuthHeader";
+import Container from "@/src/components/shared/Container";
+import AppModal from "@/src/components//shared/modal/AppModal";
+
+import ActivePlanBadge from "@/src/components/layout/profile/ActivePlanBadge";
+import PaymentSucceedModal from "@/src/components/layout/profile/PaymentSucceedModal";
+
+import { usePackageInfoQuery } from "@/src/hooks/queries/packages/usePackages";
+import { useSubscriptionsQuery } from "@/src/hooks/queries/packages/useSubscriptions";
+import { usePurchasePackage } from "@/src/hooks/mutations/subscriptions/useSubscription";
+import { type Subscription_TYPES } from "@/src/types/index.types";
+
+import { IMAGES } from "@/src/constants/images";
+import { boxShadow } from "@/src/utils/cn";
 import { packageIcon } from ".";
-import { Subscription_TYPES } from "@/core/types";
-import { useSubscriptionMutations } from "@/core/services/subscription/subscription.mutations";
 
 export default function Index() {
     const { sub } = useLocalSearchParams<{ sub: string }>();
     const [showModal, setShowModal] = useState(false);
-    const { usePurchasePackage: { mutate, isPending } } = useSubscriptionMutations()
-    const { data: packages, isLoading: loadingPackages } = usePackagesQuery()
-    const { data: purchases, isLoading: loadingPurchases } = usePurchasesQuery()
-
-    const currentPlan = packages?.data?.find(plan => plan.id === Number(sub))
-    const isActive = purchases?.data?.find(pur => new Date(pur.expires_at).getTime() > new Date().getTime() && currentPlan?.id === pur.id)
+    const { mutate, isPending } = usePurchasePackage()
+    const { data: subscriptions, isLoading: loadingPurchases } = useSubscriptionsQuery()
+    const { data: packageInfo, isLoading: loadingPackageInfo } = usePackageInfoQuery(Number(sub))
 
     const handlePurchase = () => {
         mutate(Number(sub), {
@@ -41,33 +40,33 @@ export default function Index() {
                 contentContainerClassName="items-center gap-4 my-2 mx-24 p-3 rounded-3xl border-[10px] border-secondary-500 bg-white"
             >
                 <View
-                    style={[boxShadow(4, 4, 4, 0).button, { width: 340 * VIEW_SCALE_FACTOR }]}
+                    style={[boxShadow(4, 4, 4, 0).button, { width: 340 }]}
                     className="border border-gray-300 rounded-2xl pb-4"
                 >
                     <View
                         className="relative flex-1 flex-row items-center bg-white px-10 py-6 rounded-2xl"
                     >
                         {
-                            isActive && (
+                            subscriptions?.active && (
                                 <Image
                                     source={IMAGES.ActivePlanBadge}
-                                    style={{ position: "absolute", start: -17, top: -14, width: 100 * VIEW_SCALE_FACTOR, height: 100 * VIEW_SCALE_FACTOR }} />
+                                    style={{ position: "absolute", start: -17, top: -14, width: 100, height: 100 }} />
                             )
                         }
                         <View>
                             <Image
-                                source={packageIcon(currentPlan?.subscription_type as Subscription_TYPES)}
-                                style={{ width: 48 * VIEW_SCALE_FACTOR, height: 48 * VIEW_SCALE_FACTOR, objectFit: "contain" }} />
+                                source={packageIcon(packageInfo?.subscription_type as Subscription_TYPES)}
+                                style={{ width: 48, height: 48, objectFit: "contain" }} />
                         </View>
                         <View className="ms-6 me-10">
                             <View className="flex-row items-center">
-                                <Text className="font-cairo-bold">{currentPlan?.name}</Text>
-                                {isActive && <ActivePlanBadge />}
+                                <Text className="font-cairo-bold">{packageInfo?.name}</Text>
+                                {subscriptions?.active && <ActivePlanBadge />}
                             </View>
-                            <Text className="flex-1 font-bagel-regular text-gray-600" numberOfLines={1} ellipsizeMode="tail">{currentPlan?.description}</Text>
+                            <Text className="flex-1 font-bagel-regular text-gray-600" numberOfLines={1} ellipsizeMode="tail">{packageInfo?.description}</Text>
                         </View>
                         <View className="ms-auto">
-                            <Text className="font-bagel-regular text-lg text-[#1977F2]">{currentPlan?.price} $</Text>
+                            <Text className="font-bagel-regular text-lg text-[#1977F2]">{packageInfo?.price} $</Text>
                             <Text className="font-bagel-regular text-xs text-gray-600">في الشهر</Text>
                         </View>
                     </View>
@@ -77,9 +76,9 @@ export default function Index() {
                 </View>
                 <View className="w-1/4">
                     <AppButton
-                        title="اختر الاشتراك"
-                        disabled={isPending}
                         loading={isPending}
+                        disabled={isPending}
+                        title="اختر الاشتراك"
                         onPress={handlePurchase}
                     />
                 </View>

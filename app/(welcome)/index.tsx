@@ -1,25 +1,27 @@
 import { MaterialIcons } from "@expo/vector-icons"
-import Container from "@/core/components/ui/shared/container";
-import { boxShadow } from "@/core/utils/cn";
+import Container from "@/src/components/shared/Container";
+import { boxShadow } from "@/src/utils/cn";
 import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 import { useState } from "react";
-import { HAS_LAUNCHED } from "@/core/constants";
-import { mmkvStorage } from "@/core/store/storage";
+import { HAS_LAUNCHED } from "@/src/constants";
+import { mmkvStorage } from "@/src/stores/storage";
+import { useTranslation } from 'react-i18next';
 
 export default function Welcome() {
+    const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState({
         index: 0,
-        title: "اختبر ذكاءك ووسّع معلوماتك!",
-        description: "لعبة مسلية تجمع بين التحدي والتعليم،هدفها تنشيط الذاكرة وزيادة المعرفة العامة."
+        title: t('welcome.tab0_title'),
+        description: t('welcome.tab0_decription')
     })
     const router = useRouter();
 
     const handleTabTwoPress = () => {
         setActiveTab({
             index: 1,
-            title: "اختبار شيق في انتظاركم",
-            description: "العب المسابقات مع أصدقائك واحصل على جوائز متنوعة"
+            title: t('welcome.tab1_title'),
+            description: t('welcome.tab1_decription')
         })
     }
 
@@ -29,7 +31,7 @@ export default function Welcome() {
             return;
         }
         mmkvStorage.set(HAS_LAUNCHED, true);
-        router.replace('/(auth)/signin');
+        router.replace('/(auth)/index');
     };
 
     return (
@@ -51,8 +53,8 @@ export default function Welcome() {
                     </View>
                     <View className="absolute -bottom-5">
                         <Pressable
-                            onPress={handleGetStarted}
                             hitSlop={6}
+                            onPress={handleGetStarted}
                             className="p-4 bg-secondary-500 rounded-full"
                             style={boxShadow(0, 4, 32, 0, "rgb(255 161 107 / 0.60)").button}>
                             <MaterialIcons name="arrow-back" size={20} color="#00A6DA" />
