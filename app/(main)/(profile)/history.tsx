@@ -14,6 +14,8 @@ export default function GameHistoryScreen() {
     const { data: gadha, isPending: gadhaPending } = useGadhaProgress()
     const router = useRouter()
 
+    const handleNavigateToLastGame = () => router.navigate(`/(main)/(gadha)/board/${gadha?.sessionId}`);
+
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader showLogo={false} label="العابي السابقة" />}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerClassName="items-center pb-10" className="px-6 pt-6">
@@ -22,8 +24,8 @@ export default function GameHistoryScreen() {
                         <Text className="font-cairo-bold text-xl text-white">الاختبار الأخير</Text>
                         <Pressable
                             style={{ width: 100, height: 30 }}
+                            onPress={handleNavigateToLastGame}
                             disabled={!gadha?.sessionId || gadhaPending}
-                            onPress={() => router.navigate(`/(main)/(gadha)/board/${gadha?.sessionId}`)}
                             className="bg-white items-center justify-center rounded-3xl mt-2 mb-1 disabled:bg-gray-200"
                         >
                             {gadhaPending ? <ActivityIndicator size="small" color="#F1190E" /> : <Text className="font-cairo-bold text-error">مواصلة اللعب</Text>}

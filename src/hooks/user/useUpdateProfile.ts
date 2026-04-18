@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 
 export function useUpdateProfile() {
   const queryClient = useQueryClient();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const {
     control,
@@ -30,8 +30,8 @@ export function useUpdateProfile() {
   const onSubmit = async (payload: UpdateProfileInterface) => {
     try {
       await api.patch("auth/profile", payload);
-      queryClient.invalidateQueries({queryKey: [AUTH_USER_QUERY_KEY]})
-      toast.success(t("common.profile_pic_changed"))
+      queryClient.invalidateQueries({ queryKey: [AUTH_USER_QUERY_KEY] });
+      toast.success(t("common.profile_pic_changed"), { duration: 4000 });
     } catch (error) {
       console.log({ error });
     }

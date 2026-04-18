@@ -4,19 +4,18 @@ import { Text, View } from 'react-native';
 import GameActions from '@/src/components/gadha/teams/game-actions';
 import Container from '@/src/components/shared/Container';
 import { useGadhaGameActions, useGadhaGameStore } from '@/src/stores/game.gadha.store';
-import { type GameBoard } from '@/src/types/game.gadha.types';
+import { type SessionBoard } from '@/src/types/game.gadha.types';
 
 export default function QuestionLayout() {
     const { qid, id } = useGlobalSearchParams<{ qid: string, id: string }>();
-    const { activateBoost } = useGadhaGameActions()
     const team1BoostActive = useGadhaGameStore(state => state.team1BoostActive)
     const team2BoostActive = useGadhaGameStore(state => state.team2BoostActive)
-
-    const queryClient = useQueryClient();
     const teams = useGadhaGameStore(store => store.teams)
+    const { activateBoost } = useGadhaGameActions()
+    const queryClient = useQueryClient();
 
-    const questionData = queryClient.getQueryData<GameBoard>(["gadha", "board", Number(id)])
-        ?.grid.find(q => q?.id === Number(qid));
+    const questionData = queryClient.getQueryData<SessionBoard>(["gadha", "board", Number(id)])
+        ?.questions.find(q => q?.id === Number(qid));
 
     return (
         <Container backgroundColor="#00A6DA">

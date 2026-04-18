@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Image } from "expo-image";
 import { useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
-import { Dimensions, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import AppButton from "@/src/components/shared/button/AppButton";
 import GameTimer from "@/src/components/gadha/GameTimer";
-import { type GameBoard } from "@/src/types/game.gadha.types";
+import { type SessionBoard } from "@/src/types/game.gadha.types";
 import { IMAGES } from "@/src/constants/images";
 import { useGadhaGameStore } from "@/src/stores/game.gadha.store";
+import { SCREEN } from "@/src/utils/dimensions";
 
 export default function QuestionScreen() {
     const { qid, id } = useLocalSearchParams<{ qid: string, id: string }>();
@@ -15,8 +16,8 @@ export default function QuestionScreen() {
     const [timer, setTimer] = useState(false)
     const queryClient = useQueryClient();
 
-    const questionData = queryClient.getQueryData<GameBoard>(["gadha", "board", Number(id)])
-        ?.grid.find(q => q?.id === Number(qid));
+    const questionData = queryClient.getQueryData<SessionBoard>(["gadha", "board", Number(id)])
+        ?.questions.find(q => q?.id === Number(qid));
 
     const handleShowAnswer = () => {
         setTimer(true);
@@ -24,10 +25,8 @@ export default function QuestionScreen() {
     }
 
     return (
-        <View className="flex-1 flex-row px-4 pt-4 gap-4">
-            <View className="self-center">
-                <GameTimer duration={questionTimeLimit || 45} externalPause={timer} onTimeUp={handleShowAnswer} />
-            </View>
+        <View className="flex-1 flex-row items-center px-4 pt-4 gap-4">
+            <GameTimer duration={questionTimeLimit || 45} externalPause={timer} onTimeUp={handleShowAnswer} />
             <ScrollView contentContainerClassName="items-center justify-between gap-4">
                 <Text className="text-xl text-center font-cairo-medium" numberOfLines={2} ellipsizeMode="tail">
                     {questionData?.content}
@@ -35,7 +34,7 @@ export default function QuestionScreen() {
                 <Image
                     contentFit="cover"
                     source={questionData?.file_url ? { uri: questionData?.file_url } : IMAGES.Question}
-                    style={{ width: (Dimensions.get("window").width / 2) - 20, height: (Dimensions.get("window").height / 2), borderRadius: 15 }}
+                    style={{ width: (SCREEN.width / 2), height: (SCREEN.height / 2), borderRadius: 15 }}
                 />
                 <View className="w-1/3 mb-2">
                     <AppButton

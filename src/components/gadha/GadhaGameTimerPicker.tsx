@@ -14,6 +14,7 @@ import {
     View
 } from "react-native";
 import { GlobalSelectOption } from "@/src/types/index.types";
+import { verticalScale, scale } from "@/src/utils/sizes";
 
 export default function GadhaGameTimePicker({
     name,
@@ -52,7 +53,7 @@ export default function GadhaGameTimePicker({
         <View
             collapsable={false}
             className="items-center justify-center"
-            style={{ direction: "rtl", width: 155, height: 50, borderRadius: 16, boxShadow: boxShadow().button.boxShadow }}>
+            style={{ direction: "rtl", width: scale(155), height: verticalScale(50), borderRadius: 16, boxShadow: boxShadow().button.boxShadow }}>
             <Pressable
                 onPress={toggle}
                 ref={triggerRef}
@@ -94,8 +95,8 @@ export default function GadhaGameTimePicker({
 
 const styles = StyleSheet.create({
     wrapper: {
-        height: 48,
-        width: 154,
+        height: verticalScale(48),
+        width: scale(154),
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
         borderBottomRightRadius: 12,
@@ -105,8 +106,8 @@ const styles = StyleSheet.create({
         ...boxShadow(0, 2, 2).button,
     },
     selectOption: {
-        height: 30,
-        width: 120,
+        height: verticalScale(30),
+        width: scale(120),
         borderRadius: 12,
         alignItems: "center",
         justifyContent: "center",

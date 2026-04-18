@@ -1,5 +1,5 @@
 import { useAudioPlayer } from "expo-audio";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { SOUND_EFFECTS } from "@/src/constants/audio";
 
 interface Props {
@@ -8,7 +8,11 @@ interface Props {
   externalPause?: boolean;
 }
 
-export const useGadhaGameTimer = ({ duration, externalPause, onTimeUp }: Props) => {
+export const useGadhaGameTimer = ({
+  duration,
+  externalPause,
+  onTimeUp,
+}: Props) => {
   let interval: ReturnType<typeof setInterval> | null = null;
   const audioPlayer = useAudioPlayer(SOUND_EFFECTS.Countdown);
   const [seconds, setSeconds] = useState(duration);
@@ -17,13 +21,13 @@ export const useGadhaGameTimer = ({ duration, externalPause, onTimeUp }: Props) 
   const start = () => setIsActive(true);
   const pause = () => setIsActive(false);
 
-  const restart = () => {
+  const restart = useCallback(() => {
     if (interval) clearInterval(interval);
 
     setIsActive(false);
     setSeconds(duration);
     setTimeout(() => setIsActive(true), 10);
-  };
+  }, [interval]);
 
   useEffect(() => {
     if (externalPause) {

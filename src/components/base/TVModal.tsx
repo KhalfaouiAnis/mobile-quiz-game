@@ -19,7 +19,7 @@ import {
   SPACING,
   BORDER_RADIUS,
   SCREEN,
-} from '@/src/constants/dimensions';
+} from '@/src/utils/dimensions';
 import { isTV } from '@/src/utils/platform';
 
 interface TVModalAction {

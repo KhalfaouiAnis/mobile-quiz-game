@@ -5,7 +5,7 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import { FONT_SIZE, SPACING, BORDER_RADIUS, scale, SCREEN } from '@/src/constants/dimensions';
+import { FONT_SIZE, SPACING, BORDER_RADIUS, scale, SCREEN } from '@/src/utils/dimensions';
 import { Focusable } from '@/src/components/base/Focusable';
 import { isTV } from '@/src/utils/platform';
 import { TVScreen } from '@/src/components/base/TVScreen';

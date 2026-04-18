@@ -11,7 +11,7 @@ import {
   FocusContext,
 } from '@noriginmedia/norigin-spatial-navigation';
 import { isTV } from '@/src/utils/platform';
-import { CARD, SPACING } from '@/src/constants/dimensions';
+import { CARD, SPACING } from '@/src/utils/dimensions';
 
 interface FocusableRowProps {
   focusKey: string;

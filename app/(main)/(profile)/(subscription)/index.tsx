@@ -23,7 +23,6 @@ export function packageIcon(subscription_type: Subscription_TYPES) {
 }
 
 export default function Index() {
-    const [showModal, setShowModal] = useState(false);
     const { data: subscriptions, isLoading: loadingSubscriptions } = useSubscriptionsQuery()
     const { data: packages, isLoading: loadingPackages } = usePackagesQuery()
     const [selectedPlanId, setSelectedPlanId] = useState<number>()
@@ -43,8 +42,9 @@ export default function Index() {
                                     name={plan.name}
                                     price={plan.price}
                                     isActive={!!isActive}
-                                    description={plan.description}
                                     key={plan.id + `__${index}`}
+                                    description={plan.description}
+                                    selected={plan.id === selectedPlanId}
                                     onPress={() => setSelectedPlanId(plan.id)}
                                     iconUrl={packageIcon(plan.subscription_type as Subscription_TYPES)}
                                 />
@@ -55,17 +55,11 @@ export default function Index() {
                                 title="اختر الاشتراك"
                                 disabled={!selectedPlanId}
                                 onPress={() => router.navigate(`/(main)/(profile)/(subscription)/${selectedPlanId}`)}
-                            // onPress={() => setShowModal(true)}
                             />
                         </View>
                     </ScrollView>
                 )
             }
-            <AppModal
-                visible={showModal}
-                onClose={() => setShowModal(false)}
-                content={<PaymentSucceedModal />}
-            />
         </Container>
     );
 }

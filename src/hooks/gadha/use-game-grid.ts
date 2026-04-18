@@ -1,22 +1,23 @@
-import { GameBoard } from "@/src/types/game.gadha.types";
+import { SessionBoard } from "@/src/types/game.gadha.types";
 import { useMemo } from "react";
 
-const GRID_SIZE = 6;
-
-export default function useGameGrid(grid: GameBoard["grid"]) {
+export default function useGameGrid(
+  columnHeaders: SessionBoard["columnHeaders"],
+  questions: SessionBoard["questions"],
+) {
   return useMemo(() => {
     const rows = [];
 
-    for (let i = 0; i < GRID_SIZE; i++) {
-      const rowItems = grid.filter((item) => item.grid_col === i);
+    for (let i = 0; i < columnHeaders.length; i++) {
+      const rowItems = questions.filter((item) => item.grid_col === i);
 
       rows.push({
-        subcategoryName: rowItems[0]?.subcategory?.name,
-        subcategoryImage: rowItems[0]?.subcategory?.image_url,
+        subcategoryName: columnHeaders[i]?.subcategoryName,
+        subcategoryImage: columnHeaders[i]?.imageUrl,
         questions: rowItems,
       });
     }
 
     return rows;
-  }, [grid]);
+  }, [questions]);
 }

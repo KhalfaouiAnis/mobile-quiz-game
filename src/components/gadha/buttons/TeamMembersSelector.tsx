@@ -5,6 +5,7 @@ import { Pressable, View } from "react-native";
 import { Image } from "expo-image";
 import { IMAGES } from "@/src/constants/images";
 import ShadowedText from "@/src/components/shared/text/ShadowedText";
+import { verticalScale, scale } from "@/src/utils/sizes";
 
 interface Props {
     control: Control<CreateGadhaGameSession>;
@@ -16,7 +17,7 @@ interface Props {
     }
 }
 
-export default function ScoreStepper({ control, name, step = 1, colors: { border, text } }: Props) {
+export default function TeamMembersSelector({ control, name, step = 1, colors: { border, text } }: Props) {
 
     return (
         <Controller
@@ -45,17 +46,17 @@ export default function ScoreStepper({ control, name, step = 1, colors: { border
                             boxShadow: boxShadow().button.boxShadow,
                             paddingHorizontal: 30,
                             borderColor: border,
-                            width: 200,
-                            height: 60,
+                            width: scale(295),
+                            height: verticalScale(60),
                         }}
                         className="bg-white items-center justify-between border-2 rounded-xl flex-1 flex-row"
                     >
                         <Pressable hitSlop={10} onPress={handleIncreaseScore} className="pt-2">
-                            <Image source={IMAGES.IncrementScore} style={{ width: 35, height: 35, }} contentFit="contain" />
+                            <Image source={IMAGES.IncrementScore} style={{ width: scale(35), height: verticalScale(35) }} contentFit="contain" />
                         </Pressable>
                         <ShadowedText content={currentScore + ""} fillColor={text} />
                         <Pressable hitSlop={10} onPress={handleDecreaseScore} className="mt-1">
-                            <Image source={IMAGES.DecrementScore} style={{ width: 35, height: 35 }} contentFit="contain" />
+                            <Image source={IMAGES.DecrementScore} style={{ width: scale(35), height: verticalScale(35) }} contentFit="contain" />
                         </Pressable>
                     </View>
                 );

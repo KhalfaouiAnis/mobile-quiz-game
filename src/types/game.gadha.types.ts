@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const CreateGadhaGameSessionSchema = z.object({
   subcategoryIds: z
-    .array(z.number())
+    .array(z.any())
     .length(6, "يرجى تحديد 6 فئات فرعية بالضبط"),
   teams: z
     .array(
@@ -23,7 +23,7 @@ export type CreateGadhaGameSession = z.infer<
 >;
 
 export type Difficulty = "easy" | "medium" | "hard";
-export type SessionStatus = "pending" | "active" | "completed" | "cancelled";
+export type GameStatus = "pending" | "active" | "completed" | "cancelled";
 
 // ─── Subcategory picker
 export interface GameGadhaSubcategory {
@@ -52,21 +52,12 @@ export interface AnswerQuestionPayload {
 export interface AnswerQuestionResponse {
   questionId: number;
   isCorrect: boolean;
-  basePoints: number;
   pointsAwarded: number;
   boosted: boolean;
-  teams: { id: number; name: string; score: number; isBoostUsed: boolean }[];
 }
 
 // ─── Reveal
 export interface RevealResponse {
-  questionId: number;
-  question: {
-    content: string | null;
-    fileUrl: string | null;
-    difficulty: Difficulty | null;
-    points: number | null;
-  };
   answer: {
     text: string;
     fileUrl: string | null;
@@ -101,7 +92,7 @@ export interface LastAciveSessionStats {
 
 export interface ResultsResponse {
   sessionId: number;
-  status: SessionStatus;
+  status: GameStatus;
   startTime: string | null;
   endTime: string | null;
   winner: ResultTeam | null;
@@ -112,7 +103,7 @@ export interface ResultsResponse {
 // ─── Create session
 export interface CreateSessionResponse {
   sessionId: number;
-  status: SessionStatus;
+  status: GameStatus;
   questionTimeLimit: number;
   teams: Team[];
 }
@@ -136,7 +127,6 @@ export interface Question {
   file_url?: string | null;
   difficulty: Difficulty;
   points: number;
-  point_value?: number;
   is_answered?: boolean;
   grid_row: number;
   grid_col: number;
@@ -168,4 +158,27 @@ export interface GameBoard {
   sessionId: number;
   grid: Question[];
   teams: Team[];
+}
+
+export interface SessionBoard {
+  session: {
+    id: number;
+    status: GameStatus;
+    questionTimeLimit: number;
+    startTime: Date | null;
+    endTime: Date | null;
+    createdAt: Date;
+  };
+  columnHeaders: {
+    col: number;
+    subcategoryId: number | null;
+    subcategoryName: string | null;
+    imageUrl: string | null;
+  }[];
+  questions: Question[];
+  teams: Team[];
+  progress: {
+    answered: number;
+    total: number;
+  };
 }

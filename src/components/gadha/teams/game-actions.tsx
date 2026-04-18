@@ -16,6 +16,7 @@ import { toast } from "sonner-native";
 import { Image } from "expo-image";
 import { IMAGES } from "@/src/constants/images";
 import ShadowedText from "@/src/components/shared/text/ShadowedText";
+import { SCREEN } from "@/src/utils/dimensions";
 
 interface Props {
     team?: Partial<Team>
@@ -64,10 +65,12 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
 
     return (
         <View
-            className="items-center justify-between py-1"
             style={{
+                height: "100%",
                 width: scale(120),
-                height: verticalScale(428),
+                paddingVertical: 6,
+                alignItems: "center",
+                justifyContent: "space-between",
                 backgroundColor: isTeamA ? "#FFF900" : "#00A6DA",
             }}
         >
@@ -84,7 +87,7 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
                 <Text
                     numberOfLines={2}
                     ellipsizeMode="tail"
-                    style={{ fontSize: moderateScale(23), lineHeight: 28 }}
+                    style={{ fontSize: moderateScale(22), lineHeight: 28 }}
                     className="font-cairo-bold text-error text-center"
                 >
                     {team?.name}
@@ -106,7 +109,7 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
                 >
                     <Image source={isTeamA ? IMAGES.BluePlus : IMAGES.YellowPlus} style={{ width: 40, height: 40, }} contentFit="contain" />
                 </Pressable>
-                <ShadowedText fontSize={28} content={formatScore(900)} fillColor={isTeamA ? "#FFF900" : "#00A6DA"} />
+                <ShadowedText fontSize={28} content={formatScore(team?.score || 0)} fillColor={isTeamA ? "#FFF900" : "#00A6DA"} />
                 <Pressable
                     disabled={isPending}
                     onPress={handleDecreaseScore}

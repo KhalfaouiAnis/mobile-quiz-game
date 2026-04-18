@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, ImageStyle, ImageResizeMode } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
-import { CARD, BORDER_RADIUS, FOCUS_RING } from '@/src/constants/dimensions';
+import { CARD, BORDER_RADIUS, FOCUS_RING } from '@/src/utils/dimensions';
 import { isTV } from '@/src/utils/platform';
 
 type TVImagePreset = 'card' | 'wideCard' | 'square' | 'hero' | 'avatar' | 'custom';

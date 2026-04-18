@@ -1,27 +1,33 @@
-import { Dimensions } from "react-native";
-import { isTV } from "../utils/platform";
+import { Dimensions } from 'react-native';
+import { isTV } from '../utils/platform';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 /**
  * TV screens are physically large but the app renders at a logical resolution
  * (typically 1280×720 or 1920×1080). We scale everything up relative to a
- * 375-wide mobile baseline so that a font or dimension that looks right on
+ * 926-wide mobile baseline so that a font or dimension that looks right on
  * a phone is automatically enlarged for the 10-foot viewing distance on a TV.
  *
  * TV_SCALE: multiplier applied on top of the mobile base.
  * Use `tvScale(n)` for any value you'd normally hard-code.
  */
 
-const MOBILE_BASE_WIDTH = 375;
+const MOBILE_BASE_WIDTH = 926;
+const MOBILE_BASE_HEIGHT = 428;
 const TV_BASE_WIDTH = 1280; // typical TV logical width
+const TV_BASE_HEIGHT = 720; // typical TV logical width
 
-// On TV: scale relative to 1280-wide canvas; on mobile: scale relative to 375
+// On TV: scale relative to 1280-wide canvas; on mobile: scale relative to 926
 const BASE_WIDTH = isTV ? TV_BASE_WIDTH : MOBILE_BASE_WIDTH;
+const BASE_HEIGHT = isTV ? TV_BASE_HEIGHT : MOBILE_BASE_HEIGHT;
 
 /** Scale a dimension proportionally to the current screen width. */
 export const scale = (size: number): number =>
   Math.round((SCREEN_WIDTH / BASE_WIDTH) * size);
+
+// Scale based on Height (use for vertical dimensions like heights, top/bottom padding)
+export const verticalScale = (size: number) => (SCREEN_HEIGHT / BASE_HEIGHT) * size;
 
 /** Scale specifically for font sizes — slightly gentler to avoid oversized text. */
 export const fontScale = (size: number): number => {
@@ -93,7 +99,7 @@ export const CARD = {
 /** Focus ring style — always call this instead of hard-coding border widths. */
 export const FOCUS_RING = {
   width: isTV ? 4 : 2,
-  color: "#FACC15", // golden yellow — highly visible on dark TV UIs
+  color: '#FACC15', // golden yellow — highly visible on dark TV UIs
   shadowRadius: isTV ? 12 : 4,
   shadowOpacity: isTV ? 0.9 : 0.5,
 } as const;

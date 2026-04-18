@@ -1,16 +1,18 @@
 import { boxShadow } from "@/src/utils/cn";
-import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, Text, View } from "react-native";
+import { ActivityIndicator, Platform, Pressable, ScrollView, Text, View } from "react-native";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner-native";
 import { useRouter } from "expo-router";
 import { GADHA_QUESTION_TIME_OPTIONS, TEXT_SCALE_FACOTR } from "@/src/constants";
 import { isAxiosError } from "axios";
 import GadhaGameTimePicker from "./GadhaGameTimerPicker";
-import ScoreStepper from "./buttons/ScoreStepper";
+import TeamMembersSelector from "./buttons/TeamMembersSelector";
 import TeamNamePicker from "./TeamNamePicker";
 import { useCreateGadhaSession } from "@/src/hooks/mutations/gameGadha/useCreateGadhaSession";
 import { CreateGadhaGameSession } from "@/src/types/game.gadha.types";
 import { useGadhaGameActions } from "@/src/stores/game.gadha.store";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import { moderateScale, scale } from "@/src/utils/sizes";
 
 export default function GameSetup() {
     const router = useRouter()
@@ -26,7 +28,8 @@ export default function GameSetup() {
 
     const onSubmit = async (payload: CreateGadhaGameSession) => {
         try {
-            const data = await mutateAsync(payload);
+            const mappedPayload = { ...payload, subcategoryIds: payload.subcategoryIds.map(sub => sub.id) }
+            const data = await mutateAsync(mappedPayload);
             if (data) {
                 initGame(data.teams, data.questionTimeLimit);
                 router.push(`/(gadha)/board/${data.sessionId}`);
@@ -42,15 +45,13 @@ export default function GameSetup() {
     return (
         <KeyboardAvoidingView
             style={{ flex: 1 }}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
-            <View className="items-center">
-                <View className="flex-row items-center gap-4">
+            <ScrollView contentContainerClassName="items-center">
+                <View className="flex-row items-center gap-4 px-2">
                     <View className="gap-4">
-                        <View className="gap-1">
-                            <TeamNamePicker control={control} name="teams.0.name" />
-                        </View>
-                        <ScoreStepper
+                        <TeamNamePicker control={control} name="teams.0.name" />
+                        <TeamMembersSelector
                             control={control}
                             name="teams.0.score"
                             colors={{ border: "#00A6DA", text: "#FFF900" }}
@@ -60,10 +61,8 @@ export default function GameSetup() {
                         <GadhaGameTimePicker control={control} name="questionTimeLimit" options={GADHA_QUESTION_TIME_OPTIONS} />
                     </View>
                     <View className="gap-4">
-                        <View className="gap-1">
-                            <TeamNamePicker control={control} name="teams.1.name" />
-                        </View>
-                        <ScoreStepper
+                        <TeamNamePicker control={control} name="teams.1.name" />
+                        <TeamMembersSelector
                             control={control}
                             name="teams.1.score"
                             colors={{ border: "#00A6DA", text: "#00A6DA" }}
@@ -90,15 +89,15 @@ export default function GameSetup() {
                     <View
                         style={{
                             boxShadow: boxShadow().button.boxShadow,
-                            width: 160,
-                            height: 48
+                            width: scale(160),
+                            height: moderateScale(48)
                         }}
                         className="bg-secondary-500 rounded-xl rounded-t-2xl items-center justify-center border border-error disabled:bg-gray-200"
                     >
                         {isPending ? <ActivityIndicator size="small" /> : <Text className='font-cairo-bold text-lg'>ابدأ اللعب</Text>}
                     </View>
                 </Pressable>
-            </View>
+            </ScrollView>
         </KeyboardAvoidingView>
     )
 }

@@ -3,6 +3,8 @@ import { hideSystemBars } from "@/src/lib/navigation-bar";
 import { CreateGadhaGameSession } from "@/src/types/game.gadha.types";
 import { GlobalSelectOption } from "@/src/types/index.types";
 import { boxShadow } from "@/src/utils/cn";
+import { fontScale, verticalScale } from "@/src/utils/dimensions";
+import { moderateScale, scale } from "@/src/utils/sizes";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useCallback } from "react";
 import { Control, Path, useController } from "react-hook-form";
@@ -53,10 +55,13 @@ export default function TeamNamePicker({ control, name }: Props) {
 
     return (
         <View collapsable={false}>
-            <View style={{ boxShadow: boxShadow().button.boxShadow, height: 60, position: "relative", borderRadius: 8 }}>
+            <View
+                className="bg-secondary-500 border border-error"
+                style={{ boxShadow: boxShadow().button.boxShadow, width: scale(295), height: verticalScale(60), position: "relative", borderRadius: 8 }}
+            >
                 <TextInput
-                    className="text-primary-500 font-cairo-bold bg-secondary-500 border border-error flex-row justify-center items-center rounded-lg ps-4"
-                    style={{ width: 200, height: 60, writingDirection: "rtl", textAlign: "right", }}
+                    className="text-primary-500 font-cairo-bold rounded-lg ps-4"
+                    style={{ width: scale(200), height: verticalScale(60), writingDirection: "rtl", textAlign: "right", fontSize: fontScale(20) }}
                     value={value?.toString()}
                     onChangeText={onChange}
                     onBlur={hideSystemBars}
@@ -67,15 +72,15 @@ export default function TeamNamePicker({ control, name }: Props) {
                     onPress={toggle}
                     ref={triggerRef}
                     className="flex-row items-center gap-1 ps-1"
-                    style={{ position: "absolute", end: 10, top: 22, zIndex: 2 }}
+                    style={{ position: "absolute", end: 10, top: verticalScale(18), zIndex: 2 }}
                 >
-                    <Ionicons name="chevron-down" size={24} color="#00A6DA" />
+                    <Ionicons name="chevron-down" size={moderateScale(24)} color="#00A6DA" />
                 </Pressable>
                 {error && <Text
                     numberOfLines={2}
                     ellipsizeMode="tail"
-                    style={{ maxWidth: 200 }}
-                    className="text-error text-sm text-center font-cairo mt-1">
+                    style={{ maxWidth: scale(200), fontSize: moderateScale(14) }}
+                    className="text-error text-center font-cairo mt-1">
                     {error.message}
                 </Text>}
             </View>
@@ -107,9 +112,10 @@ export default function TeamNamePicker({ control, name }: Props) {
 
 const styles = StyleSheet.create({
     selectOption: {
-        height: 30,
+        height: verticalScale(30),
         width: "auto",
         borderRadius: 12,
+        paddingHorizontal: 4,
         alignItems: "center",
         justifyContent: "center",
         ...boxShadow(0, 4, 9).button,

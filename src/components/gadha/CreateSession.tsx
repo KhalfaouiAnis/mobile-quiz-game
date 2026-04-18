@@ -39,18 +39,18 @@ export default function CreateSession() {
                 onPress={() => toggleSelectSubcategory(item)}
                 className="relative px-2 rounded-2xl items-center justify-center"
                 style={{
-                    width: scale(80),
+                    width: scale(70),
                     height: verticalScale(60),
                     boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").button.boxShadow
                 }}
             >
-                <Feather name="x-circle" size={16} color="#F1190E" className="absolute top-0.5 start-0" />
+                <Feather name="x-circle" size={scale(14)} color="#F1190E" className="absolute top-0.5 start-0" />
                 <Image
                     source={item.image_url ? { uri: item.image_url } : IMAGES.FilmsCategory}
-                    style={{ width: scale(40), height: scale(40), borderRadius: 999 }}
+                    style={{ width: scale(30), height: scale(30), borderRadius: 999 }}
                     contentFit="cover"
                 />
-                <Text className="font-cairo-bold text-sm" ellipsizeMode="tail" numberOfLines={1}>
+                <Text className="font-cairo-bold" style={{ fontSize: moderateScale(15) }} ellipsizeMode="tail" numberOfLines={1}>
                     {item.name?.charAt(0).toUpperCase()}
                 </Text>
             </Pressable>
@@ -61,22 +61,22 @@ export default function CreateSession() {
         return (
             <Pressable
                 onPress={() => toggleSelectSubcategory(item)}
-                className="relative px-2 rounded-2xl items-center justify-center"
+                className="relative px-1 rounded-2xl items-center justify-center"
                 style={{
-                    width: scale(130),
+                    width: scale(140),
                     height: verticalScale(90),
                     boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").button.boxShadow,
                     backgroundColor: selectedSubs.indexOf(item) > -1 ? "#00A6DA" : undefined
                 }}
             >
                 <Image
-                    style={{ width: scale(50), height: scale(50), borderRadius: 999 }}
+                    style={{ width: scale(48), height: verticalScale(48), borderRadius: 999 }}
                     source={item.image_url ? { uri: item.image_url } : IMAGES.FilmsCategory}
                     contentFit="cover"
                 />
                 <Text
-                    className="font-cairo-semibold px-1"
-                    style={{ fontSize: moderateScale(18) }}
+                    className="font-cairo-semibold px-1 text-center"
+                    style={{ fontSize: moderateScale(20) }}
                     ellipsizeMode="tail"
                     numberOfLines={1}
                 >
@@ -107,7 +107,9 @@ export default function CreateSession() {
                     className="py-1 border border-secondary-500 rounded-md"
                     style={[boxShadow(4, 4, 4, 0, "rgb(000 000 000 / 0.50)").button, { width: scale(420), paddingHorizontal: 80 }]}
                 >
-                    <Text className="text-center font-cairo-bold text-2xl text-primary-500">{item.name}</Text>
+                    <Text
+                        style={{ fontSize: moderateScale(24) }}
+                        className="text-center font-cairo-bold text-primary-500">{item.name}</Text>
                 </View>
                 <FlatList
                     numColumns={6}
@@ -136,7 +138,9 @@ export default function CreateSession() {
                 <Pressable className="absolute end-3 top-3">
                     <Ionicons name="menu" size={24} color="#00A6DA" />
                 </Pressable>
-                <Text className="font-cairo-bold text-2xl text-primary-500">اختر فئات  لعبتك</Text>
+                <Text
+                    style={{ fontSize: moderateScale(24) }}
+                    className="font-cairo-bold text-primary-500">اختر فئات  لعبتك</Text>
                 <FlatList
                     horizontal
                     data={selectedSubs}

@@ -17,21 +17,25 @@ const QuestionCell = memo(({ question, onPress }: Props) => {
     const team1BoostActive = useGadhaGameStore(state => state.team1BoostActive)
     const team2BoostActive = useGadhaGameStore(state => state.team2BoostActive)
 
+    const isDisabled = isAnsweredLocal || question.is_answered;
+
     return (
         <Pressable
             onPress={onPress}
-            disabled={isAnsweredLocal || question.is_answered}
-            className="items-center justify-center rounded-xl relative bg-primary-500 disabled:bg-gray-400"
+            disabled={isDisabled}
+            className="items-center justify-center rounded-xl relative"
             style={{
                 boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow,
-                height: verticalScale(44),
+                backgroundColor: isDisabled ? "rgb(141 136 136 / 0.77)" : "#00A6DA",
+                height: verticalScale(46),
                 width: scale(100),
             }}
         >
-            <ShadowedText fontSize={28} content={question.points + ""} fillColor="#fff" />
+            <ShadowedText uniqueId={question.id} fontSize={31} content={question.points + ""} fillColor="#fff" />
+            {/* <Text>{question.points}</Text> */}
             {((team1BoostActive || team2BoostActive) && (!isAnsweredLocal && !question.is_answered)) && (
                 <Text className="text-white font-bagel-regular absolute top-0 -start-1">
-                    <StrokeText />
+                    <StrokeText size={32} />
                 </Text>
             )}
         </Pressable>

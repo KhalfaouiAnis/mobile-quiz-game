@@ -6,17 +6,18 @@ import { boxShadow } from "@/src/utils/cn";
 
 type Props = Partial<Package> & {
     iconUrl: any;
-    isActive: boolean
+    isActive: boolean;
+    selected: boolean;
     onPress: () => void
 }
 
-export default function SubscriptionCard({ iconUrl, isActive, name, description, price, onPress }: Props) {
+export default function SubscriptionCard({ iconUrl, isActive, selected, name, description, price, onPress }: Props) {
     return (
         <Pressable
             onPress={onPress}
             style={[boxShadow(4, 4, 4, 0).button, {
-                borderWidth: isActive ? 1 : undefined,
-                borderColor: isActive ? "#F1190E" : undefined,
+                borderWidth: selected ? 1 : undefined,
+                borderColor: selected ? "#F1190E" : undefined,
                 width: 340
             }]}
             className="relative flex-row items-center bg-white px-10 py-6 rounded-2xl"

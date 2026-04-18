@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { Team } from "@/src/types/game.gadha.types";
+import { useShallow } from "zustand/shallow";
 
 interface GameState {
   teams: Record<number, Partial<Team>>;
@@ -51,6 +52,7 @@ export const useGadhaGameStore = create<GameState>()((set) => ({
             [teamIndex]: {
               ...currentTeam,
               score: newScore,
+              is_boost_used: applyBoost,
             },
           },
         };
@@ -71,4 +73,5 @@ export const useGadhaGameStore = create<GameState>()((set) => ({
 
 export const useGadhaTeam = (teamIndex: number) =>
   useGadhaGameStore((s) => s.teams[teamIndex]);
-export const useGadhaGameActions = () => useGadhaGameStore((s) => s.actions);
+export const useGadhaGameActions = () =>
+  useGadhaGameStore(useShallow((s) => s.actions));

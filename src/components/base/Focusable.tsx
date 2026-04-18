@@ -11,7 +11,7 @@ import {
   FocusContext,
 } from '@noriginmedia/norigin-spatial-navigation';
 import { isTV } from '@/src/utils/platform';
-import { FOCUS_RING } from '@/src/constants/dimensions';
+import { FOCUS_RING } from '@/src/utils/dimensions';
 
 interface FocusableProps {
   /**

@@ -11,7 +11,7 @@ import {
   FocusContext,
 } from '@noriginmedia/norigin-spatial-navigation';
 import { isTV } from '@/src/utils/platform';
-import { SCREEN } from '@/src/constants/dimensions';
+import { SCREEN } from '@/src/utils/dimensions';
 
 interface TVScreenProps {
   /** A unique focus key for this screen's root container. */

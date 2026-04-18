@@ -17,7 +17,7 @@ import {
   BORDER_RADIUS,
   ICON_SIZE,
   FOCUS_RING,
-} from '@/src/constants/dimensions';
+} from '@/src/utils/dimensions';
 import { isTV } from '@/src/utils/platform';
 
 export interface MenuItem {

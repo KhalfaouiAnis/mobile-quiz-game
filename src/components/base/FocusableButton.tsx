@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import { Focusable } from './Focusable';
-import { FONT_SIZE, SPACING, BORDER_RADIUS, FOCUS_RING } from '@/src/constants/dimensions';
+import { FONT_SIZE, SPACING, BORDER_RADIUS, FOCUS_RING } from '@/src/utils/dimensions';
 import { isTV } from '@/src/utils/platform';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
