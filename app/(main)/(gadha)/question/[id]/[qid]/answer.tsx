@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { useQueryClient } from '@tanstack/react-query';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { View, Text, ActivityIndicator, ScrollView, Dimensions, unstable_batchedUpdates } from 'react-native';
 import AppButton from '@/src/components/shared/button/AppButton';
 import { useGadhaGameActions, useGadhaGameStore } from '@/src/stores/game.gadha.store';
@@ -25,6 +25,7 @@ export default function AnswerScreen() {
 
     const answerMutation = useAnswerQuestion(Number(id));
     const queryClient = useQueryClient();
+    const router = useRouter()
 
     const { data, isLoading, error } = useRevealAnswer(Number(id), Number(qid))
 
@@ -41,6 +42,8 @@ export default function AnswerScreen() {
             {
                 onSuccess() {
                     if (questionData) {
+                        router.replace(`/(main)/(gadha)/board/${id}`);
+
                         unstable_batchedUpdates(() => {
                             if (isCorrect) {
                                 addScore(teamIndex, questionData.points, useBoost);
@@ -50,7 +53,6 @@ export default function AnswerScreen() {
                             }
                             markAnswered(Number(qid));
                         })
-                        router.replace(`/(main)/(gadha)/board/${id}`);
                     }
                 },
                 onError(error) {
@@ -72,7 +74,7 @@ export default function AnswerScreen() {
                 ) : (
                     <ScrollView contentContainerClassName="items-center justify-between gap-4">
                         <View className='gap-4'>
-                            <Text className="text-lg text-center font-cairo-medium">الإجابة:</Text>
+                            {/* <Text className="text-lg text-center font-cairo-medium">الإجابة:</Text> */}
                             {
                                 isLoading ? (
                                     <ActivityIndicator size="large" color="#00A6DA" />
@@ -98,16 +100,16 @@ export default function AnswerScreen() {
                                     danger
                                     semiRounded
                                     title={teams[0].name || ""}
-                                    onPress={() => handleSubmitAnswer({ teamIndex: 0, isCorrect: true, useBoost: team1BoostActive })}
                                     disabled={answerMutation.isPending || answeredQuestionsIds.has(Number(qid))}
+                                    onPress={() => handleSubmitAnswer({ teamIndex: 0, isCorrect: true, useBoost: team1BoostActive })}
                                 />
                             </View>
                             <View className="w-1/3">
                                 <AppButton
                                     title="لا أحد"
                                     rounded={false}
+                                    disabled={answerMutation.isPending || answeredQuestionsIds.has(Number(qid))}
                                     onPress={() => handleSubmitAnswer({ teamIndex: 0, isCorrect: false, useBoost: team1BoostActive || team2BoostActive })}
-                                // disabled={answerMutation.isPending || answeredQuestionsIds.has(Number(qid))}
                                 />
                             </View>
                             <View className="w-1/3">
@@ -115,8 +117,8 @@ export default function AnswerScreen() {
                                     danger
                                     semiRounded
                                     title={teams[1].name || ""}
-                                    onPress={() => handleSubmitAnswer({ teamIndex: 1, isCorrect: true, useBoost: team2BoostActive })}
                                     disabled={answerMutation.isPending || answeredQuestionsIds.has(Number(qid))}
+                                    onPress={() => handleSubmitAnswer({ teamIndex: 1, isCorrect: true, useBoost: team2BoostActive })}
                                 />
                             </View>
                         </View>

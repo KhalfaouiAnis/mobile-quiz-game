@@ -8,14 +8,14 @@ import { IMAGES } from "@/src/constants/images";
 import { fontScale, scale, verticalScale } from "@/src/utils/dimensions";
 import BackArrow from "../shared/BackArrow";
 import { useGadhaSubcategories } from "@/src/hooks/queries/gameGadha/useGadhaSubcategories";
-import { GameGadhaSubcategory } from "@/src/types/game.gadha.types";
+import { CreateGadhaGameSession, GameGadhaSubcategory } from "@/src/types/game.gadha.types";
 import DetailView from "./listing/CategoriesDetailView";
 import CategoriesListView from "./listing/CategoriesListView";
 
 export default function SetupSession() {
-    const rawSelected = useWatch({ name: 'subcategoryIds', defaultValue: [] });
+    const rawSelected: GameGadhaSubcategory[] = useWatch({ name: 'subcategoryIds', defaultValue: [] });
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const { setValue } = useFormContext()
+    const { setValue, getValues } = useFormContext<CreateGadhaGameSession>()
 
     const { data, isLoading } = useGadhaSubcategories()
 
@@ -23,7 +23,7 @@ export default function SetupSession() {
     const handleBack = useCallback(() => setSelectedCategory(null), []);
 
     const handleDeleteSelected = useCallback((sub: GameGadhaSubcategory) => {
-        const current = [...rawSelected]
+        const current: GameGadhaSubcategory[] = getValues("subcategoryIds") ?? []
 
         setValue('subcategoryIds', current.filter((item: GameGadhaSubcategory) => item.id !== sub.id), {
             shouldValidate: false,

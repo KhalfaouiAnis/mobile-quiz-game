@@ -5,12 +5,18 @@ import GameActions from '@/src/components/gadha/teams/game-actions';
 import Container from '@/src/components/shared/Container';
 import { useGadhaGameActions, useGadhaGameStore } from '@/src/stores/game.gadha.store';
 import { type SessionBoard } from '@/src/types/game.gadha.types';
+import { useShallow } from 'zustand/shallow';
 
 export default function QuestionLayout() {
     const { qid, id } = useGlobalSearchParams<{ qid: string, id: string }>();
-    const team1BoostActive = useGadhaGameStore(state => state.team1BoostActive)
-    const team2BoostActive = useGadhaGameStore(state => state.team2BoostActive)
-    const teams = useGadhaGameStore(store => store.teams)
+    const { teams, team1BoostActive, team2BoostActive } = useGadhaGameStore(
+        useShallow(state => ({
+            team1BoostActive: state.team1BoostActive,
+            team2BoostActive: state.team2BoostActive,
+            answeredQuestionsIds: state.optimisticAnsweredIds,
+            teams: state.teams
+        }))
+    )
     const { activateBoost } = useGadhaGameActions()
     const queryClient = useQueryClient();
 

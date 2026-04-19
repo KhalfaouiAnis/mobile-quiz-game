@@ -1,4 +1,3 @@
-import DoublePoints from "./DoublePoints";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { Team } from "@/src/types/game.gadha.types";
 import { useGlobalSearchParams, useRouter } from "expo-router";
@@ -16,7 +15,8 @@ import { toast } from "sonner-native";
 import { Image } from "expo-image";
 import { IMAGES } from "@/src/constants/images";
 import ShadowedText from "@/src/components/shared/text/ShadowedText";
-import { SCREEN } from "@/src/utils/dimensions";
+import { fontScale } from "@/src/utils/dimensions";
+import UserActionButtons from "./UserActionButtons";
 
 interface Props {
     team?: Partial<Team>
@@ -56,11 +56,9 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
     }
 
     const handleDecreaseScore = () => {
-        if ((team?.score && team.score - 100 < 0)) return;
-        if (team) {
-            updateScore({ teamId: team?.id || 0, score: (team.score || 0) - 100, session_id: Number(id) })
-            addScore(isTeamA ? 0 : 1, -100, false);
-        }
+        if ((team?.score ?? 0) <= 0) return;
+        updateScore({ teamId: team?.id || 0, score: (team?.score ?? 0) - 100, session_id: Number(id) })
+        addScore(isTeamA ? 0 : 1, -100, false);
     }
 
     return (
@@ -70,16 +68,16 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
                 width: scale(120),
                 paddingVertical: 6,
                 alignItems: "center",
+                backgroundColor: "#00a6da",
                 justifyContent: "space-between",
-                backgroundColor: isTeamA ? "#FFF900" : "#00A6DA",
             }}
         >
             <View
                 style={{
                     borderWidth: 3,
                     width: scale(103),
+                    borderColor: "#00a6da",
                     height: verticalScale(90),
-                    borderColor: isTeamA ? "#00A6DA" : "#FFF900",
                     boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow
                 }}
                 className="bg-white items-center justify-center rounded-lg"
@@ -96,8 +94,8 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
             <View
                 style={{
                     boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow,
-                    borderColor: isTeamA ? "#00A6DA" : "#FFF900",
                     height: verticalScale(190),
+                    borderColor: "#00a6da",
                     width: scale(103),
                     borderWidth: 3,
                 }}
@@ -107,21 +105,19 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
                     disabled={isPending}
                     onPress={handleIncreaseScore}
                 >
-                    <Image source={isTeamA ? IMAGES.BluePlus : IMAGES.YellowPlus} style={{ width: 40, height: 40, }} contentFit="contain" />
+                    <Image source={IMAGES.BluePlus} style={{ width: 40, height: 40, }} contentFit="contain" />
                 </Pressable>
-                <ShadowedText fontSize={28} content={formatScore(team?.score || 0)} fillColor={isTeamA ? "#FFF900" : "#00A6DA"} />
+                <ShadowedText fontSize={28} content={formatScore(team?.score || 0)} fillColor={"#f1190e"} />
                 <Pressable
                     disabled={isPending}
                     onPress={handleDecreaseScore}
                 >
-                    <Image source={IMAGES.RedMinus} style={{ width: 40, height: 40, }} contentFit="contain" />
+                    <Image source={IMAGES.BlueMinus} style={{ width: 40, height: 40, }} contentFit="contain" />
                 </Pressable>
             </View>
-            <DoublePoints
-                boosterDisabled={team?.is_boost_used || boostActive}
-                borderColor={isTeamA ? "#00A6DA" : "#FFF900"}
-                onPress={handleBoost}
-            />
+            <UserActionButtons
+                block={{ disabled: true, onPress: () => { } }}
+                boost={{ disabled: team?.is_boost_used || boostActive, onPress: handleBoost }} />
             <Pressable
                 onPress={() => setShowModal(true)}
                 className="bg-white flex-row items-center justify-around border-2 rounded-lg"
@@ -129,21 +125,21 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
                     borderWidth: 3,
                     width: scale(103),
                     height: verticalScale(46),
-                    borderColor: isTeamA ? "#00A6DA" : "#FFF900",
+                    borderColor: "#00a6da",
                     boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow
                 }}
             >
                 <Text
-                    style={{ fontSize: moderateScale(22), paddingBottom: isTeamA ? undefined : 4 }}
+                    style={{ fontSize: fontScale(22), paddingBottom: isTeamA ? undefined : 6 }}
                     className="text-error font-cairo-bold"
                 >
                     {isTeamA ? "انهاء" : "رجوع"}
                 </Text>
                 {
                     isTeamA ? endingSession ? <ActivityIndicator size="small" /> : (
-                        <FontAwesome6 name="close" color="#F1190E" size={moderateScale(20)} />
+                        <FontAwesome6 name="close" color="#F1190E" size={fontScale(20)} />
                     ) : (
-                        <Ionicons name="log-out-outline" color="#F1190E" size={moderateScale(20)} />
+                        <Ionicons name="log-out-outline" color="#F1190E" size={fontScale(20)} className="pt-1" />
                     )
                 }
             </Pressable>

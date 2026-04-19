@@ -82,7 +82,7 @@ export default function GameSetup() {
                     )
                 }
                 <Pressable
-                    className='mt-4'
+                    className='my-4'
                     disabled={isPending}
                     onPress={handleSubmit(onSubmit, handleErrors)}
                 >

@@ -24,7 +24,7 @@ export default function PaymentSucceedModal() {
             <View className="w-1/4 mt-auto -mb-8">
                 <AppButton
                     title="تاكيد"
-                    onPress={() => router.replace("/(main)/(profile)")} />
+                    onPress={() => router.dismissTo("/(main)/(profile)")} />
             </View>
         </View>
     )

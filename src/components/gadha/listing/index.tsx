@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { memo} from "react";
+import { memo } from "react";
 import { Image } from "expo-image";
 import { boxShadow } from "@/src/utils/cn";
 import { IMAGES } from "@/src/constants/images";
@@ -50,69 +50,76 @@ interface ItemCardProps {
     isSelected?: boolean;
 }
 
-export const ItemCard = memo(({ item, onPress, isSelected }: ItemCardProps) => (
-    <Pressable
-        onPress={() => onPress(item)}
-        className="relative px-1 rounded-2xl items-center justify-center"
-        style={{
-            width: scale(130),
-            height: verticalScale(90),
-            backgroundColor: isSelected ? "#00A6DA" : undefined,
-            boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").button.boxShadow,
-        }}
-    >
-        {item.image_url ? (
-            <Image
-                style={{ width: scale(48), height: scale(48), borderRadius: 50 }}
-                source={item.image_url ? { uri: item.image_url } : IMAGES.FilmsCategory}
-                contentFit="cover"
-            />
-        ) : (
-
-            <View style={[styles.avatarRing, { borderColor: isSelected ? "white" : BLUE }]}>
-                <Text
-                    style={{ fontSize: fontScale(18), color: isSelected ? "white" : "#00A6DA" }}
-                    className="font-cairo-semibold"
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                >
-                    {item.name?.charAt(0) ?? '?'}
-                </Text>
-            </View>
-        )}
-
-        <Text
-            className="font-cairo-semibold px-1 text-center"
-            style={{ fontSize: fontScale(18) }}
-            ellipsizeMode="tail"
-            numberOfLines={1}
+export const ItemCard = memo(({ item, onPress, isSelected }: ItemCardProps) => {
+    return (
+        <Pressable
+            onPress={() => onPress(item)}
+            className="relative px-1 rounded-2xl items-center justify-center"
+            style={{
+                width: scale(130),
+                height: verticalScale(90),
+                backgroundColor: isSelected ? "#00A6DA" : undefined,
+                boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").button.boxShadow,
+            }}
         >
-            {item.name}
-        </Text>
-    </Pressable>
-));
+            {item.image_url ? (
+                <Image
+                    style={{ width: scale(48), height: scale(48), borderRadius: 50 }}
+                    source={item.image_url ? { uri: item.image_url } : IMAGES.FilmsCategory}
+                    contentFit="cover"
+                />
+            ) : (
+
+                <View style={[styles.avatarRing, { borderColor: isSelected ? "white" : BLUE }]}>
+                    <Text
+                        style={{ fontSize: fontScale(18), color: isSelected ? "white" : "#00A6DA" }}
+                        className="font-cairo-semibold"
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
+                    >
+                        {item.name?.charAt(0) ?? '?'}
+                    </Text>
+                </View>
+            )}
+
+            <Text
+                className="font-cairo-semibold px-1 text-center"
+                style={{ fontSize: fontScale(18) }}
+                ellipsizeMode="tail"
+                numberOfLines={1}
+            >
+                {item.name}
+            </Text>
+        </Pressable>
+    )
+}, (prev, next) =>
+    prev.item.id === next.item.id &&
+    prev.isSelected === next.isSelected);
+
+interface ItemCardWrapperProps {
+    item: GameGadhaSubcategory,
+    onPress: (item: GameGadhaSubcategory) => void,
+    selectedSet: Set<number>;
+}
 
 const SubcategoryCardWrapper = memo(
-    ({ item, selectedSet, onPress }: any) => {
-        console.log("selected: ", selectedSet);
-        
+    ({ item, selectedSet, onPress }: ItemCardWrapperProps) => {
         return (
-        <ItemCard
-            item={item}
-            onPress={onPress}
-            isSelected={selectedSet.has(item.id)}
-        />
-    )
+            <ItemCard
+                item={item}
+                onPress={onPress}
+                isSelected={selectedSet.has(item.id)}
+            />
+        )
     },
     (prev, next) =>
         prev.item.id === next.item.id &&
-        prev.onPress === next.onPress &&
-        prev.selectedSet.has(prev.item) === next.selectedSet.has(next.item),
+        prev.selectedSet.has(prev.item.id) === next.selectedSet.has(next.item.id)
 );
 
 interface SubcategoryRowProps {
     row: GameGadhaSubcategory[];
-    selectedSet: Set<GameGadhaSubcategory>,
+    selectedSet: Set<number>,
     onSubPress: (item: GameGadhaSubcategory) => void,
 }
 
@@ -134,7 +141,11 @@ export const SubcategoryRow = memo(({ row, selectedSet, onSubPress }: Subcategor
                 ))}
         </View>
     )
-});
+},
+    (prev, next) =>
+        prev.onSubPress === next.onSubPress &&
+        prev.selectedSet === next.selectedSet
+);
 
 export const SectionHeader = memo(({ title }: { title: string }) => (
     <View

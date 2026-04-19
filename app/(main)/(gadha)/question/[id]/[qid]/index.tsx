@@ -8,7 +8,7 @@ import GameTimer from "@/src/components/gadha/GameTimer";
 import { type SessionBoard } from "@/src/types/game.gadha.types";
 import { IMAGES } from "@/src/constants/images";
 import { useGadhaGameStore } from "@/src/stores/game.gadha.store";
-import { SCREEN } from "@/src/utils/dimensions";
+import { scale, SCREEN } from "@/src/utils/dimensions";
 
 export default function QuestionScreen() {
     const { qid, id } = useLocalSearchParams<{ qid: string, id: string }>();
@@ -27,7 +27,7 @@ export default function QuestionScreen() {
     return (
         <View className="flex-1 flex-row items-center px-4 pt-4 gap-4">
             <GameTimer duration={questionTimeLimit || 45} externalPause={timer} onTimeUp={handleShowAnswer} />
-            <ScrollView contentContainerClassName="items-center justify-between gap-4">
+            <ScrollView contentContainerClassName="items-center justify-between gap-4 self-start">
                 <Text className="text-xl text-center font-cairo-medium" numberOfLines={2} ellipsizeMode="tail">
                     {questionData?.content}
                 </Text>
@@ -36,7 +36,7 @@ export default function QuestionScreen() {
                     source={questionData?.file_url ? { uri: questionData?.file_url } : IMAGES.Question}
                     style={{ width: (SCREEN.width / 2), height: (SCREEN.height / 2), borderRadius: 15 }}
                 />
-                <View className="w-1/3 mb-2">
+                <View className="pb-2" style={{ width: scale(150) }}>
                     <AppButton
                         title="الإجابة"
                         rounded={false}

@@ -21,6 +21,7 @@ import ActivePlanBadge from "@/assets/images/active-plan-badge.png";
 import IncrementScore from "@/assets/images/incrementScore.png";
 import DecrementScore from "@/assets/images/decrementScore.png";
 import RedMinus from "@/assets/images/redMinus.png";
+import BlueMinus from "@/assets/images/blueMinus.png";
 import BluePlus from "@/assets/images/bluePlus.png";
 import YellowPlus from "@/assets/images/yellowPlus.png";
 import Feature1 from "@/assets/images/feature-image1.png";
@@ -43,6 +44,7 @@ export const IMAGES = {
   YellowPlus,
   RedMinus,
   BluePlus,
+  BlueMinus,
   Leader2,
   Leader3,
   GadghaLogo,

@@ -6,6 +6,8 @@ import { Question } from '@/src/types/game.gadha.types';
 import { boxShadow } from '@/src/utils/cn';
 import { scale, verticalScale } from '@/src/utils/sizes';
 import ShadowedText from "@/src/components/shared/text/ShadowedText";
+import { fontScale } from '@/src/utils/dimensions';
+import { useShallow } from 'zustand/shallow';
 
 interface Props {
     question: Question,
@@ -13,9 +15,13 @@ interface Props {
 }
 
 const QuestionCell = memo(({ question, onPress }: Props) => {
-    const isAnsweredLocal = useGadhaGameStore(state => state.optimisticAnsweredIds.has(question.id));
-    const team1BoostActive = useGadhaGameStore(state => state.team1BoostActive)
-    const team2BoostActive = useGadhaGameStore(state => state.team2BoostActive)
+    const { team1BoostActive, team2BoostActive, isAnsweredLocal } = useGadhaGameStore(
+        useShallow(state => ({
+            team1BoostActive: state.team1BoostActive,
+            team2BoostActive: state.team2BoostActive,
+            isAnsweredLocal: state.optimisticAnsweredIds.has(question.id),
+        }))
+    )
 
     const isDisabled = isAnsweredLocal || question.is_answered;
 
@@ -31,11 +37,10 @@ const QuestionCell = memo(({ question, onPress }: Props) => {
                 width: scale(100),
             }}
         >
-            <ShadowedText uniqueId={question.id} fontSize={31} content={question.points + ""} fillColor="#fff" />
-            {/* <Text>{question.points}</Text> */}
+            <ShadowedText fontSize={31} content={question.points + ""} fillColor="#fff" />
             {((team1BoostActive || team2BoostActive) && (!isAnsweredLocal && !question.is_answered)) && (
-                <Text className="text-white font-bagel-regular absolute top-0 -start-1">
-                    <StrokeText size={32} />
+                <Text className="text-white font-bagel-regular absolute -top-1 -start-1">
+                    <StrokeText size={fontScale(28)} />
                 </Text>
             )}
         </Pressable>

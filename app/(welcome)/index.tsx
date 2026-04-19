@@ -31,7 +31,7 @@ export default function Welcome() {
             return;
         }
         mmkvStorage.set(HAS_LAUNCHED, true);
-        router.replace('/(auth)/index');
+        router.replace('/(auth)');
     };
 
     return (

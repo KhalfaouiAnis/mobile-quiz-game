@@ -1,59 +1,134 @@
-import { fontScale, scale, verticalScale } from '@/src/utils/dimensions';
-import React, { memo, useMemo } from 'react';
-import { Defs, FeDropShadow, Filter, Svg, Text as SvgText } from 'react-native-svg';
+// import { fontScale, scale, verticalScale } from '@/src/utils/dimensions';
+// import React, { memo, useMemo } from 'react';
+// import { Defs, FeDropShadow, Filter, Svg, Text as SvgText } from 'react-native-svg';
 
-interface Propss {
-    content: string;
-    uniqueId?: number;
-    fontSize?: number;
-    fillColor?: string;
-    dropsShadow?: { dx: string; dy: string };
+// interface Propss {
+//     content: string;
+//     uniqueId?: number;
+//     fontSize?: number;
+//     fillColor?: string;
+//     dropsShadow?: { dx: string; dy: string };
+// }
+
+// const DEFAULT_SHADOW = { dx: "0", dy: '4' }
+
+// export default memo(function ShadowedText({
+//     content,
+//     fontSize = 27,
+//     fillColor = '#FFF900',
+//     uniqueId,
+//     dropsShadow = DEFAULT_SHADOW
+// }: Propss) {
+
+//     const height = useMemo(() => verticalScale(fontSize * 1.5), [fontSize]);
+//     const width = useMemo(() => scale((content.length * fontSize) * 0.8), [content, fontSize]);
+
+//     return (
+//         <Svg
+//             height={height} width={width} viewBox={`0 0 ${width} ${height}`}
+//         >
+//             <Defs>
+//                 <Filter id={`shadow-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
+//                     <FeDropShadow
+//                         dx={dropsShadow.dx}
+//                         dy={dropsShadow.dy}
+//                         stdDeviation="2"
+//                         floodColor="#000"
+//                         floodOpacity="0.13"
+//                     />
+//                 </Filter>
+//             </Defs>
+
+//             <SvgText
+//                 fontSize={fontScale(fontSize)}
+//                 fill={fillColor}
+//                 stroke="#000000"
+//                 strokeWidth="1"
+//                 strokeLinejoin="round"
+//                 fontFamily="BagelRegular"
+//                 x="50%"
+//                 y="50%"
+//                 textAnchor="middle"
+//                 alignmentBaseline="central"
+//                 filter={`url(#shadow-${uniqueId})`}
+//             >
+//                 {content}
+//             </SvgText>
+//         </Svg>
+//     );
+// });
+
+import { fontScale } from '@/src/utils/dimensions'
+import { memo } from 'react'
+import { Text, View, StyleSheet } from 'react-native'
+
+const STROKE_OFFSETS = [
+    [-1, -1], [0, -1], [1, -1],
+    [-1, 0], [1, 0],
+    [-1, 1], [0, 1], [1, 1],
+] as const
+
+const DEFAULT_SHADOW = { dx: 0, dy: 4 }
+
+interface Props {
+    content: string
+    fontSize?: number
+    fillColor?: string
+    dropShadow?: { dx: number; dy: number }
 }
 
-const DEFAULT_SHADOW = { dx: "0", dy: '4' }
-
-export default memo(function ShadowedText({
+const ShadowedText = memo(function ShadowedText({
     content,
     fontSize = 27,
     fillColor = '#FFF900',
-    uniqueId,
-    dropsShadow = DEFAULT_SHADOW
-}: Propss) {
-
-    const height = useMemo(() => verticalScale(fontSize * 1.5), [fontSize]);
-    const width = useMemo(() => scale((content.length * fontSize) * 0.8), [content, fontSize]);
+    dropShadow = DEFAULT_SHADOW,
+}: Props) {
+    const scaledSize = fontScale(fontSize)
+    const baseStyle = { fontFamily: 'BagelRegular', fontSize: scaledSize }
 
     return (
-        <Svg
-            height={height} width={width} viewBox={`0 0 ${width} ${height}`}
-        >
-            <Defs>
-                <Filter id={`shadow-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
-                    <FeDropShadow
-                        dx={dropsShadow.dx}
-                        dy={dropsShadow.dy}
-                        stdDeviation="2"
-                        floodColor="#000"
-                        floodOpacity="0.13"
-                    />
-                </Filter>
-            </Defs>
-
-            <SvgText
-                fontSize={fontScale(fontSize)}
-                fill={fillColor}
-                stroke="#000000"
-                strokeWidth="1"
-                strokeLinejoin="round"
-                fontFamily="BagelRegular"
-                x="50%"
-                y="50%"
-                textAnchor="middle"
-                alignmentBaseline="central"
-                filter={`url(#shadow-${uniqueId})`}
+        // padding:1 gives the absolute stroke layers room to bleed without clipping
+        <View style={styles.wrapper}>
+            {STROKE_OFFSETS.map(([dx, dy], i) => (
+                <Text
+                    key={i}
+                    style={[styles.stroke, baseStyle, { left: dx + 1, top: dy + 1 }]}
+                    numberOfLines={1}
+                >
+                    {content}
+                </Text>
+            ))}
+            <Text
+                style={[
+                    styles.fill,
+                    baseStyle,
+                    {
+                        color: fillColor,
+                        textShadowColor: 'rgba(0,0,0,0.13)',
+                        textShadowOffset: { width: dropShadow.dx, height: dropShadow.dy },
+                        textShadowRadius: 2,
+                    },
+                ]}
+                numberOfLines={1}
             >
                 {content}
-            </SvgText>
-        </Svg>
-    );
-});
+            </Text>
+        </View>
+    )
+})
+
+export default ShadowedText
+
+const styles = StyleSheet.create({
+    wrapper: {
+        padding: 1, // breathing room for stroke layers
+        alignSelf: 'center',
+    },
+    stroke: {
+        position: 'absolute',
+        color: '#000000',
+    },
+    fill: {
+        // drives the layout size — stroke layers hang off it
+    },
+})

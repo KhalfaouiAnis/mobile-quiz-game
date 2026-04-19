@@ -2,31 +2,29 @@ import { SectionList, NativeScrollEvent, NativeSyntheticEvent, View } from "reac
 import { useCallback, useMemo, useRef, useState } from "react";
 import { SCREEN } from "@/src/utils/dimensions";
 import { useFormContext, useWatch } from "react-hook-form";
-import { GameGadhaSubcategory } from "@/src/types/game.gadha.types";
+import { CreateGadhaGameSession, GameGadhaSubcategory } from "@/src/types/game.gadha.types";
 import GameSetup from "../GameSetup";
 import EmptyList from "../../shared/empty-list";
 import { buildSections, FOOTER_HEIGHT, getSectionListTotalHeight, ROW_HEIGHT, ScrollButton, SECTION_HEADER_HEIGHT, SectionHeader, styles, SubcategoryRow } from ".";
 
 const DetailView = ({ selectedCategory, allCategories }: any) => {
+    const { getValues, setValue } = useFormContext<CreateGadhaGameSession>()
     const [isAtBottom, setIsAtBottom] = useState(false);
-    const { getValues, setValue } = useFormContext()
     const listRef = useRef<SectionList>(null);
 
     const orderedCategories = useMemo(
         () => [selectedCategory, ...allCategories.filter((c: any) => c.id !== selectedCategory.id)],
         [selectedCategory, allCategories],
     );
-
-    const rawSelected = useWatch({ name: 'subcategoryIds', defaultValue: [] });
-
-    const selectedSet = useMemo(() => new Set<GameGadhaSubcategory>(rawSelected), [rawSelected]);
     const sections = useMemo(() => buildSections(orderedCategories), [orderedCategories]);
-
     const totalHeight = useMemo(() => getSectionListTotalHeight(sections), [sections]);
     const showScrollButtons = totalHeight > SCREEN.height - 100;
 
+    const rawSelected = useWatch({ name: 'subcategoryIds', defaultValue: [] });
+    const selectedSet = useMemo(() => new Set<number>(rawSelected.map((obj: GameGadhaSubcategory) => obj.id)), [rawSelected]);
+
     const handleSubPress = useCallback((sub: GameGadhaSubcategory) => {
-        const current = getValues('subcategoryIds') ?? [];
+        const current: GameGadhaSubcategory[] = getValues('subcategoryIds') ?? [];
         const alreadySelected = current.some((item: GameGadhaSubcategory) => item.id === sub.id)
 
         if (alreadySelected) {

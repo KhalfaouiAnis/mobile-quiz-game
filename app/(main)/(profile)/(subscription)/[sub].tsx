@@ -17,11 +17,13 @@ import { type Subscription_TYPES } from "@/src/types/index.types";
 import { IMAGES } from "@/src/constants/images";
 import { boxShadow } from "@/src/utils/cn";
 import { packageIcon } from ".";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Index() {
     const { sub } = useLocalSearchParams<{ sub: string }>();
     const [showModal, setShowModal] = useState(false);
     const { mutate, isPending } = usePurchasePackage()
+    const queryClient = useQueryClient();
     const { data: subscriptions, isLoading: loadingPurchases } = useSubscriptionsQuery()
     const { data: packageInfo, isLoading: loadingPackageInfo } = usePackageInfoQuery(Number(sub))
 
@@ -29,6 +31,7 @@ export default function Index() {
         mutate(Number(sub), {
             onSuccess() {
                 setShowModal(true)
+                queryClient.invalidateQueries({ queryKey: ["subscriptions"] })
             }
         })
     }
