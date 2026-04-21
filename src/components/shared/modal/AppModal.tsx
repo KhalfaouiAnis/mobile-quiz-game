@@ -19,9 +19,13 @@ const AppModal: React.FC<AppModalProps> = ({
             animationType="fade"
             onRequestClose={onClose}
         >
-            <TouchableWithoutFeedback className="flex-1" onPress={onClose}>
+            <TouchableWithoutFeedback onPress={onClose}>
                 <View className="flex-1 justify-center items-center bg-black/80">
-                    {content}
+                    <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+                        <View>
+                            {content}
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
             </TouchableWithoutFeedback>
         </Modal>

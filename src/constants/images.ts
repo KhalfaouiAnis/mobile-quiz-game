@@ -24,6 +24,7 @@ import RedMinus from "@/assets/images/redMinus.png";
 import BlueMinus from "@/assets/images/blueMinus.png";
 import BluePlus from "@/assets/images/bluePlus.png";
 import YellowPlus from "@/assets/images/yellowPlus.png";
+import EndSession from "@/assets/images/endSession.png";
 import Feature1 from "@/assets/images/feature-image1.png";
 import Feature2 from "@/assets/images/feature-image2.png";
 import Feature3 from "@/assets/images/feature-image3.png";
@@ -39,6 +40,7 @@ export const IMAGES = {
   Question,
   BasicPlan,
   Leader1,
+  EndSession,
   IncrementScore,
   DecrementScore,
   YellowPlus,

@@ -2,7 +2,7 @@ import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { Team } from "@/src/types/game.gadha.types";
 import { useGlobalSearchParams, useRouter } from "expo-router";
 import { boxShadow } from "@/src/utils/cn";
-import { FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useGadhaGameActions } from "@/src/stores/game.gadha.store";
 import { moderateScale, scale, verticalScale } from "@/src/utils/sizes";
 import { formatScore } from "@/src/utils";
@@ -124,8 +124,8 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
                 style={{
                     borderWidth: 3,
                     width: scale(103),
-                    height: verticalScale(46),
                     borderColor: "#00a6da",
+                    height: verticalScale(46),
                     boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow
                 }}
             >
@@ -137,9 +137,9 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
                 </Text>
                 {
                     isTeamA ? endingSession ? <ActivityIndicator size="small" /> : (
-                        <FontAwesome6 name="close" color="#F1190E" size={fontScale(20)} />
+                        <Image source={IMAGES.EndSession} style={{ width: scale(22), height: scale(22), }} contentFit="cover" />
                     ) : (
-                        <Ionicons name="log-out-outline" color="#F1190E" size={fontScale(20)} className="pt-1" />
+                        <Ionicons name="log-out-outline" color="#F1190E" size={fontScale(24)} className="pt-1" />
                     )
                 }
             </Pressable>

@@ -10,18 +10,19 @@ import { useRevealAnswer } from '@/src/hooks/queries/gameGadha/useRevealAnswer';
 import { toast } from 'sonner-native';
 import { isAxiosError } from 'axios';
 import { useShallow } from 'zustand/shallow';
+import { scale, verticalScale } from '@/src/utils/dimensions';
 
 export default function AnswerScreen() {
     const { qid, id } = useLocalSearchParams<{ id: string, qid: string }>();
-    const { team1BoostActive, team2BoostActive, answeredQuestionsIds } = useGadhaGameStore(
+    const { teams, team1BoostActive, team2BoostActive, answeredQuestionsIds } = useGadhaGameStore(
         useShallow(state => ({
+            teams: state.teams,
             team1BoostActive: state.team1BoostActive,
             team2BoostActive: state.team2BoostActive,
             answeredQuestionsIds: state.optimisticAnsweredIds,
         }))
     )
-    const { markAnswered, deactivateBoosts, addScore } = useGadhaGameActions();
-    const teams = useGadhaGameStore(useShallow(store => store.teams))
+    const { markAnswered, deactivateBoosts, addScore, switchTurn } = useGadhaGameActions();
 
     const answerMutation = useAnswerQuestion(Number(id));
     const queryClient = useQueryClient();
@@ -32,26 +33,29 @@ export default function AnswerScreen() {
     const questionData = queryClient.getQueryData<SessionBoard>(["gadha", "board", Number(id)])
         ?.questions.find(q => q?.id === Number(qid));
 
-    const handleSubmitAnswer = async ({ teamIndex, isCorrect, useBoost = false }: { teamIndex: number, isCorrect: boolean, useBoost: boolean }) => {
+    const handleSubmitAnswer = async ({ teamIndex, isCorrect, noOne, useBoost = false }: { teamIndex?: number, noOne?: boolean, isCorrect: boolean, useBoost: boolean }) => {
+        const teamId = (teamIndex === 0 || teamIndex === 1) ? teams[teamIndex].id! : undefined;
         answerMutation.mutate({
-            teamId: teams[teamIndex].id!,
             questionId: Number(qid),
             isCorrect,
-            useBoost
+            useBoost,
+            teamId,
+            noOne,
         },
             {
-                onSuccess() {
+                onSuccess(result) {
                     if (questionData) {
                         router.replace(`/(main)/(gadha)/board/${id}`);
 
                         unstable_batchedUpdates(() => {
-                            if (isCorrect) {
+                            if ((teamIndex === 0 || teamIndex === 1) && isCorrect) {
                                 addScore(teamIndex, questionData.points, useBoost);
                             }
                             if (useBoost) {
                                 deactivateBoosts()
                             }
                             markAnswered(Number(qid));
+                            switchTurn(result.nextTeamId);
                         })
                     }
                 },
@@ -65,29 +69,28 @@ export default function AnswerScreen() {
     }
 
     return (
-        <View className="flex-1 flex-row p-4 gap-4">
+        <View className="flex-1 flex-row  pb-0 gap-4">
             {
                 error ? (
                     <View className='flex-1 items-center justify-center'>
                         <Text className='text-error text-lg font-cairo-semibold text-center'>{error.message}</Text>
                     </View>
                 ) : (
-                    <ScrollView contentContainerClassName="items-center justify-between gap-4">
+                    <ScrollView contentContainerClassName="items-center justify-between gap-3 p-4">
                         <View className='gap-4'>
-                            {/* <Text className="text-lg text-center font-cairo-medium">الإجابة:</Text> */}
                             {
                                 isLoading ? (
                                     <ActivityIndicator size="large" color="#00A6DA" />
                                 ) : (
                                     <View className='gap-3'>
                                         <Text className="text-3xl text-center font-cairo-medium pb-2" numberOfLines={2} ellipsizeMode="tail">
-                                            ✅ {data?.answer?.text}
+                                            {data?.answer?.text} ✅
                                         </Text>
                                         {data?.answer?.fileUrl && (
                                             <Image
                                                 contentFit="cover"
                                                 source={{ uri: data?.answer?.fileUrl }}
-                                                style={{ width: (Dimensions.get("window").width / 2) - 20, height: (Dimensions.get("window").height / 2), borderRadius: 15 }}
+                                                style={{ width: scale(440), height: verticalScale(210), borderRadius: 15 }}
                                             />
                                         )}
                                     </View>
@@ -109,7 +112,7 @@ export default function AnswerScreen() {
                                     title="لا أحد"
                                     rounded={false}
                                     disabled={answerMutation.isPending || answeredQuestionsIds.has(Number(qid))}
-                                    onPress={() => handleSubmitAnswer({ teamIndex: 0, isCorrect: false, useBoost: team1BoostActive || team2BoostActive })}
+                                    onPress={() => handleSubmitAnswer({ noOne: true, isCorrect: false, useBoost: team1BoostActive || team2BoostActive })}
                                 />
                             </View>
                             <View className="w-1/3">
@@ -122,7 +125,7 @@ export default function AnswerScreen() {
                                 />
                             </View>
                         </View>
-                        <View className="w-1/3">
+                        <View className="w-1/3 pb-2">
                             <AppButton
                                 rounded={false}
                                 title="ارجع للسؤال"

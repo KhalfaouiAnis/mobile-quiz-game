@@ -18,16 +18,15 @@ interface Props {
 }
 
 export default function TeamMembersSelector({ control, name, step = 1, colors: { border, text } }: Props) {
-
     return (
         <Controller
             name={name}
             control={control}
             render={({ field: { onChange, value } }) => {
-                const currentScore = (value as number) || 0;
+                const currentScore = (value as number) || 1;
 
                 const handleDecreaseScore = () => {
-                    if ((currentScore - step) < 0) return;
+                    if ((currentScore - step) < 1) return;
                     // audioPlayer.seekTo(0);
                     // audioPlayer.play()
                     onChange(currentScore - step)

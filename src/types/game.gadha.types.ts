@@ -1,9 +1,7 @@
 import { z } from "zod";
 
 export const CreateGadhaGameSessionSchema = z.object({
-  subcategoryIds: z
-    .array(z.any())
-    .length(6, "يرجى تحديد 6 فئات فرعية بالضبط"),
+  subcategoryIds: z.array(z.any()).length(6, "يرجى تحديد 6 فئات فرعية بالضبط"),
   teams: z
     .array(
       z.object({
@@ -11,7 +9,7 @@ export const CreateGadhaGameSessionSchema = z.object({
           .string("يجب أن يتكون اسم الفريق من حرفين على الأقل")
           .min(2)
           .max(20),
-        score: z.number().default(0).nullish(),
+        score: z.number().min(1).max(10).default(1).nullish(),
       }),
     )
     .length(2, "تتطلب اللعبة فريقين بالضبط"),
@@ -43,7 +41,8 @@ export interface GameGadhaCategory {
 
 // ─── Answer
 export interface AnswerQuestionPayload {
-  teamId: number;
+  teamId?: number;
+  noOne?: boolean;
   questionId: number;
   isCorrect: boolean;
   useBoost?: boolean;
@@ -53,6 +52,7 @@ export interface AnswerQuestionResponse {
   questionId: number;
   isCorrect: boolean;
   pointsAwarded: number;
+  nextTeamId: number;
   boosted: boolean;
 }
 
@@ -113,6 +113,7 @@ export interface Team {
   session_id: number;
   name: string;
   is_boost_used: boolean;
+  is_current_turn?: boolean;
   score: number;
   created_at: Date;
   updated_at: Date;

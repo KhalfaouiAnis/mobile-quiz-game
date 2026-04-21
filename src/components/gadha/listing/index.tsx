@@ -69,7 +69,6 @@ export const ItemCard = memo(({ item, onPress, isSelected }: ItemCardProps) => {
                     contentFit="cover"
                 />
             ) : (
-
                 <View style={[styles.avatarRing, { borderColor: isSelected ? "white" : BLUE }]}>
                     <Text
                         style={{ fontSize: fontScale(18), color: isSelected ? "white" : "#00A6DA" }}

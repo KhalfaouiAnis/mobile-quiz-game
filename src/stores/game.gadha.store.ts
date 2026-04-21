@@ -5,6 +5,7 @@ import { useShallow } from "zustand/shallow";
 interface GameState {
   teams: Record<number, Partial<Team>>;
   questionTimeLimit: number;
+  currentTeamId: number | null;
   optimisticAnsweredIds: Set<number>;
   team1BoostActive: boolean;
   team2BoostActive: boolean;
@@ -19,26 +20,35 @@ interface GameState {
     markAnswered: (questionId: number) => void;
     activateBoost: (index: 0 | 1) => void;
     deactivateBoosts: () => void;
+    switchTurn: (nextTeamId: number) => void;
   };
 }
 
 export const useGadhaGameStore = create<GameState>()((set) => ({
   teams: {},
+  currentTeamId: null,
   questionTimeLimit: 25,
   team1BoostActive: false,
   team2BoostActive: false,
   optimisticAnsweredIds: new Set(),
   actions: {
     initGame: (teamsData, timeLimit) => {
-      const teams = teamsData.reduce(
-        (acc, team, index) => {
-          acc[index] = team;
-          return acc;
-        },
-        {} as Record<number, Partial<Team>>,
-      );
+      const teams = {
+        0: teamsData[0],
+        1: teamsData[1],
+      };
 
-      set({ teams, questionTimeLimit: timeLimit });
+      const startingTeam = teamsData.find((t) => t.is_current_turn);
+
+      set({
+        teams,
+        questionTimeLimit: timeLimit,
+        optimisticAnsweredIds: new Set(),
+        currentTeamId: startingTeam?.id ?? teamsData[0].id,
+      });
+    },
+    switchTurn: (nextTeamId) => {
+      set({ currentTeamId: nextTeamId });
     },
     addScore: (teamIndex, basePoints, applyBoost) => {
       set((state) => {
@@ -72,6 +82,6 @@ export const useGadhaGameStore = create<GameState>()((set) => ({
 }));
 
 export const useGadhaTeam = (teamIndex: number) =>
-  useGadhaGameStore((s) => s.teams[teamIndex]);
+  useGadhaGameStore(useShallow((s) => s.teams[teamIndex].is_current_turn));
 export const useGadhaGameActions = () =>
   useGadhaGameStore(useShallow((s) => s.actions));
