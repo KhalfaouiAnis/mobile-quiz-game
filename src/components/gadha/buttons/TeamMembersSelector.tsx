@@ -23,37 +23,37 @@ export default function TeamMembersSelector({ control, name, step = 1, colors: {
             name={name}
             control={control}
             render={({ field: { onChange, value } }) => {
-                const currentScore = (value as number) || 1;
+                const currentValue = (value as number) || 1;
 
                 const handleDecreaseScore = () => {
-                    if ((currentScore - step) < 1) return;
+                    if ((currentValue - step) < 1) return;
                     // audioPlayer.seekTo(0);
                     // audioPlayer.play()
-                    onChange(currentScore - step)
+                    onChange(currentValue - step)
                 }
 
                 const handleIncreaseScore = () => {
-                    if (currentScore >= 10) return
+                    if (currentValue >= 10) return
                     // audioPlayer.seekTo(0);
                     // audioPlayer.play();
-                    onChange(currentScore + step)
+                    onChange(currentValue + step)
                 }
 
                 return (
                     <View
                         style={{
                             boxShadow: boxShadow().button.boxShadow,
+                            height: verticalScale(60),
                             paddingHorizontal: 30,
                             borderColor: border,
                             width: scale(295),
-                            height: verticalScale(60),
                         }}
                         className="bg-white items-center justify-between border-2 rounded-xl flex-1 flex-row"
                     >
                         <Pressable hitSlop={10} onPress={handleIncreaseScore} className="pt-2">
                             <Image source={IMAGES.IncrementScore} style={{ width: scale(35), height: verticalScale(35) }} contentFit="contain" />
                         </Pressable>
-                        <ShadowedText content={currentScore + ""} fillColor={text} />
+                        <ShadowedText content={currentValue} fillColor={text} />
                         <Pressable hitSlop={10} onPress={handleDecreaseScore} className="mt-1">
                             <Image source={IMAGES.DecrementScore} style={{ width: scale(35), height: verticalScale(35) }} contentFit="contain" />
                         </Pressable>

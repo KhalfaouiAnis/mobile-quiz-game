@@ -1,6 +1,8 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
-import { View, Text, Pressable, ActivityIndicator, Platform } from 'react-native';
+import { View, Pressable, ActivityIndicator, Platform } from 'react-native';
 import { useGoogleAuth, useFacebookAuth, useAppleAuth } from '@/src/hooks/mutations/useOAuth';
+import GoogleIcon from '@/assets/svg/google';
+import FacebookIcon from '@/assets/svg/facebook';
 
 interface OAuthButtonsProps {
     onError: (msg: string) => void;
@@ -13,31 +15,24 @@ export function OAuthButtons({ onError }: OAuthButtonsProps) {
 
     const handleError = (err: unknown) => {
         const msg = (err as Error)?.message ?? 'Authentication failed';
-        if (msg === 'CANCELLED') return; // user dismissed — silent
+        if (msg === 'CANCELLED') return;
         onError(msg);
     };
 
     return (
         <View style={{ gap: 10 }}>
-            <Pressable
-                onPress={() => google.mutate(undefined, { onError: handleError })}
-                disabled={google.isPending}
-                style={styles.btn}
-            >
-                {google.isPending
-                    ? <ActivityIndicator />
-                    : <Text>Continue with Google</Text>}
-            </Pressable>
-
-            <Pressable
-                onPress={() => facebook.mutate(undefined, { onError: handleError })}
-                disabled={facebook.isPending}
-                style={styles.btn}
-            >
-                {facebook.isPending
-                    ? <ActivityIndicator />
-                    : <Text>Continue with Facebook</Text>}
-            </Pressable>
+            <View className="flex-row gap-6 items-center justify-center">
+                <Pressable onPress={() => facebook.mutate(undefined, { onError: handleError })} className='items-center justify-center flex'>
+                    {facebook.isPending
+                        ? <ActivityIndicator />
+                        : <FacebookIcon />}
+                </Pressable>
+                <Pressable onPress={() => google.mutate(undefined, { onError: handleError })} className='items-center justify-center flex'>
+                    {google.isPending
+                        ? <ActivityIndicator />
+                        : <GoogleIcon />}
+                </Pressable>
+            </View>
 
             {Platform.OS === 'ios' && (
                 <AppleAuthentication.AppleAuthenticationButton
@@ -51,14 +46,3 @@ export function OAuthButtons({ onError }: OAuthButtonsProps) {
         </View>
     );
 }
-
-const styles = {
-    btn: {
-        height: 48,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 8,
-        alignItems: 'center' as const,
-        justifyContent: 'center' as const,
-    },
-};

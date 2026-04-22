@@ -6,6 +6,7 @@
     "development": {
       "extends": "production",
       "distribution": "internal",
+      "developmentClient": true,
       "android": {
         "buildType": "apk",
         "withoutCredentials": true,
@@ -26,11 +27,14 @@
       "extends": "production",
       "distribution": "internal",
       "ios": {
-        "simulator": true
+        "simulator": false
       },
       "android": {
         "buildType": "apk",
         "withoutCredentials": true
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://backend-quiz-games-ejxze.ondigitalocean.app"
       }
     },
     "preview_tv": {
@@ -39,9 +43,13 @@
         "EXPO_TV": "1"
       }
     },
-    "production": {},
+    "production": {
+      "ios": {
+        "simulator": false
+      }
+    },
     "production_tv": {
-      "extends": "production", 
+      "extends": "production",
       "env": {
         "EXPO_TV": "1"
       }

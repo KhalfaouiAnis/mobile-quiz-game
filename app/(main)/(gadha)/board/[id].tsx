@@ -4,7 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { View, ActivityIndicator, } from 'react-native';
 import Container from '@/src/components/shared/Container';
 import GadhaGameBoard from '@/src/components/gadha/GameBoard';
-import GameActions from '@/src/components/gadha/teams/game-actions';
+import GameActions from '@/src/components/gadha/teams/GameActions';
 import { useGadhaGameBoard } from '@/src/hooks/queries/gameGadha/useGadhaBoard';
 import { useGadhaGameActions, useGadhaGameStore } from '@/src/stores/game.gadha.store';
 

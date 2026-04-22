@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Stack, useGlobalSearchParams, usePathname } from 'expo-router';
 import { Text, View } from 'react-native';
-import GameActions from '@/src/components/gadha/teams/game-actions';
+import GameActions from '@/src/components/gadha/teams/GameActions';
 import Container from '@/src/components/shared/Container';
 import { useGadhaGameActions, useGadhaGameStore } from '@/src/stores/game.gadha.store';
 import { type SessionBoard } from '@/src/types/game.gadha.types';

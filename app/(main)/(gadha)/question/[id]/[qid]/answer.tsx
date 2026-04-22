@@ -1,7 +1,6 @@
-import { Image } from 'expo-image';
 import { useQueryClient } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { View, Text, ActivityIndicator, ScrollView, Dimensions, unstable_batchedUpdates } from 'react-native';
+import { View, Text, ActivityIndicator, ScrollView, unstable_batchedUpdates } from 'react-native';
 import AppButton from '@/src/components/shared/button/AppButton';
 import { useGadhaGameActions, useGadhaGameStore } from '@/src/stores/game.gadha.store';
 import { type SessionBoard } from '@/src/types/game.gadha.types';
@@ -11,6 +10,7 @@ import { toast } from 'sonner-native';
 import { isAxiosError } from 'axios';
 import { useShallow } from 'zustand/shallow';
 import { scale, verticalScale } from '@/src/utils/dimensions';
+import FlipImage from '@/src/components/shared/FlipImage';
 
 export default function AnswerScreen() {
     const { qid, id } = useLocalSearchParams<{ id: string, qid: string }>();
@@ -44,6 +44,10 @@ export default function AnswerScreen() {
         },
             {
                 onSuccess(result) {
+                    if (result.isSessionComplete) {
+                        router.replace(`/(gadha)/results/${id}`);
+                        return;
+                    }
                     if (questionData) {
                         router.replace(`/(main)/(gadha)/board/${id}`);
 
@@ -87,7 +91,7 @@ export default function AnswerScreen() {
                                             {data?.answer?.text} ✅
                                         </Text>
                                         {data?.answer?.fileUrl && (
-                                            <Image
+                                            <FlipImage
                                                 contentFit="cover"
                                                 source={{ uri: data?.answer?.fileUrl }}
                                                 style={{ width: scale(440), height: verticalScale(210), borderRadius: 15 }}

@@ -17,6 +17,7 @@ import { IMAGES } from "@/src/constants/images";
 import ShadowedText from "@/src/components/shared/text/ShadowedText";
 import { fontScale } from "@/src/utils/dimensions";
 import UserActionButtons from "./UserActionButtons";
+import { isAxiosError } from "axios";
 
 interface Props {
     team?: Partial<Team>
@@ -34,18 +35,21 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
     const router = useRouter()
 
     const handleQuit = async () => {
-        if (isTeamA) {
-            endSession({ id: Number(id) }, {
-                onSuccess() {
-                    return router.replace("/")
-                },
-                onError(error) {
-                    toast.error(error.message)
-                },
-            })
-        }
-
-        router.replace("/")
+        router.replace(`/(gadha)/results/${id}`);
+        // if (isTeamA) {
+        //     endSession({ id: Number(id) }, {
+        //         onSuccess() {
+        //             router.replace(`/(gadha)/results/${id}`);
+        //         },
+        //         onError(error) {
+        //             if(isAxiosError(error)){
+        //                 toast.error(error.response?.data.message)
+        //             }
+        //         },
+        //     })
+        // } else {
+        //     router.replace("/")
+        // }
     }
 
     const handleIncreaseScore = () => {

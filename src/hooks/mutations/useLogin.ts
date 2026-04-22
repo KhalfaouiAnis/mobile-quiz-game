@@ -7,7 +7,7 @@ export function useLogin() {
 
   return useMutation({
     mutationFn: async (data: LoginFormData) => {
-      await login(data);
+      return login(data);
     },
   });
 }

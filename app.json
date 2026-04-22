@@ -44,7 +44,6 @@
       ],
       "expo-router",
       "expo-font",
-      "expo-build-properties",
       "expo-web-browser",
       [
         "@react-native-google-signin/google-signin",
@@ -59,7 +58,7 @@
         {
           "appID": "1277409807481340",
           "clientToken": "your-client-token",
-          "displayName": "Xcars",
+          "displayName": "Gadha",
           "scheme": "fb{your-app-id}",
           "advertiserIDCollectionEnabled": false,
           "autoLogAppEventsEnabled": false,
@@ -69,7 +68,18 @@
       "expo-apple-authentication",
       "expo-video",
       "expo-audio",
-      "react-native-compressor"
+      "react-native-compressor",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "16.0"
+          },
+          "android": {
+            "minSdkVersion": 24
+          }
+        }
+      ]
     ],
     "android": {
       "systemBars": {
@@ -87,8 +97,7 @@
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
+        "android.permission.INTERNET"
       ],
       "package": "com.aniskhalfaoui.kahoot"
     },
@@ -96,6 +105,16 @@
       "usesAppleSignIn": true,
       "splash": {
         "image": "./assets/images/splash.png"
+      },
+      "infoPlist": {
+        "SKAdNetworkItems": [
+          {
+            "SKAdNetworkIdentifier": "v9wttpbfk9.skadnetwork"
+          },
+          {
+            "SKAdNetworkIdentifier": "n38lu8286q.skadnetwork"
+          }
+        ]
       }
     },
     "web": {
@@ -109,7 +128,15 @@
     },
     "extra": {
       "router": {},
-      "supportsRTL": true
-    }
+      "supportsRTL": true,
+      "expo-navigation-bar": {
+        "visibility": "hidden",
+        "behavior": "overlay-swipe"
+      },
+      "eas": {
+        "projectId": "b368e8a3-4abf-44bc-9f9f-a97575d58d3e"
+      }
+    },
+    "owner": "aniskhalfaoui"
   }
 }

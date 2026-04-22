@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { ScrollView, Text, View } from "react-native";
+import { Alert, ScrollView, Text, View } from "react-native";
 import { toast } from "sonner-native";
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
@@ -9,15 +9,15 @@ import AppButton from "@/src/components/shared/button/AppButton";
 import AuthHeader from "@/src/components/layout/AuthHeader";
 import Container from "@/src/components/shared/Container";
 import ViewWrapper from "@/src/components/shared/ViewWrapper";
-
-import AppleButton from "@/src/components/shared/button/AppleButton";
-import FacebookButton from "@/src/components/shared/button/FacebookButton";
-import GoogleButton from "@/src/components/shared/button/GoogleButton";
 import AppTextInput from "@/src/components/shared/text/AppTextInput";
 import { OrSeparator } from "@/src/components/shared/OrSeparator";
 
 import { loginSchema, type LoginFormData } from '@/src/schemas/auth.schemas';
 import { useLogin } from '@/src/hooks/mutations/useLogin';
+import { OAuthButtons } from "@/src/components/auth/OAuthButtons";
+import { configureRevenueCat, fetchCustomerInfo } from "@/src/lib/revenuecat/service";
+import { queryClient } from "@/src/lib/query-client";
+import { CUSTOMER_INFO_QUERY_KEY } from "@/src/hooks/subscription/useCustomerInfo";
 
 export default function SignInScreen() {
     const login = useLogin();
@@ -34,6 +34,13 @@ export default function SignInScreen() {
                 const msg = err?.response?.data?.message ?? t("errors.login_failed");
                 toast.error(Array.isArray(msg) ? msg.join('\n') : msg)
             },
+            async onSuccess(data) {
+                await configureRevenueCat(data.user.id);
+                queryClient.prefetchQuery({
+                    queryKey: CUSTOMER_INFO_QUERY_KEY,
+                    queryFn: fetchCustomerInfo,
+                });
+            }
         });
     };
 
@@ -71,16 +78,8 @@ export default function SignInScreen() {
                             onPress={handleSubmit(onSubmit)}
                         />
                     </View>
-
                     <View className="w-1/3 my-1"><OrSeparator label={t("welcome.or")} /></View>
-
-                    {/* <OAuthButtons onError={(msg) => Alert.alert('Error', msg)} /> */}
-
-                    <View className="flex-row gap-6 items-center justify-center">
-                        <FacebookButton />
-                        <AppleButton />
-                        <GoogleButton />
-                    </View>
+                    <OAuthButtons onError={(msg) => Alert.alert('Error', msg)} />
                 </ViewWrapper>
             </ScrollView>
         </Container>

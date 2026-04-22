@@ -3,14 +3,10 @@ import { IMAGES } from "./images";
 import { SubscriptionPlan } from "../types/index.types";
 
 export const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL!;
-export const APP_STORAGE_KEY = "KAHOOT_APP_STORAGE_KEY";
-export const AUTH_STORAGE_KEY = "KAHOOT_AUTH_STORAGE";
-export const ACC_TOKEN_STORAGE_KEY = "KAHOOT_ACC_TOKEN";
-export const REFRESH_TOKEN_STORAGE_KEY = "KAHOOT_REFRESH_TOKEN";
-export const CONFIGURATION_STORAGE_KEY = "KAHOOT_PREFERENCES_STORAGE";
-export const GAME1_STORAGE_KEY = "KAHOOT_GAME1_STORAGE";
+export const APP_STORAGE_KEY = "GADHA_APP_STORAGE_KEY";
+export const SUBSCRIPTIONS_STORAGE_KEY = "GADHA_SUBSCRIPTION_STORE";
+export const CONFIGURATION_STORAGE_KEY = "GADHA_PREFERENCES_STORAGE";
 export const HAS_LAUNCHED = "has_launched";
-export const RESET_PASSWORD_TOKEN = "RESET_PASSWORD_TOKEN";
 
 export const AUTH_USER_QUERY_KEY = ["auth", "user"] as const;
 

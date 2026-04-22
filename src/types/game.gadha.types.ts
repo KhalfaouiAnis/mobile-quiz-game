@@ -49,6 +49,7 @@ export interface AnswerQuestionPayload {
 }
 
 export interface AnswerQuestionResponse {
+  isSessionComplete?: boolean;
   questionId: number;
   isCorrect: boolean;
   pointsAwarded: number;

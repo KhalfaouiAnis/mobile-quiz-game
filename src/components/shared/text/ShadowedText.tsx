@@ -71,7 +71,7 @@ const STROKE_OFFSETS = [
 const DEFAULT_SHADOW = { dx: 0, dy: 4 }
 
 interface Props {
-    content: string
+    content: string | number
     fontSize?: number
     fillColor?: string
     dropShadow?: { dx: number; dy: number }
@@ -87,26 +87,24 @@ const ShadowedText = memo(function ShadowedText({
     const baseStyle = { fontFamily: 'BagelRegular', fontSize: scaledSize }
 
     return (
-        // padding:1 gives the absolute stroke layers room to bleed without clipping
         <View style={styles.wrapper}>
             {STROKE_OFFSETS.map(([dx, dy], i) => (
                 <Text
                     key={i}
-                    style={[styles.stroke, baseStyle, { left: dx + 1, top: dy + 1 }]}
                     numberOfLines={1}
+                    style={[styles.stroke, baseStyle, { left: dx + 1, top: dy + 1, width: content === 4 ? "100%" : undefined }]}
                 >
                     {content}
                 </Text>
             ))}
             <Text
                 style={[
-                    styles.fill,
                     baseStyle,
                     {
                         color: fillColor,
+                        textShadowRadius: 2,
                         textShadowColor: 'rgba(0,0,0,0.13)',
                         textShadowOffset: { width: dropShadow.dx, height: dropShadow.dy },
-                        textShadowRadius: 2,
                     },
                 ]}
                 numberOfLines={1}
@@ -121,14 +119,12 @@ export default ShadowedText
 
 const styles = StyleSheet.create({
     wrapper: {
-        padding: 1, // breathing room for stroke layers
+        padding: 1,
         alignSelf: 'center',
     },
     stroke: {
         position: 'absolute',
-        color: '#000000',
-    },
-    fill: {
-        // drives the layout size — stroke layers hang off it
+        left: 0,
+        top: 0,
     },
 })

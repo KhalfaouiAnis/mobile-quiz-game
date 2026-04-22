@@ -8,7 +8,8 @@ import GameTimer from "@/src/components/gadha/GameTimer";
 import { type SessionBoard } from "@/src/types/game.gadha.types";
 import { IMAGES } from "@/src/constants/images";
 import { useGadhaGameStore } from "@/src/stores/game.gadha.store";
-import { fontScale, scale, SCREEN, verticalScale } from "@/src/utils/dimensions";
+import { scale, verticalScale } from "@/src/utils/dimensions";
+import FlipImage from "@/src/components/shared/FlipImage";
 
 export default function QuestionScreen() {
     const { qid, id } = useLocalSearchParams<{ qid: string, id: string }>();
@@ -31,11 +32,16 @@ export default function QuestionScreen() {
                 <Text className="text-xl font-cairo-medium" numberOfLines={2} ellipsizeMode="tail">
                     {questionData?.content}
                 </Text>
-                <Image
+                <FlipImage
                     contentFit="cover"
                     style={{ width: scale(480), height: verticalScale(230), borderRadius: 15 }}
                     source={questionData?.file_url ? { uri: questionData?.file_url } : IMAGES.Question}
                 />
+                {/* <Image
+                    contentFit="cover"
+                    style={{ width: scale(480), height: verticalScale(230), borderRadius: 15 }}
+                    source={questionData?.file_url ? { uri: questionData?.file_url } : IMAGES.Question}
+                /> */}
                 <View className="pb-2" style={{ width: scale(150) }}>
                     <AppButton
                         title="الإجابة"

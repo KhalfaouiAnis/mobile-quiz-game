@@ -12,6 +12,7 @@ import { useAppStore } from '@/src/stores/app.store';
 
 import { isTV } from '@/src/utils/platform';
 import { useBootstrapAuth } from '@/src/hooks/useBootstrapAuth';
+import { configureOAuth } from '@/src/lib/oauth';
 
 SplashScreen.preventAutoHideAsync();
 NavigationBar.setVisibilityAsync("hidden");
@@ -47,6 +48,8 @@ export default function RootLayout() {
   }, [isReady, fontsLoaded]);
 
   if (!isReady || !fontsLoaded) return null;
+
+  configureOAuth()
 
   return (
     <Providers>

@@ -3,46 +3,47 @@ import ActivePlanBadge from "./ActivePlanBadge";
 import { Package } from "@/src/types/index.types";
 import { IMAGES } from "@/src/constants/images";
 import { boxShadow } from "@/src/utils/cn";
+import { scale, verticalScale } from "@/src/utils/dimensions";
 
-type Props = Partial<Package> & {
+export type SubscriptionCardProps = Partial<Package> & {
     iconUrl: any;
     isActive: boolean;
     selected: boolean;
     onPress: () => void
 }
 
-export default function SubscriptionCard({ iconUrl, isActive, selected, name, description, price, onPress }: Props) {
+export default function SubscriptionCard({ iconUrl, isActive, selected, name, description, price, onPress }: SubscriptionCardProps) {
     return (
         <Pressable
             onPress={onPress}
             style={[boxShadow(4, 4, 4, 0).button, {
                 borderWidth: selected ? 1 : undefined,
                 borderColor: selected ? "#F1190E" : undefined,
-                width: 340
+                width: scale(270), height: verticalScale(80)
             }]}
-            className="relative flex-row items-center bg-white px-10 py-6 rounded-2xl"
+            className="relative flex-row items-center bg-white px-2 py-6 rounded-2xl"
         >
             {
                 isActive && (
                     <Image
                         source={IMAGES.ActivePlanBadge}
-                        style={{ position: "absolute", start: -17, top: -14, width: 100, height: 100 }} />
+                        style={{ position: "absolute", start: -10, top: -8, width: scale(70), height: scale(70) }} />
                 )
             }
             <View>
                 <Image
                     source={iconUrl}
-                    style={{ width: 48, height: 48, objectFit: "contain" }} />
+                    style={{ width: scale(50), height: scale(50), objectFit: "contain" }} />
             </View>
-            <View className="flex-1 ms-6 me-10">
+            <View className="flex-1 mx-2">
                 <View className="flex-row items-center">
                     <Text className="font-cairo-bold">{name}</Text>
                     {isActive && <ActivePlanBadge />}
                 </View>
-                <Text className="flex-1 font-bagel-regular text-gray-600" numberOfLines={1} ellipsizeMode="tail">{description}</Text>
+                <Text className=" font-bagel-regular text-gray-600" numberOfLines={1} ellipsizeMode="tail">{description}</Text>
             </View>
             <View className="ms-auto">
-                <Text className="font-bagel-regular text-lg text-[#1977F2]">{price} $</Text>
+                <Text className="font-bagel-regular  text-[#1977F2]">{price} $</Text>
                 <Text className="font-bagel-regular text-xs text-gray-600">في الشهر</Text>
             </View>
         </Pressable>

@@ -1,7 +1,6 @@
 import { View, Text, Pressable, ScrollView, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useGadhaResults } from '@/src/hooks/queries/gameGadha/useGadhaResults';
-import { useGadhaGameStore } from '@/src/stores/game.gadha.store';
 import type { ResultTeam, Difficulty } from '@/src/types/game.gadha.types';
 
 const DIFF_COLORS: Record<Difficulty, string> = {
