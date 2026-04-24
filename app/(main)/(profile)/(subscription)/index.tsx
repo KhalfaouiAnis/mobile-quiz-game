@@ -1,4 +1,4 @@
-import { ActivityIndicator, ScrollView } from "react-native";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 
 import SubscriptionWrapper from "@/src/components/layout/profile/SubscriptionsWrapper";
 import AuthHeader from "@/src/components/layout/AuthHeader";
@@ -6,6 +6,7 @@ import Container from "@/src/components/shared/Container";
 
 import { usePackagesQuery } from "@/src/hooks/queries/packages/usePackages";
 import { useSubscriptionsQuery } from "@/src/hooks/queries/packages/useSubscriptions";
+import ViewWrapper from "@/src/components/shared/ViewWrapper";
 
 export default function Index() {
     const { data: subscriptions, isLoading: loadingSubscriptions } = useSubscriptionsQuery()
@@ -17,11 +18,15 @@ export default function Index() {
                 (loadingSubscriptions || loadingPackages) ? <ActivityIndicator size="large" /> : (
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        contentContainerClassName="items-center gap-10 mx-2 p-3 rounded-3xl border-2 border-secondary-500 bg-white pb-12 mt-4"
+                        contentContainerClassName="justify-center px-2 py-4 "
                     >
-                        <SubscriptionWrapper title="The Challenge التحدي" packages={packages} subscriptions={subscriptions} />
-                        <SubscriptionWrapper title="The Liar" packages={packages} subscriptions={subscriptions} />
-                        <SubscriptionWrapper title="قدها" packages={packages} subscriptions={subscriptions} />
+                        <ViewWrapper>
+                            <View className="gap-8">
+                                <SubscriptionWrapper title="The Challenge التحدي" packages={packages} subscriptions={subscriptions} />
+                                <SubscriptionWrapper title="The Liar" packages={packages} subscriptions={subscriptions} />
+                                <SubscriptionWrapper title="قدها" packages={packages} subscriptions={subscriptions} />
+                            </View>
+                        </ViewWrapper>
                     </ScrollView>
                 )
             }

@@ -16,8 +16,8 @@ import { type Subscription_TYPES } from "@/src/types/index.types";
 
 import { IMAGES } from "@/src/constants/images";
 import { boxShadow } from "@/src/utils/cn";
-import { packageIcon } from ".";
 import { useQueryClient } from "@tanstack/react-query";
+import { packageIcon } from "@/src/components/layout/profile/SubscriptionsWrapper";
 
 export default function Index() {
     const { sub } = useLocalSearchParams<{ sub: string }>();
@@ -40,7 +40,7 @@ export default function Index() {
         <Container backgroundColor="#00A6DA" header={<AuthHeader showLogo={false} label="إدارة الاشتراك" />}>
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                contentContainerClassName="items-center gap-4 my-2 mx-24 p-3 rounded-3xl border-[10px] border-secondary-500 bg-white"
+                contentContainerClassName="items-center gap-4 my-2 mx-24 p-3 rounded-3xl border-[4px] border-secondary-500 bg-white"
             >
                 <View
                     style={[boxShadow(4, 4, 4, 0).button, { width: 340 }]}
@@ -72,9 +72,6 @@ export default function Index() {
                             <Text className="font-bagel-regular text-lg text-[#1977F2]">{packageInfo?.price} $</Text>
                             <Text className="font-bagel-regular text-xs text-gray-600">في الشهر</Text>
                         </View>
-                    </View>
-                    <View className="border-t border-gray-300 pt-6 gap-2">
-                        {/* {currentPlan?.features?.map(text => <SubscriptionFeature key={text} text={text} />)} */}
                     </View>
                 </View>
                 <View className="w-1/4">

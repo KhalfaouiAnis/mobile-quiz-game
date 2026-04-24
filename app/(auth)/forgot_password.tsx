@@ -14,6 +14,7 @@ import AppButton from '@/src/components/shared/button/AppButton';
 import OTPInput from '@/src/components/auth/OtpInput';
 import { toast } from 'sonner-native';
 import { useTranslation } from 'react-i18next';
+import { scale } from '@/src/utils/dimensions';
 
 type Step = 'email' | 'otp' | 'reset' | 'done';
 
@@ -96,10 +97,13 @@ export default function ForgotPasswordScreen() {
                 <ViewWrapper>
                     <Text className="text-center text-xl font-cairo-bold text-primary-500">{stepLabels[stepIndex] || ""}</Text>
                     {stepIndex === 0 && (<>
-                        <Text numberOfLines={2} className="text-center text-lg font-cairo-bold my-4">
+                        <Text numberOfLines={2} className="text-center text-sm font-cairo-bold my-4">
                             {t("welcome.please_enter_email")}
                         </Text>
-                        <View className="w-1/2 mt-6">
+                        <View
+                            className="mt-6"
+                            style={{ width: scale(320) }}
+                        >
                             <AppTextInput
                                 required
                                 name="email"
@@ -110,8 +114,9 @@ export default function ForgotPasswordScreen() {
                                 placeholder={t("welcome.email")}
                             />
                         </View>
-                        <View className="w-1/4 mt-10">
+                        <View className="mt-10">
                             <AppButton
+                                width={scale(160)}
                                 title={buttonLabels[0]}
                                 loading={forgotMutation.isPending}
                                 disabled={forgotMutation.isPending || !!emailForm.formState.errors.email}
@@ -125,8 +130,9 @@ export default function ForgotPasswordScreen() {
                             {t("welcome.enter_code", { email })}
                         </Text>
                         <OTPInput numberOfElements={6} onComplete={(code) => otpForm.setValue("otp", code)} />
-                        <View className="w-1/4 mt-10">
+                        <View className="mt-10">
                             <AppButton
+                                width={scale(160)}
                                 title={buttonLabels[1]}
                                 loading={verifyMutation.isPending}
                                 disabled={verifyMutation.isPending}
@@ -154,8 +160,9 @@ export default function ForgotPasswordScreen() {
                                 error={resetForm.formState.errors.confirmPassword?.message}
                             />
                         </View>
-                        <View className="w-1/4 mt-10">
+                        <View className="mt-10">
                             <AppButton
+                                width={scale(160)}
                                 title={buttonLabels[2]}
                                 loading={resetMutation.isPending}
                                 disabled={resetMutation.isPending}

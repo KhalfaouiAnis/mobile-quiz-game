@@ -3,6 +3,7 @@ import { Control, FieldPath, FieldValues, useController } from "react-hook-form"
 import { hideSystemBars } from "@/src/lib/navigation-bar";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
+import { scale, verticalScale } from "@/src/utils/dimensions";
 
 type Props<TForm extends FieldValues> = TextInputProps & {
     name: FieldPath<TForm>;
@@ -35,7 +36,7 @@ export default function AppTextInput<TForm extends FieldValues>({ control, name,
                 </View>
             )}
             <View style={{
-                height: 47,
+                height: verticalScale(54),
                 width: '100%',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -64,7 +65,7 @@ export default function AppTextInput<TForm extends FieldValues>({ control, name,
             {error && <Text
                 numberOfLines={2}
                 ellipsizeMode="tail"
-                style={{ maxWidth: 300 }}
+                style={{ maxWidth: scale(400) }}
                 className="absolute right-0 -bottom-6 text-error text-sm ms-2 font-bagel-regular">
                 {error.message}
             </Text>}

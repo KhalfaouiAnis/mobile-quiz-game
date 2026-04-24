@@ -18,6 +18,7 @@ import { OAuthButtons } from "@/src/components/auth/OAuthButtons";
 import { configureRevenueCat, fetchCustomerInfo } from "@/src/lib/revenuecat/service";
 import { queryClient } from "@/src/lib/query-client";
 import { CUSTOMER_INFO_QUERY_KEY } from "@/src/hooks/subscription/useCustomerInfo";
+import { scale } from "@/src/utils/dimensions";
 
 export default function SignInScreen() {
     const login = useLogin();
@@ -50,7 +51,7 @@ export default function SignInScreen() {
                 contentContainerClassName="justify-center px-8 py-4 gap-y-6" showsVerticalScrollIndicator={false}>
                 <ViewWrapper>
                     <Text className="text-center text-xl font-cairo-bold mb-4 text-primary-500">{t("welcome.signin")}</Text>
-                    <View className="w-full">
+                    <View className="w-4/5">
                         <View className="flex-row gap-8">
                             <AppTextInput
                                 required
@@ -71,10 +72,11 @@ export default function SignInScreen() {
                             <Link className="font-cairo" href="/forgot_password">{t("welcome.forgot_pass")}</Link>
                         </View>
                     </View>
-                    <View className="w-1/5 mt-2">
+                    <View className="mt-2">
                         <AppButton
-                            title={t("welcome.enter")}
+                            width={scale(150)}
                             loading={login.isPending}
+                            title={t("welcome.enter")}
                             onPress={handleSubmit(onSubmit)}
                         />
                     </View>

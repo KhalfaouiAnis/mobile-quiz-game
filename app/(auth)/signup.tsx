@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ScrollView, Text, View } from "react-native";
 import { toast } from "sonner-native";
+import { scale } from "@/src/utils/dimensions";
 
 export default function SignupScreen() {
     const { t } = useTranslation()
@@ -38,7 +39,7 @@ export default function SignupScreen() {
             >
                 <ViewWrapper>
                     <Text className="text-center text-xl font-cairo-bold text-primary-500">{t("welcome.signup")}</Text>
-                    <View className="flex-row gap-4 mt-6">
+                    <View className="flex-row gap-4 mt-6 w-4/5">
                         <AppTextInput
                             required
                             name="username"
@@ -54,7 +55,7 @@ export default function SignupScreen() {
                             keyboardType="email-address"
                         />
                     </View>
-                    <View className="flex-row gap-4 mt-10">
+                    <View className="flex-row gap-4 mt-10 w-4/5">
                         <AppTextInput
                             phone
                             name="phone"
@@ -72,10 +73,11 @@ export default function SignupScreen() {
                             label={t("welcome.password")}
                         />
                     </View>
-                    <View className="w-1/4 mt-10">
+                    <View className="mt-10">
                         <AppButton
-                            title={t("welcome.signup")}
+                            width={scale(160)}
                             loading={signup.isPending}
+                            title={t("welcome.signup")}
                             disabled={signup.isPending}
                             onPress={handleSubmit(onSubmit)}
                         />

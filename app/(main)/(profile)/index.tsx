@@ -10,13 +10,17 @@ import Switch from "@/src/components/shared/button/switch";
 import Container from "@/src/components/shared/Container";
 import { useAuth } from "@/src/hooks/useAuth";
 import { boxShadow } from "@/src/utils/cn";
+import { queryClient } from "@/src/lib/query-client";
 
 export default function Index() {
     const [showModal, setShowModal] = useState(false);
     const [notifications, setNotifications] = useState(true)
     const { logout, isLoggingOut } = useAuth()
 
-    const handleSignout = () => logout()
+    const handleSignout = () => {
+        logout();
+        queryClient.clear()
+    }
 
     return (
         <Container header={<ProfileHeader />}>

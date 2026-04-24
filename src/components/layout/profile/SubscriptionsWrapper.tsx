@@ -1,12 +1,14 @@
-import { Text, View } from "react-native";
-import { IMAGES } from "@/src/constants/images";
-import { boxShadow } from "@/src/utils/cn";
-import SubscriptionCard, { SubscriptionCardProps } from "./SubscriptionCard";
-import { fontScale, scale, verticalScale } from "@/src/utils/dimensions";
-import AppButton from "../../shared/button/AppButton";
 import { useState } from "react";
 import { useRouter } from "expo-router";
+import { Text, View } from "react-native";
+import { boxShadow } from "@/src/utils/cn";
+import { IMAGES } from "@/src/constants/images";
+import SubscriptionCard from "./SubscriptionCard";
+import AppButton from "@/src/components/shared/button/AppButton";
+import { usePurchasePackage } from "@/src/hooks/mutations/subscriptions/useSubscription";
+import { fontScale, scale, verticalScale } from "@/src/utils/dimensions";
 import { Package, Subscription_TYPES, SubscriptionResponse } from "@/src/types/index.types";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
     title: string,
@@ -23,12 +25,21 @@ export function packageIcon(subscription_type: Subscription_TYPES) {
 }
 
 export default function SubscriptionWrapper({ title, packages, subscriptions }: Props) {
-    const [selectedPlanId, setSelectedPlanId] = useState<number>();
-    const router = useRouter()
+    const [selectedPackageId, setSelectedPackageId] = useState<number>();
+    const { mutate, isPending } = usePurchasePackage()
+    const queryClient = useQueryClient();
+
+    const handlePurchase = () => {
+        mutate(Number(selectedPackageId), {
+            onSuccess() {
+                queryClient.invalidateQueries({ queryKey: ["subscriptions"] })
+            }
+        })
+    }
 
     return (
         <View
-            style={{ borderRadius: 28, borderWidth: 2, borderColor: "#677185", width: scale(920), height: verticalScale(200) }}
+            style={{ borderRadius: 28, borderWidth: 1.5, borderColor: "#677185", width: "auto", height: verticalScale(200) }}
             className="items-center justify-around bg-white"
         >
             <View className="flex-row items-center justify-between px-10 w-full">
@@ -46,13 +57,17 @@ export default function SubscriptionWrapper({ title, packages, subscriptions }: 
                     </Text>
                 </View>
                 <AppButton
+                    loading={isPending}
+                    width={scale(150)}
                     title="اختر الاشتراك"
-                    disabled={!selectedPlanId}
-                    onPress={() => router.navigate(`/(main)/(profile)/(subscription)/${selectedPlanId}`)}
+                    onPress={handlePurchase}
+                    disabled={!selectedPackageId || isPending}
                 />
-
             </View>
-            <View className="flex-row items-center justify-around w-full">
+            <View
+                style={{ gap: scale(22) }}
+                className="flex-row items-center justify-around px-4"
+            >
                 {packages?.map((plan, index) => {
                     const isActive = subscriptions?.active?.packageId === plan.id
                     return (
@@ -62,8 +77,8 @@ export default function SubscriptionWrapper({ title, packages, subscriptions }: 
                             isActive={!!isActive}
                             key={plan.id + `__${index}`}
                             description={plan.description}
-                            selected={plan.id === selectedPlanId}
-                            onPress={() => setSelectedPlanId(plan.id)}
+                            selected={plan.id === selectedPackageId}
+                            onPress={() => setSelectedPackageId(plan.id)}
                             iconUrl={packageIcon(plan.subscription_type as Subscription_TYPES)}
                         />
                     )

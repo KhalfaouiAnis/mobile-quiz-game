@@ -1,5 +1,5 @@
 import { boxShadow, cn } from "@/src/utils/cn";
-import { ActivityIndicator, Pressable, Text } from "react-native";
+import { ActivityIndicator, DimensionValue, Pressable, Text } from "react-native";
 
 interface ButtonProps {
     title: string | number;
@@ -9,9 +9,10 @@ interface ButtonProps {
     semiRounded?: boolean;
     danger?: boolean;
     disabled?: boolean;
+    width?: DimensionValue
 }
 
-export default function AppButton({ title, onPress, loading, disabled, rounded = true, semiRounded = false, danger = false }: ButtonProps) {
+export default function AppButton({ title, onPress, loading, disabled, rounded = true, semiRounded = false, danger = false, width = "auto" }: ButtonProps) {
     function br() {
         if (semiRounded) return 12;
         if (rounded) return 24;
@@ -23,8 +24,9 @@ export default function AppButton({ title, onPress, loading, disabled, rounded =
             onPress={onPress}
             disabled={disabled}
             style={{
-                boxShadow: boxShadow().button.boxShadow,
+                width,
                 borderRadius: br(),
+                boxShadow: boxShadow().button.boxShadow,
             }}
             className={cn("items-center justify-center py-2 px-4 border border-secondary-500 disabled:bg-gray-400", {
                 "bg-[#F1190E]": danger,

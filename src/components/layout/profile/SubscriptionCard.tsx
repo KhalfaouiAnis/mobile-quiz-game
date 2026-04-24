@@ -19,7 +19,7 @@ export default function SubscriptionCard({ iconUrl, isActive, selected, name, de
             style={[boxShadow(4, 4, 4, 0).button, {
                 borderWidth: selected ? 1 : undefined,
                 borderColor: selected ? "#F1190E" : undefined,
-                width: scale(270), height: verticalScale(80)
+                width: "auto", height: verticalScale(80), flex: 1
             }]}
             className="relative flex-row items-center bg-white px-2 py-6 rounded-2xl"
         >
@@ -43,7 +43,7 @@ export default function SubscriptionCard({ iconUrl, isActive, selected, name, de
                 <Text className=" font-bagel-regular text-gray-600" numberOfLines={1} ellipsizeMode="tail">{description}</Text>
             </View>
             <View className="ms-auto">
-                <Text className="font-bagel-regular  text-[#1977F2]">{price} $</Text>
+                <Text className="font-bagel-regular  text-[#1977F2]">${price}</Text>
                 <Text className="font-bagel-regular text-xs text-gray-600">في الشهر</Text>
             </View>
         </Pressable>
