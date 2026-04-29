@@ -9,6 +9,8 @@ import { usePurchasePackage } from "@/src/hooks/mutations/subscriptions/useSubsc
 import { fontScale, scale, verticalScale } from "@/src/utils/dimensions";
 import { Package, Subscription_TYPES, SubscriptionResponse } from "@/src/types/index.types";
 import { useQueryClient } from "@tanstack/react-query";
+import AppModal from "../../shared/modal/AppModal";
+import PaymentSucceedModal from "./PaymentSucceedModal";
 
 interface Props {
     title: string,
@@ -26,15 +28,23 @@ export function packageIcon(subscription_type: Subscription_TYPES) {
 
 export default function SubscriptionWrapper({ title, packages, subscriptions }: Props) {
     const [selectedPackageId, setSelectedPackageId] = useState<number>();
+    const [showModal, setShowModal] = useState(false);
     const { mutate, isPending } = usePurchasePackage()
     const queryClient = useQueryClient();
 
     const handlePurchase = () => {
-        mutate(Number(selectedPackageId), {
-            onSuccess() {
-                queryClient.invalidateQueries({ queryKey: ["subscriptions"] })
-            }
-        })
+        setTimeout(() => setShowModal(true), 500)
+        // mutate(Number(sub), {
+        //     onSuccess() {
+        //         setShowModal(true)
+        //         queryClient.invalidateQueries({ queryKey: ["subscriptions"] })
+        //     }
+        // })
+        // mutate(Number(selectedPackageId), {
+        //     onSuccess() {
+        //         queryClient.invalidateQueries({ queryKey: ["subscriptions"] })
+        //     }
+        // })
     }
 
     return (
@@ -84,6 +94,11 @@ export default function SubscriptionWrapper({ title, packages, subscriptions }: 
                     )
                 })}
             </View>
+            <AppModal
+                visible={showModal}
+                onClose={() => setShowModal(false)}
+                content={<PaymentSucceedModal onClose={() => setShowModal(false)} />}
+            />
         </View>
     )
 }

@@ -83,8 +83,7 @@ const ShadowedText = memo(function ShadowedText({
     fillColor = '#FFF900',
     dropShadow = DEFAULT_SHADOW,
 }: Props) {
-    const scaledSize = fontScale(fontSize)
-    const baseStyle = { fontFamily: 'BagelRegular', fontSize: scaledSize }
+    const baseStyle = { fontFamily: 'BagelRegular', fontSize: fontScale(fontSize) }
 
     return (
         <View style={styles.wrapper}>

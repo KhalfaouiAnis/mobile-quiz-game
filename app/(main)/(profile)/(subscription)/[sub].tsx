@@ -28,12 +28,13 @@ export default function Index() {
     const { data: packageInfo, isLoading: loadingPackageInfo } = usePackageInfoQuery(Number(sub))
 
     const handlePurchase = () => {
-        mutate(Number(sub), {
-            onSuccess() {
-                setShowModal(true)
-                queryClient.invalidateQueries({ queryKey: ["subscriptions"] })
-            }
-        })
+        setTimeout(() => setShowModal(true), 500)
+        // mutate(Number(sub), {
+        //     onSuccess() {
+        //         setShowModal(true)
+        //         queryClient.invalidateQueries({ queryKey: ["subscriptions"] })
+        //     }
+        // })
     }
 
     return (
@@ -83,11 +84,11 @@ export default function Index() {
                     />
                 </View>
             </ScrollView>
-            <AppModal
+            {/* <AppModal
                 visible={showModal}
                 onClose={() => setShowModal(false)}
                 content={<PaymentSucceedModal />}
-            />
+            /> */}
         </Container>
     );
 }

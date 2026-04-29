@@ -62,6 +62,7 @@ export interface RevealResponse {
   answer: {
     text: string;
     fileUrl: string | null;
+    mediaType?: "image" | "video";
   };
 }
 
@@ -126,9 +127,11 @@ export interface Question {
   id: number;
   sub_category_id: number;
   content: string;
-  file_url?: string | null;
   difficulty: Difficulty;
   points: number;
+  file_url?: string | null;
+  media_type?: "image" | "video";
+  init_fullscreen?: boolean;
   is_answered?: boolean;
   grid_row: number;
   grid_col: number;

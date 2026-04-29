@@ -13,6 +13,8 @@ export interface SubscriptionPlan {
   features?: string[];
 }
 
+export type ThemeType = "light" | "dark" | "system";
+
 export type Subscription_TYPES =
   | "ultimate_tier"
   | "premium_tier"

@@ -22,9 +22,9 @@ export default function Index() {
                     >
                         <ViewWrapper>
                             <View className="gap-8">
+                                <SubscriptionWrapper title="قدها" packages={packages} subscriptions={subscriptions} />
                                 <SubscriptionWrapper title="The Challenge التحدي" packages={packages} subscriptions={subscriptions} />
                                 <SubscriptionWrapper title="The Liar" packages={packages} subscriptions={subscriptions} />
-                                <SubscriptionWrapper title="قدها" packages={packages} subscriptions={subscriptions} />
                             </View>
                         </ViewWrapper>
                     </ScrollView>

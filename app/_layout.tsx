@@ -13,6 +13,7 @@ import { useAppStore } from '@/src/stores/app.store';
 import { isTV } from '@/src/utils/platform';
 import { useBootstrapAuth } from '@/src/hooks/useBootstrapAuth';
 import { configureOAuth } from '@/src/lib/oauth';
+import { ThemeSynchronizer } from '@/src/lib/theme/themeSynchronizer';
 
 SplashScreen.preventAutoHideAsync();
 NavigationBar.setVisibilityAsync("hidden");
@@ -54,6 +55,7 @@ export default function RootLayout() {
   return (
     <Providers>
       <StatusBar hidden={true} />
+      <ThemeSynchronizer />
       <Stack
         screenOptions={{
           headerShown: false,

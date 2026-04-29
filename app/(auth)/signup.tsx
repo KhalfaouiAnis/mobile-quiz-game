@@ -9,9 +9,10 @@ import { type SignupFormData, signupSchema } from "@/src/schemas/auth.schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { ScrollView, Text, View } from "react-native";
+import { Platform, ScrollView, Text, View } from "react-native";
 import { toast } from "sonner-native";
 import { scale } from "@/src/utils/dimensions";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 export default function SignupScreen() {
     const { t } = useTranslation()
@@ -33,57 +34,62 @@ export default function SignupScreen() {
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader />}>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerClassName="justify-center px-8 py-4 gap-y-6"
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             >
-                <ViewWrapper>
-                    <Text className="text-center text-xl font-cairo-bold text-primary-500">{t("welcome.signup")}</Text>
-                    <View className="flex-row gap-4 mt-6 w-4/5">
-                        <AppTextInput
-                            required
-                            name="username"
-                            control={control}
-                            label={t("welcome.username")}
-                        />
-                        <AppTextInput
-                            required
-                            name="email"
-                            control={control}
-                            autoComplete="email"
-                            label={t("welcome.email")}
-                            keyboardType="email-address"
-                        />
-                    </View>
-                    <View className="flex-row gap-4 mt-10 w-4/5">
-                        <AppTextInput
-                            phone
-                            name="phone"
-                            required={false}
-                            control={control}
-                            autoComplete="tel"
-                            label={t("welcome.phone")}
-                            keyboardType="number-pad"
-                        />
-                        <AppTextInput
-                            required
-                            name="password"
-                            secureTextEntry
-                            control={control}
-                            label={t("welcome.password")}
-                        />
-                    </View>
-                    <View className="mt-10">
-                        <AppButton
-                            width={scale(160)}
-                            loading={signup.isPending}
-                            title={t("welcome.signup")}
-                            disabled={signup.isPending}
-                            onPress={handleSubmit(onSubmit)}
-                        />
-                    </View>
-                </ViewWrapper>
-            </ScrollView>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerClassName="justify-center px-8 py-4 gap-y-6"
+                >
+                    <ViewWrapper>
+                        <Text className="text-center text-xl font-cairo-bold text-primary-500">{t("welcome.signup")}</Text>
+                        <View className="flex-row gap-4 mt-6 w-4/5">
+                            <AppTextInput
+                                required
+                                name="username"
+                                control={control}
+                                label={t("welcome.username")}
+                            />
+                            <AppTextInput
+                                required
+                                name="email"
+                                control={control}
+                                autoComplete="email"
+                                label={t("welcome.email")}
+                                keyboardType="email-address"
+                            />
+                        </View>
+                        <View className="flex-row gap-4 mt-10 w-4/5">
+                            <AppTextInput
+                                phone
+                                name="phone"
+                                required={false}
+                                control={control}
+                                autoComplete="tel"
+                                label={t("welcome.phone")}
+                                keyboardType="number-pad"
+                            />
+                            <AppTextInput
+                                required
+                                name="password"
+                                secureTextEntry
+                                control={control}
+                                label={t("welcome.password")}
+                            />
+                        </View>
+                        <View className="mt-10">
+                            <AppButton
+                                width={scale(160)}
+                                loading={signup.isPending}
+                                title={t("welcome.signup")}
+                                disabled={signup.isPending}
+                                onPress={handleSubmit(onSubmit)}
+                            />
+                        </View>
+                    </ViewWrapper>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </Container>
     )
 }

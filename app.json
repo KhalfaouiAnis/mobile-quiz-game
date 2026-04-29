@@ -87,6 +87,19 @@
           "hidden": true
         }
       },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "kahoot",
+              "host": "payment"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
       "windowSoftInputMode": "adjustResize",
       "predictiveBackGestureEnabled": false,
       "softwareKeyboardLayoutMode": "resize",

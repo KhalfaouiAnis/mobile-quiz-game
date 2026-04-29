@@ -4,7 +4,7 @@ import AppButton from "@/src/components/shared/button/AppButton";
 import { IMAGES } from "@/src/constants/images";
 import { boxShadow } from "@/src/utils/cn";
 
-export default function PaymentSucceedModal() {
+export default function PaymentSucceedModal({ onClose }: { onClose: () => void }) {
     return (
         <View className="flex-1 my-12 items-center justify-center bg-white p-3 rounded-3xl border-[10px] border-secondary-500"
             style={[boxShadow(0, 16, 32, 0, "rgb(000 000 000 / 0.23)").button,
@@ -24,7 +24,7 @@ export default function PaymentSucceedModal() {
             <View className="w-1/4 mt-auto -mb-8">
                 <AppButton
                     title="تاكيد"
-                    onPress={() => router.dismissTo("/(main)/(profile)")} />
+                    onPress={onClose} />
             </View>
         </View>
     )

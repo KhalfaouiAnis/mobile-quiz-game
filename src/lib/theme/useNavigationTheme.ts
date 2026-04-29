@@ -1,21 +1,26 @@
+import useConfigStore from "@/src/stores/config.store";
 import { DarkTheme, DefaultTheme } from "@react-navigation/native";
-import { useColorScheme } from "nativewind";
 import { useMemo } from "react";
+import { useColorScheme } from "react-native";
 
 export const useNavigationTheme = () => {
-  const { colorScheme } = useColorScheme();
+  const storeTheme = useConfigStore((state) => state.theme);
+  const systemTheme = useColorScheme();
 
   const navigationTheme = useMemo(() => {
-    const baseTheme = colorScheme === "dark" ? DarkTheme : DefaultTheme;
+    const isDark =
+      storeTheme === "system" ? systemTheme === "dark" : storeTheme === "dark";
+    const theme = isDark ? DarkTheme : DefaultTheme;
 
     return {
-      ...baseTheme,
+      ...theme,
+      dark: isDark,
       colors: {
-        ...baseTheme.colors,
-        background: colorScheme === "dark" ? "black" : "white",
+        ...theme.colors,
+        background: isDark ? "black" : "white",
       },
     };
-  }, [colorScheme]);
+  }, [storeTheme, systemTheme]);
 
   return navigationTheme;
 };

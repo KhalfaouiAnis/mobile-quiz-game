@@ -1,18 +1,19 @@
-import { CONFIGURATION_STORAGE_KEY } from "@/src/constants";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { CONFIGURATION_STORAGE_KEY } from "@/src/constants";
+import { ThemeType } from "@/src/types/index.types";
 import { zustandMMKVStorage } from "./storage";
 
 interface ConfigState {
-  theme: "light" | "dark";
+  theme: ThemeType;
   toggleTheme: () => void;
-  setTheme: (theme: "light" | "dark") => void;
+  setTheme: (theme: ThemeType) => void;
 }
 
 const useConfigStore = create<ConfigState>()(
   persist(
     (set) => ({
-      theme: "light",
+      theme: "system",
       toggleTheme: () => {
         set((state) => ({
           theme: state.theme === "light" ? "dark" : "light",

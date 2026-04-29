@@ -9,7 +9,7 @@ export default function BoosterButton({ onPress, disabled }: { borderColor?: str
             disabled={disabled}
         >
             <View
-                className="items-center justify-center rounded-[8px] px-1 ms-2"
+                className="items-center justify-center rounded-[8px] px-1 ms-1.5"
                 style={[
                     boxShadow(3, 3, 0, 0, "rgb(000 000 000 / 1)").button,
                     { backgroundColor: disabled ? "#A8A8A8" : "#F1190E" }

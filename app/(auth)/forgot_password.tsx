@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Platform } from 'react-native';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useVerifyOtp } from '@/src/hooks/mutations/useVerifyOtp';
 import { useResetPassword } from '@/src/hooks/mutations/useResetPassword';
@@ -14,7 +14,8 @@ import AppButton from '@/src/components/shared/button/AppButton';
 import OTPInput from '@/src/components/auth/OtpInput';
 import { toast } from 'sonner-native';
 import { useTranslation } from 'react-i18next';
-import { scale } from '@/src/utils/dimensions';
+import { scale, verticalScale } from '@/src/utils/dimensions';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 type Step = 'email' | 'otp' | 'reset' | 'done';
 
@@ -85,94 +86,96 @@ export default function ForgotPasswordScreen() {
 
     // ── Step indicator
     const stepIndex = { email: 0, otp: 1, reset: 2, done: 3 }[step];
-    const stepLabels = [t("welcome.forgot_password"), t("welcome.check_email"), t("welcome.reset_password")];
-    const buttonLabels = [t("welcome.reset"), t("welcome.otp"), t("welcome.confirm")]
+    const stepLabels = useMemo(() => [t("welcome.forgot_password"), t("welcome.check_email"), t("welcome.reset_password")], [t]);
+    const buttonLabels = useMemo(() => [t("welcome.reset"), t("welcome.otp"), t("welcome.confirm")], [t])
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader />}>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerClassName="justify-center px-8 py-4 gap-y-6"
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             >
-                <ViewWrapper>
-                    <Text className="text-center text-xl font-cairo-bold text-primary-500">{stepLabels[stepIndex] || ""}</Text>
-                    {stepIndex === 0 && (<>
-                        <Text numberOfLines={2} className="text-center text-sm font-cairo-bold my-4">
-                            {t("welcome.please_enter_email")}
-                        </Text>
-                        <View
-                            className="mt-6"
-                            style={{ width: scale(320) }}
-                        >
-                            <AppTextInput
-                                required
-                                name="email"
-                                autoComplete="email"
-                                label={t("welcome.email")}
-                                control={emailForm.control}
-                                keyboardType="email-address"
-                                placeholder={t("welcome.email")}
-                            />
-                        </View>
-                        <View className="mt-10">
-                            <AppButton
-                                width={scale(160)}
-                                title={buttonLabels[0]}
-                                loading={forgotMutation.isPending}
-                                disabled={forgotMutation.isPending || !!emailForm.formState.errors.email}
-                                onPress={emailForm.handleSubmit(onSubmitEmail)}
-                            />
-                        </View>
-                    </>
-                    )}
-                    {stepIndex === 1 && (<>
-                        <Text numberOfLines={2} className="text-center text-lg font-cairo-bold my-4">
-                            {t("welcome.enter_code", { email })}
-                        </Text>
-                        <OTPInput numberOfElements={6} onComplete={(code) => otpForm.setValue("otp", code)} />
-                        <View className="mt-10">
-                            <AppButton
-                                width={scale(160)}
-                                title={buttonLabels[1]}
-                                loading={verifyMutation.isPending}
-                                disabled={verifyMutation.isPending}
-                                onPress={otpForm.handleSubmit(onSubmitOtp)}
-                            />
-                        </View>
-                    </>
-                    )}
-                    {stepIndex === 2 && (<>
-                        <View className="flex-row gap-4 mt-6">
-                            <AppTextInput
-                                required
-                                secureTextEntry
-                                name="newPassword"
-                                control={resetForm.control}
-                                label={t("welcome.new_pass")}
-                                error={resetForm.formState.errors.newPassword?.message}
-                            />
-                            <AppTextInput
-                                required
-                                secureTextEntry
-                                name="confirmPassword"
-                                control={resetForm.control}
-                                label={t("welcome.confirm_new_pass")}
-                                error={resetForm.formState.errors.confirmPassword?.message}
-                            />
-                        </View>
-                        <View className="mt-10">
-                            <AppButton
-                                width={scale(160)}
-                                title={buttonLabels[2]}
-                                loading={resetMutation.isPending}
-                                disabled={resetMutation.isPending}
-                                onPress={resetForm.handleSubmit(onSubmitReset)}
-                            />
-                        </View>
-                    </>
-                    )}
-                </ViewWrapper>
-            </ScrollView>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerClassName="justify-center px-8 py-4 gap-y-6"
+                >
+                    <ViewWrapper>
+                        <Text className="text-center text-xl font-cairo-bold text-primary-500">{stepLabels[stepIndex] || ""}</Text>
+                        {stepIndex === 0 && (<>
+                            <Text numberOfLines={2} style={{ minHeight: scale(40) }} className="text-center text-sm font-cairo-bold my-4">
+                                {t("welcome.please_enter_email")}
+                            </Text>
+                            <View
+                                className="mt-6"
+                                style={{ width: scale(320), minHeight: verticalScale(54) }}
+                            >
+                                <AppTextInput
+                                    required
+                                    name="email"
+                                    autoComplete="email"
+                                    label={t("welcome.email")}
+                                    control={emailForm.control}
+                                    keyboardType="email-address"
+                                    placeholder={t("welcome.email")}
+                                />
+                            </View>
+                            <View className="mt-10" pointerEvents={forgotMutation.isPending ? "none" : "auto"}>
+                                <AppButton
+                                    width={scale(160)}
+                                    title={buttonLabels[0]}
+                                    loading={forgotMutation.isPending}
+                                    disabled={forgotMutation.isPending || !!emailForm.formState.errors.email}
+                                    onPress={emailForm.handleSubmit(onSubmitEmail)}
+                                />
+                            </View>
+                        </>)}
+                        {stepIndex === 1 && (<>
+                            <Text numberOfLines={2} style={{ minHeight: scale(40) }} className="text-center text-lg font-cairo-bold my-4">
+                                {t("welcome.enter_code", { email })}
+                            </Text>
+                            <OTPInput numberOfElements={6} onComplete={(code) => otpForm.setValue("otp", code)} />
+                            <View className="mt-10" pointerEvents={verifyMutation.isPending ? "none" : "auto"}>
+                                <AppButton
+                                    width={scale(160)}
+                                    title={buttonLabels[1]}
+                                    loading={verifyMutation.isPending}
+                                    disabled={verifyMutation.isPending}
+                                    onPress={otpForm.handleSubmit(onSubmitOtp)}
+                                />
+                            </View>
+                        </>)}
+                        {stepIndex === 2 && (<>
+                            <View className="flex-row gap-4 mt-6">
+                                <AppTextInput
+                                    required
+                                    secureTextEntry
+                                    name="newPassword"
+                                    control={resetForm.control}
+                                    label={t("welcome.new_pass")}
+                                    error={resetForm.formState.errors.newPassword?.message}
+                                />
+                                <AppTextInput
+                                    required
+                                    secureTextEntry
+                                    name="confirmPassword"
+                                    control={resetForm.control}
+                                    label={t("welcome.confirm_new_pass")}
+                                    error={resetForm.formState.errors.confirmPassword?.message}
+                                />
+                            </View>
+                            <View className="mt-10" pointerEvents={resetMutation.isPending ? "none" : "auto"}>
+                                <AppButton
+                                    width={scale(160)}
+                                    title={buttonLabels[2]}
+                                    loading={resetMutation.isPending}
+                                    disabled={resetMutation.isPending}
+                                    onPress={resetForm.handleSubmit(onSubmitReset)}
+                                />
+                            </View>
+                        </>)}
+                    </ViewWrapper>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </Container>
     )
 }

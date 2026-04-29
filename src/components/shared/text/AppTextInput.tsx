@@ -48,7 +48,7 @@ export default function AppTextInput<TForm extends FieldValues>({ control, name,
                     </View>
                 )}
                 <TextInput
-                    style={{ writingDirection: "rtl", textAlign: "right", height: '100%', flex: 1, color: "black" }}
+                    style={{ writingDirection: "rtl", textAlign: "right", height: verticalScale(54), flex: 1, color: "black" }}
                     onChangeText={onChange}
                     value={value as string}
                     onBlur={hideSystemBars}

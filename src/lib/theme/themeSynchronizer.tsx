@@ -1,13 +1,14 @@
-import usePreferencesStore from '@/src/stores/config.store';
-import { Appearance } from 'react-native';
+import { useTheme } from '@react-navigation/native';
+import { useColorScheme as useNativeWind } from 'nativewind';
 import { useEffect } from 'react';
 
 export const ThemeSynchronizer = () => {
-    const theme = usePreferencesStore((state) => state.theme);
+    const { setColorScheme } = useNativeWind();
+    const { dark } = useTheme();
 
     useEffect(() => {
-        Appearance.setColorScheme(theme);
-    }, [theme, Appearance.setColorScheme]);
+        setColorScheme(dark ? 'dark' : 'light');
+    }, [dark, setColorScheme]);
 
     return null;
 };

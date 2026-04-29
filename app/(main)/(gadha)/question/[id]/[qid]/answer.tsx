@@ -11,6 +11,7 @@ import { isAxiosError } from 'axios';
 import { useShallow } from 'zustand/shallow';
 import { scale, verticalScale } from '@/src/utils/dimensions';
 import FlipImage from '@/src/components/shared/FlipImage';
+import VideoPlayer from '@/src/components/shared/video/VideoPlayer';
 
 export default function AnswerScreen() {
     const { qid, id } = useLocalSearchParams<{ id: string, qid: string }>();
@@ -72,73 +73,74 @@ export default function AnswerScreen() {
         )
     }
 
-    return (
-        <View className="flex-1 flex-row  pb-0 gap-4">
-            {
-                error ? (
-                    <View className='flex-1 items-center justify-center'>
-                        <Text className='text-error text-lg font-cairo-semibold text-center'>{error.message}</Text>
-                    </View>
-                ) : (
-                    <ScrollView contentContainerClassName="items-center justify-between gap-3 p-4">
-                        <View className='gap-4'>
-                            {
-                                isLoading ? (
-                                    <ActivityIndicator size="large" color="#00A6DA" />
-                                ) : (
-                                    <View className='gap-3'>
-                                        <Text className="text-3xl text-center font-cairo-medium pb-2" numberOfLines={2} ellipsizeMode="tail">
-                                            {data?.answer?.text} ✅
-                                        </Text>
-                                        {data?.answer?.fileUrl && (
-                                            <FlipImage
-                                                contentFit="cover"
-                                                source={{ uri: data?.answer?.fileUrl }}
-                                                style={{ width: scale(440), height: verticalScale(210), borderRadius: 15 }}
-                                            />
-                                        )}
-                                    </View>
-                                )
-                            }
-                        </View>
-                        <View className='flex-row items-center justify-around gap-6 px-8'>
-                            <View className="w-1/3">
-                                <AppButton
-                                    danger
-                                    semiRounded
-                                    title={teams[0].name || ""}
-                                    disabled={answerMutation.isPending || answeredQuestionsIds.has(Number(qid))}
-                                    onPress={() => handleSubmitAnswer({ teamIndex: 0, isCorrect: true, useBoost: team1BoostActive })}
-                                />
-                            </View>
-                            <View className="w-1/3">
-                                <AppButton
-                                    title="لا أحد"
-                                    rounded={false}
-                                    disabled={answerMutation.isPending || answeredQuestionsIds.has(Number(qid))}
-                                    onPress={() => handleSubmitAnswer({ noOne: true, isCorrect: false, useBoost: team1BoostActive || team2BoostActive })}
-                                />
-                            </View>
-                            <View className="w-1/3">
-                                <AppButton
-                                    danger
-                                    semiRounded
-                                    title={teams[1].name || ""}
-                                    disabled={answerMutation.isPending || answeredQuestionsIds.has(Number(qid))}
-                                    onPress={() => handleSubmitAnswer({ teamIndex: 1, isCorrect: true, useBoost: team2BoostActive })}
-                                />
-                            </View>
-                        </View>
-                        <View className="w-1/3 pb-2">
-                            <AppButton
-                                rounded={false}
-                                title="ارجع للسؤال"
-                                onPress={() => router.back()}
-                            />
-                        </View>
-                    </ScrollView>
-                )
-            }
+    if (error) return (
+        <View className='flex-1 items-center justify-center'>
+            <Text className='text-error text-lg font-cairo-semibold text-center'>{error.message}</Text>
         </View>
+    )
+
+    if (isLoading) return (
+        <View className='flex-1 items-center justify-center'>
+            <ActivityIndicator size="large" color="#00A6DA" />
+        </View>
+    )
+
+    return (
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerClassName="items-center justify-between gap-3 py-2">
+            <View className='gap-1 items-center'>
+                <Text className="text-xl text-center font-cairo-medium pb-2" numberOfLines={2} ellipsizeMode="tail">
+                    ✅ {data?.answer?.text}
+                </Text>
+                {
+                    data?.answer?.mediaType === "video" ? <VideoPlayer
+                        windowedHeight={verticalScale(230)}
+                        source={data.answer.fileUrl}
+                        windowedWidth={scale(480)}
+                        autoPlay={true}
+                    /> : <FlipImage
+                        contentFit="fill"
+                        style={{ width: scale(440), height: verticalScale(190), borderRadius: 15 }}
+                        source={data?.answer?.fileUrl ? { uri: data?.answer?.fileUrl } : undefined}
+                    />
+                }
+            </View>
+            <View className='flex-row items-center justify-around gap-6'>
+                <View style={{ width: scale(170) }}>
+                    <AppButton
+                        danger
+                        semiRounded
+                        title={teams[0].name || ""}
+                        disabled={answerMutation.isPending || answeredQuestionsIds.has(Number(qid))}
+                        onPress={() => handleSubmitAnswer({ teamIndex: 0, isCorrect: true, useBoost: team1BoostActive })}
+                    />
+                </View>
+                <View style={{ width: scale(170) }}>
+                    <AppButton
+                        title="لا أحد"
+                        rounded={false}
+                        disabled={answerMutation.isPending || answeredQuestionsIds.has(Number(qid))}
+                        onPress={() => handleSubmitAnswer({ noOne: true, isCorrect: false, useBoost: team1BoostActive || team2BoostActive })}
+                    />
+                </View>
+                <View style={{ width: scale(170) }}>
+                    <AppButton
+                        danger
+                        semiRounded
+                        title={teams[1].name || ""}
+                        disabled={answerMutation.isPending || answeredQuestionsIds.has(Number(qid))}
+                        onPress={() => handleSubmitAnswer({ teamIndex: 1, isCorrect: true, useBoost: team2BoostActive })}
+                    />
+                </View>
+            </View>
+            <View style={{ width: scale(170) }}>
+                <AppButton
+                    rounded={false}
+                    title="ارجع للسؤال"
+                    onPress={() => router.back()}
+                />
+            </View>
+        </ScrollView>
     );
 }

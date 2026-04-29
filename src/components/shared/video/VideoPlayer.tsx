@@ -19,7 +19,7 @@ export default function VideoPlayer({
     windowedWidth = 300,
     windowedHeight = 200,
 }: {
-    source?: string;
+    source?: string | null;
     autoPlay?: boolean;
     initialFullScreen?: boolean;
     windowedWidth?: number;

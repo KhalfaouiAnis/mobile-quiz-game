@@ -11,7 +11,6 @@ export const api = axios.create({
   headers: { "Content-Type": "application/json", "Accept-Language": "ar" },
 });
 
-// ─── Request: attach access token
 api.interceptors.request.use(
   (config) => {
     config.headers["Accept-Language"] = "ar";

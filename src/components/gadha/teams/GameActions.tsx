@@ -35,21 +35,21 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
     const router = useRouter()
 
     const handleQuit = async () => {
-        router.replace(`/(gadha)/results/${id}`);
-        // if (isTeamA) {
-        //     endSession({ id: Number(id) }, {
-        //         onSuccess() {
-        //             router.replace(`/(gadha)/results/${id}`);
-        //         },
-        //         onError(error) {
-        //             if(isAxiosError(error)){
-        //                 toast.error(error.response?.data.message)
-        //             }
-        //         },
-        //     })
-        // } else {
-        //     router.replace("/")
-        // }
+        // router.replace(`/(gadha)/results/${id}`);
+        if (isTeamA) {
+            endSession({ id: Number(id) }, {
+                onSuccess() {
+                    router.replace(`/(gadha)/results/${id}`);
+                },
+                onError(error) {
+                    if(isAxiosError(error)){
+                        toast.error(error.response?.data.message)
+                    }
+                },
+            })
+        } else {
+            router.replace("/")
+        }
     }
 
     const handleIncreaseScore = () => {

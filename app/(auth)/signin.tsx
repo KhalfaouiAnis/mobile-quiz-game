@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { Alert, ScrollView, Text, View } from "react-native";
+import { Alert, Platform, ScrollView, Text, View } from "react-native";
 import { toast } from "sonner-native";
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
@@ -19,6 +19,7 @@ import { configureRevenueCat, fetchCustomerInfo } from "@/src/lib/revenuecat/ser
 import { queryClient } from "@/src/lib/query-client";
 import { CUSTOMER_INFO_QUERY_KEY } from "@/src/hooks/subscription/useCustomerInfo";
 import { scale } from "@/src/utils/dimensions";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 export default function SignInScreen() {
     const login = useLogin();
@@ -36,7 +37,8 @@ export default function SignInScreen() {
                 toast.error(Array.isArray(msg) ? msg.join('\n') : msg)
             },
             async onSuccess(data) {
-                await configureRevenueCat(data.user.id);
+                // await configureRevenueCat(data.user.id);
+                toast.success("authenticated successfully")
                 queryClient.prefetchQuery({
                     queryKey: CUSTOMER_INFO_QUERY_KEY,
                     queryFn: fetchCustomerInfo,
@@ -47,43 +49,48 @@ export default function SignInScreen() {
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader />}>
-            <ScrollView
-                contentContainerClassName="justify-center px-8 py-4 gap-y-6" showsVerticalScrollIndicator={false}>
-                <ViewWrapper>
-                    <Text className="text-center text-xl font-cairo-bold mb-4 text-primary-500">{t("welcome.signin")}</Text>
-                    <View className="w-4/5">
-                        <View className="flex-row gap-8">
-                            <AppTextInput
-                                required
-                                name="identifier"
-                                control={control}
-                                keyboardType="email-address"
-                                label={t("welcome.email_username")}
-                            />
-                            <AppTextInput
-                                required
-                                secureTextEntry
-                                name="password"
-                                control={control}
-                                label={t("welcome.password")}
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            >
+                <ScrollView
+                    contentContainerClassName="justify-center px-8 py-4 gap-y-6" showsVerticalScrollIndicator={false}>
+                    <ViewWrapper>
+                        <Text className="text-center text-xl font-cairo-bold mb-4 text-primary-500">{t("welcome.signin")}</Text>
+                        <View className="w-4/5">
+                            <View className="flex-row gap-8">
+                                <AppTextInput
+                                    required
+                                    name="identifier"
+                                    control={control}
+                                    keyboardType="email-address"
+                                    label={t("welcome.email_username")}
+                                />
+                                <AppTextInput
+                                    required
+                                    secureTextEntry
+                                    name="password"
+                                    control={control}
+                                    label={t("welcome.password")}
+                                />
+                            </View>
+                            <View className="w-full items-end">
+                                <Link className="font-cairo" href="/forgot_password">{t("welcome.forgot_pass")}</Link>
+                            </View>
+                        </View>
+                        <View className="mt-2">
+                            <AppButton
+                                width={scale(150)}
+                                loading={login.isPending}
+                                title={t("welcome.enter")}
+                                onPress={handleSubmit(onSubmit)}
                             />
                         </View>
-                        <View className="w-full items-end">
-                            <Link className="font-cairo" href="/forgot_password">{t("welcome.forgot_pass")}</Link>
-                        </View>
-                    </View>
-                    <View className="mt-2">
-                        <AppButton
-                            width={scale(150)}
-                            loading={login.isPending}
-                            title={t("welcome.enter")}
-                            onPress={handleSubmit(onSubmit)}
-                        />
-                    </View>
-                    <View className="w-1/3 my-1"><OrSeparator label={t("welcome.or")} /></View>
-                    <OAuthButtons onError={(msg) => Alert.alert('Error', msg)} />
-                </ViewWrapper>
-            </ScrollView>
+                        <View className="w-1/3 my-1"><OrSeparator label={t("welcome.or")} /></View>
+                        <OAuthButtons onError={(msg) => Alert.alert('Error', msg)} />
+                    </ViewWrapper>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </Container>
     )
 }

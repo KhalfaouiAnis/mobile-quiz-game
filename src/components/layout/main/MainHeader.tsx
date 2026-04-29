@@ -3,7 +3,7 @@ import { boxShadow } from '@/src/utils/cn';
 import { Link } from 'expo-router';
 import { Image } from "expo-image"
 import { Pressable, Text, View } from 'react-native';
-import { fontScale } from '@/src/utils/dimensions';
+import { fontScale, scale, verticalScale } from '@/src/utils/dimensions';
 import { useAuth } from '@/src/hooks/useAuth';
 
 export function MainHeader() {
@@ -19,7 +19,7 @@ export function MainHeader() {
                         <Image
                             className='rounded-full border border-primary-500'
                             source={user?.avatar_url ? { uri: user.avatar_url } : IMAGES.Avatar}
-                            style={{ width: 50, height: 50, objectFit: "cover", borderRadius: 100 }}
+                            style={{ width: scale(50), height: scale(50), objectFit: "cover", borderRadius: 100 }}
                         />
                         <Text
                             style={{ fontSize: fontScale(20), lineHeight: 28 }}
@@ -58,7 +58,7 @@ export function MainHeader() {
             <View className='pt-12 items-center justify-center absolute top-0 end-0 start-0 z-10 w-fit'>
                 <Link asChild href="/(gadha)/setup">
                     <Pressable className='items-center'>
-                        <Image source={IMAGES.GadghaLogo} style={{ width: 140, height: 70 }} contentFit="cover" />
+                        <Image source={IMAGES.GadghaLogo} style={{ width: 140, height: 70, objectFit: "fill", borderRadius: 50 }} contentFit="cover" />
                         <View
                             style={{ boxShadow: boxShadow().button.boxShadow, height: 40, width: 140, borderWidth: 1.5, marginTop: -5 }}
                             className="bg-secondary-500 rounded-xl items-center justify-center border-error relative -z-10"
@@ -86,7 +86,7 @@ export function MainHeader() {
                     <Pressable className='items-center'>
                         <Image source={IMAGES.TheChallengeLogo} style={{ width: 140, height: 70 }} contentFit="cover" />
                         <View
-                            style={{ boxShadow: boxShadow().button.boxShadow, height: 40, width: 140, borderWidth: 1.5, marginTop: -10 }}
+                            style={{ boxShadow: boxShadow().button.boxShadow, width: 140, height: 40, borderWidth: 1.5, marginTop: -10 }}
                             className="bg-secondary-500 rounded-xl items-center justify-center border-error relative -z-10"
                         >
                             <Text

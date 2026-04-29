@@ -1,4 +1,4 @@
-import GadghaLogo from "@/assets/images/gadha-logo.png";
+import GadghaLogo from "@/assets/images/gadha-logo.jpeg";
 import TheChallengeLogo from "@/assets/images/theChallenge-logo.png";
 import TheLiarLogo from "@/assets/images/theLiar-logo.png";
 import Coin from "@/assets/images/coin.png";

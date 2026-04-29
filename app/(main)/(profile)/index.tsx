@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useTheme } from "@react-navigation/native";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import ProfileLinkIcon from "@/src/components/layout/profile/ProfileLinkIcon";
 import GenericModal from "@/src/components/shared/modal/GenericModalContent";
@@ -11,11 +12,14 @@ import Container from "@/src/components/shared/Container";
 import { useAuth } from "@/src/hooks/useAuth";
 import { boxShadow } from "@/src/utils/cn";
 import { queryClient } from "@/src/lib/query-client";
+import useConfigStore from "@/src/stores/config.store";
 
 export default function Index() {
+    const { dark } = useTheme()
+    const { logout, isLoggingOut } = useAuth()
     const [showModal, setShowModal] = useState(false);
     const [notifications, setNotifications] = useState(true)
-    const { logout, isLoggingOut } = useAuth()
+    const toggleTheme = useConfigStore(store => store.toggleTheme)
 
     const handleSignout = () => {
         logout();
@@ -66,58 +70,55 @@ export default function Index() {
                             <ProfileLinkIcon>
                                 <Ionicons name="call-outline" size={24} color="#00A6DA" />
                             </ProfileLinkIcon>
-                            <View>
-                                <Text className="font-cairo-medium">الدعم</Text>
-                            </View>
-                            <View >
-                                <Ionicons name="chevron-back" size={24} color="#00A6DA" />
-                            </View>
+                            <Text className="font-cairo-medium">الدعم</Text>
+                            <Ionicons name="chevron-back" size={24} color="#00A6DA" />
                         </Pressable>
                     </View>
                     <View className="flex-1 bg-white items-center py-2 gap-y-4 rounded-lg border border-secondary-500">
-                        <View
-                            className="bg-white flex-row w-full items-center justify-between py-2 px-4">
+                        <View className="bg-white flex-row w-full items-center justify-between py-2 px-4">
                             <ProfileLinkIcon>
                                 <Ionicons name="notifications" size={24} color="#00A6DA" />
                             </ProfileLinkIcon>
-                            <View>
-                                <Text className="font-cairo-medium">إشعارات</Text>
-                            </View>
-                            <View>
-                                <Switch value={notifications} onValueChange={setNotifications} />
-                            </View>
+                            <Text className="font-cairo-medium">إشعارات</Text>
+                            <Switch value={notifications} onValueChange={setNotifications} />
                         </View>
-                        <Pressable
-                            onPress={() => router.navigate("/(profile)/history")}
-                            className="bg-white flex-row w-full items-center justify-between py-2 px-4">
+                        <View className="bg-white flex-row w-full items-center justify-between py-2 px-4">
                             <ProfileLinkIcon>
-                                <Ionicons name="refresh-outline" className="bg-white border border-primary-500 rounded-full" size={24} color="#00A6DA" />
+                                <MaterialCommunityIcons name="lightbulb-on-10" size={24} color="#00A6DA" style={{ transform: [{ rotate: '180deg' }] }} />
                             </ProfileLinkIcon>
-                            <View>
-                                <Text className="font-cairo-medium">العابي السابقة</Text>
-                            </View>
-                            <View>
-                                <Ionicons name="chevron-back" size={24} color="#00A6DA" />
-                            </View>
-                        </Pressable>
+                            <Text className="font-cairo-medium">الوضع الفاتج</Text>
+                            <Switch value={!dark} onValueChange={toggleTheme} />
+                        </View>
                     </View>
                 </View>
 
-                <Pressable
-                    style={boxShadow().button}
-                    onPress={() => setShowModal(true)}
-                    className="bg-white w-1/2 flex-row gap-6 items-center justify-between py-3 px-4 rounded-lg border border-secondary-500"
-                >
-                    <ProfileLinkIcon bgColor="bg-error">
-                        <Ionicons name="log-out-outline" className="rotate-180" color="white" size={24} />
-                    </ProfileLinkIcon>
-                    <View>
+                <View className="flex-row gap-6 my-4">
+                    <Pressable
+                        onPress={() => router.navigate("/(profile)/history")}
+                        className="bg-white flex-1 flex-row items-center justify-between py-3 px-4 rounded-lg border border-secondary-500">
+                        <ProfileLinkIcon>
+                            <Ionicons name="refresh-outline" className="bg-white border border-primary-500 rounded-full" size={24} color="#00A6DA" />
+                        </ProfileLinkIcon>
+                        <View>
+                            <Text className="font-cairo-medium">العابي السابقة</Text>
+                        </View>
+                        <View>
+                            <Ionicons name="chevron-back" size={24} color="#00A6DA" />
+                        </View>
+                    </Pressable>
+                    <Pressable
+                        style={boxShadow().button}
+                        onPress={() => setShowModal(true)}
+                        className="bg-white flex-1 flex-row gap-6 items-center justify-between py-3 px-4 rounded-lg border border-secondary-500"
+                    >
+                        <ProfileLinkIcon bgColor="bg-error">
+                            <Ionicons name="log-out-outline" className="rotate-180" color="white" size={24} />
+                        </ProfileLinkIcon>
                         <Text className="font-cairo-medium">خروج</Text>
-                    </View>
-                    <View>
                         <Ionicons name="chevron-back" size={24} color="#00A6DA" />
-                    </View>
-                </Pressable>
+                    </Pressable>
+                </View>
+
             </ScrollView>
             <AppModal
                 visible={showModal}

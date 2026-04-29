@@ -122,6 +122,9 @@ importers:
       react-native-gesture-handler:
         specifier: ~2.28.0
         version: 2.28.0(react-native-tvos@0.81.5-2)(react@19.1.0)
+      react-native-inappbrowser-reborn:
+        specifier: ^3.7.1
+        version: 3.7.1(react-native-tvos@0.81.5-2)
       react-native-keyboard-controller:
         specifier: 1.18.5
         version: 1.18.5(react-native-reanimated@4.1.7(react-native-tvos@0.81.5-2)(react-native-worklets@0.5.1(@babel/core@7.29.0)(react-native-tvos@0.81.5-2)(react@19.1.0))(react@19.1.0))(react-native-tvos@0.81.5-2)(react@19.1.0)
@@ -3046,6 +3049,10 @@ packages:
     resolution: {integrity: sha512-7x81NCL719oNbsq/3mh+hVrAWmFuEYUqrq/Iw3kUzH8ReypT9QQ0BLoJS7/G9k6N81XjW4qHWtjWwe/9eLy1EQ==}
     engines: {node: '>=12'}
 
+  opencollective-postinstall@2.0.3:
+    resolution: {integrity: sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==}
+    hasBin: true
+
   ora@3.4.0:
     resolution: {integrity: sha512-eNwHudNbO1folBP3JsZ19v9azXWtQZjICdr3Q0TDPIaeBQ3mXLrh54wM+er0+hSp+dWKf+Z8KM58CYzEyIYxYg==}
     engines: {node: '>=6'}
@@ -3345,6 +3352,11 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
+
+  react-native-inappbrowser-reborn@3.7.1:
+    resolution: {integrity: sha512-4HSomJzElAqzJs5ORQmYY79fBQ/33WRQ1tScyHaREfvpLpZfoMX1moopGaytXGmakmYmR9RaYWOYZaZr9bZoOw==}
+    peerDependencies:
+      react-native: '>=0.56'
 
   react-native-is-edge-to-edge@1.3.1:
     resolution: {integrity: sha512-NIXU/iT5+ORyCc7p0z2nnlkouYKX425vuU1OEm6bMMtWWR9yvb+Xg5AZmImTKoF9abxCPqrKC3rOZsKzUYgYZA==}
@@ -7605,6 +7617,8 @@ snapshots:
       is-docker: 2.2.1
       is-wsl: 2.2.0
 
+  opencollective-postinstall@2.0.3: {}
+
   ora@3.4.0:
     dependencies:
       chalk: 2.4.2
@@ -7867,6 +7881,12 @@ snapshots:
       hoist-non-react-statics: 3.3.2
       invariant: 2.2.4
       react: 19.1.0
+      react-native: react-native-tvos@0.81.5-2(@babel/core@7.29.0)(@types/react@19.1.17)(react-native-tvos@0.81.5-2)(react@19.1.0)
+
+  react-native-inappbrowser-reborn@3.7.1(react-native-tvos@0.81.5-2):
+    dependencies:
+      invariant: 2.2.4
+      opencollective-postinstall: 2.0.3
       react-native: react-native-tvos@0.81.5-2(@babel/core@7.29.0)(@types/react@19.1.17)(react-native-tvos@0.81.5-2)(react@19.1.0)
 
   react-native-is-edge-to-edge@1.3.1(react-native-tvos@0.81.5-2)(react@19.1.0):

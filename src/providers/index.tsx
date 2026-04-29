@@ -33,6 +33,18 @@ export const Providers = ({ children }: PropsWithChildren) => {
                             width: Dimensions.get("window").width - 100,
                         }
                     }}
+                    toastOptions={{
+                        error: {
+                            borderWidth: 1,
+                            borderStyle: "solid",
+                            borderColor: "#ef4444"
+                        },
+                        success: {
+                            borderWidth: 1,
+                            borderStyle: "solid",
+                            borderColor: "#22c55e"
+                        },
+                    }}
                 />
             </GestureHandlerRootView>
         </SpatialNavigationProvider>
