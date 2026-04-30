@@ -6,10 +6,7 @@ import { Redirect } from "expo-router";
 export default function Index() {
   const hasLaunched = mmkvStorage.getBoolean(HAS_LAUNCHED);
 
-  const status = useAuthStore(s => s.status);
-
-  console.log({status});
-  
+  const status = useAuthStore(s => s.status);  
 
   if (!hasLaunched) {
     return <Redirect href="/(welcome)" />;

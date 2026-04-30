@@ -41,11 +41,9 @@ export default function QuestionLayout() {
                 <View className='flex-1 mb-2 items-center me-1'>
                     <View className='relative w-full justify-center'>
                         {!pathname.includes("answer") && (
-                            <Text
-                                style={{ fontSize: fontScale(30) }}
-                                className='text-white font-bagel-regular absolute top-2 start-1 z-10'>
-                                {currentTeam.name || ""}
-                            </Text>
+                            <View className='absolute top-2 start-1 z-10'>
+                                <ShadowedText fontSize={34} content={currentTeam.name || ""} fillColor={"#fff"} />
+                            </View>
                         )}
 
                         <Text className='text-error bg-white px-4 py-1.5 font-cairo-bold text-xl absolute border border-error rounded-md' style={{ end: "40%", top: 2 }}>

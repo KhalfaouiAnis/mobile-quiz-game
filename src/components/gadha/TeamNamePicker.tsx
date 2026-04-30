@@ -57,7 +57,7 @@ export default function TeamNamePicker({ control, name }: Props) {
         <View collapsable={false}>
             <View
                 className="bg-secondary-500 border border-error"
-                style={{ boxShadow: boxShadow().button.boxShadow, width: scale(295), height: verticalScale(60), position: "relative", borderRadius: 8 }}
+                style={{ boxShadow: boxShadow().boxShadow, width: scale(295), height: verticalScale(60), position: "relative", borderRadius: 8 }}
             >
                 <TextInput
                     className="text-primary-500 font-cairo-bold rounded-lg ps-4"
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
         alignItems: "center",
         justifyContent: "center",
-        ...boxShadow(0, 4, 9).button,
+        ...boxShadow(0, 4, 9),
     },
     dropdown: {
         position: "absolute",
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         width: "auto",
         padding: 4,
-        ...boxShadow().button,
+        ...boxShadow(),
     },
     listContent: {
         gap: 12,

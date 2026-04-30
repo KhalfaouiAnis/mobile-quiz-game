@@ -81,7 +81,5 @@ export const useGadhaGameStore = create<GameState>()((set) => ({
   },
 }));
 
-export const useGadhaTeam = (teamIndex: number) =>
-  useGadhaGameStore(useShallow((s) => s.teams[teamIndex].is_current_turn));
 export const useGadhaGameActions = () =>
   useGadhaGameStore(useShallow((s) => s.actions));

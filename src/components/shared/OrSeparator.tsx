@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     },
     line: {
         width: '50%',
-        height: 1,
-        backgroundColor: '#F1190E',
+        height: 1.5,
+        backgroundColor: '#00A6DA',
         position: 'absolute',
     },
     textWrapper: {

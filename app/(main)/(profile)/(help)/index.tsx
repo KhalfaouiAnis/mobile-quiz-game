@@ -15,14 +15,14 @@ export default function Index() {
                         <Pressable
                             onPress={() => router.navigate("/chat")}
                             className="flex-row items-center gap-4 py-4 px-16 rounded-xl border border-primary-500"
-                            style={boxShadow(4).button}>
+                            style={boxShadow(4)}>
                             <Ionicons name="headset-outline" size={24} color="#00AA30" />
                             <Text className="font-cairo-bold">خدمة العملاء</Text>
                         </Pressable>
                         <Pressable
                             onPress={() => router.navigate("/chat")}
                             className="flex-row items-center gap-4 py-4 px-16 rounded-xl border border-primary-500"
-                            style={boxShadow(4).button}>
+                            style={boxShadow(4)}>
                             <Ionicons name="logo-whatsapp" size={24} color="#25D366" />
                             <Text className="font-cairo-bold">واتساب</Text>
                         </Pressable>

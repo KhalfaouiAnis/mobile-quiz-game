@@ -3,16 +3,16 @@ import { memo } from "react";
 import { Image } from "expo-image";
 import { boxShadow } from "@/src/utils/cn";
 import { IMAGES } from "@/src/constants/images";
-import { fontScale, scale, verticalScale } from "@/src/utils/dimensions";
+import { fontScale, scale, SCREEN, verticalScale } from "@/src/utils/dimensions";
 import { GameGadhaCategory, GameGadhaSubcategory } from "@/src/types/game.gadha.types";
 import BackArrow from "../../shared/BackArrow";
 
-export const NUM_COLUMNS = 6;
+export const NUM_COLUMNS = 5;
+export const ITEM_GAP = 10;
 export const FOOTER_HEIGHT = verticalScale(180);
-export const ITEM_GAP = 8;
-export const CARD_WIDTH = scale(140)
+export const CARD_WIDTH = (SCREEN.width / (NUM_COLUMNS)) - 12
 
-export const CARD_HEIGHT = verticalScale(90) + 4 + 26 + 12; // avatar + gap + label(2lines) + vertical padding
+export const CARD_HEIGHT = verticalScale(90) + 4 + ITEM_GAP + 12; // avatar + gap + label(2lines) + vertical padding
 export const ROW_HEIGHT = CARD_HEIGHT + ITEM_GAP;
 export const SECTION_HEADER_HEIGHT = 54; // top margin(8) + box(~36) + bottom margin(10)
 
@@ -56,15 +56,15 @@ export const ItemCard = memo(({ item, onPress, isSelected }: ItemCardProps) => {
             onPress={() => onPress(item)}
             className="relative px-1 rounded-2xl items-center justify-center"
             style={{
-                width: scale(130),
-                height: verticalScale(90),
+                width: CARD_WIDTH,
+                height: CARD_HEIGHT,
                 backgroundColor: isSelected ? "#00A6DA" : undefined,
-                boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").button.boxShadow,
+                boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").boxShadow,
             }}
         >
             {item.image_url ? (
                 <Image
-                    style={{ width: scale(48), height: scale(48), borderRadius: 50 }}
+                    style={{ width: scale(68), height: scale(68), borderRadius: 50 }}
                     source={item.image_url ? { uri: item.image_url } : IMAGES.FilmsCategory}
                     contentFit="cover"
                 />
@@ -80,10 +80,9 @@ export const ItemCard = memo(({ item, onPress, isSelected }: ItemCardProps) => {
                     </Text>
                 </View>
             )}
-
             <Text
-                className="font-cairo-semibold px-1 text-center"
-                style={{ fontSize: fontScale(18) }}
+                className="font-cairo-semibold px-1 mt-1 text-center"
+                style={{ fontSize: fontScale(15) }}
                 ellipsizeMode="tail"
                 numberOfLines={1}
             >
@@ -149,7 +148,7 @@ export const SubcategoryRow = memo(({ row, selectedSet, onSubPress }: Subcategor
 export const SectionHeader = memo(({ title }: { title: string }) => (
     <View
         className="py-1 border border-secondary-500 rounded-md self-center my-4"
-        style={[boxShadow(4, 4, 4, 0, "rgb(000 000 000 / 0.50)").button, { width: scale(420), paddingHorizontal: scale(80) }]}
+        style={[boxShadow(4, 4, 4, 0, "rgb(000 000 000 / 0.50)"), { width: scale(420), paddingHorizontal: scale(80) }]}
     >
         <Text
             style={{ fontSize: fontScale(24) }}

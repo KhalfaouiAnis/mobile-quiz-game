@@ -97,7 +97,7 @@ export const FocusableButton: React.FC<FocusableButtonProps> = ({
         return (
           <View
             style={[
-              styles.button,
+              styles,
               { backgroundColor: bg },
               v.border ? { borderWidth: 1, borderColor: v.border } : null,
               disabled && styles.disabled,

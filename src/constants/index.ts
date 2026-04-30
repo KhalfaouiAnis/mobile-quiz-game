@@ -1,4 +1,3 @@
-import { Platform } from "react-native";
 import { IMAGES } from "./images";
 import { SubscriptionPlan } from "../types/index.types";
 
@@ -9,9 +8,6 @@ export const CONFIGURATION_STORAGE_KEY = "GADHA_PREFERENCES_STORAGE";
 export const HAS_LAUNCHED = "has_launched";
 
 export const AUTH_USER_QUERY_KEY = ["auth", "user"] as const;
-
-export const TEXT_SCALE_FACOTR = Platform.isTVOS ? 10 : 1;
-export const VIEW_SCALE_FACTOR = Platform.isTVOS ? 10 : 1;
 
 export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
   {

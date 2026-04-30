@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Alert, Image, ScrollView, Text, View } from "react-native";
 import AppButton from "@/src/components/shared/button/AppButton";
 import AuthHeader from "@/src/components/layout/AuthHeader";
 import Container from "@/src/components/shared/Container";
@@ -18,24 +18,40 @@ import { IMAGES } from "@/src/constants/images";
 import { boxShadow } from "@/src/utils/cn";
 import { useQueryClient } from "@tanstack/react-query";
 import { packageIcon } from "@/src/components/layout/profile/SubscriptionsWrapper";
+import { useInAppPayment } from "@/src/hooks/subscription/useInAppPayment";
 
 export default function Index() {
     const { sub } = useLocalSearchParams<{ sub: string }>();
     const [showModal, setShowModal] = useState(false);
     const { mutate, isPending } = usePurchasePackage()
+    const { initiatePayment, status, error, reset } = useInAppPayment();
     const queryClient = useQueryClient();
     const { data: subscriptions, isLoading: loadingPurchases } = useSubscriptionsQuery()
     const { data: packageInfo, isLoading: loadingPackageInfo } = usePackageInfoQuery(Number(sub))
 
     const handlePurchase = () => {
-        setTimeout(() => setShowModal(true), 500)
+        // setTimeout(() => setShowModal(true), 500)
         // mutate(Number(sub), {
         //     onSuccess() {
         //         setShowModal(true)
         //         queryClient.invalidateQueries({ queryKey: ["subscriptions"] })
         //     }
         // })
+        initiatePayment({
+            amount: { currency: "KWD", value: 2 },
+            customer: { fullName: "Anis", phoneNumber: "00000000" },
+            order: { placedAt: new Date(), products: [{ nameAr: "الاشتراك", nameEn: "Subscription", price: 2, qty: 1 }] }
+        });
     }
+
+    useEffect(() => {
+        if (status === 'error' && error) {
+            Alert.alert('Payment Error', error, [{ text: 'OK', onPress: reset }]);
+        }
+        if (status === 'cancelled') {
+            Alert.alert('Cancelled', 'Your payment was cancelled.', [{ text: 'OK', onPress: reset }]);
+        }
+    }, [status, error]);
 
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader showLogo={false} label="إدارة الاشتراك" />}>
@@ -44,7 +60,7 @@ export default function Index() {
                 contentContainerClassName="items-center gap-4 my-2 mx-24 p-3 rounded-3xl border-[4px] border-secondary-500 bg-white"
             >
                 <View
-                    style={[boxShadow(4, 4, 4, 0).button, { width: 340 }]}
+                    style={[boxShadow(4, 4, 4, 0), { width: 340 }]}
                     className="border border-gray-300 rounded-2xl pb-4"
                 >
                     <View

@@ -1,5 +1,4 @@
 import { ClassValue, clsx } from "clsx";
-import { StyleSheet } from "react-native";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -11,19 +10,16 @@ export function boxShadow(
   offsetY: number = 4,
   blurRadius: number = 4,
   spreadDistance: number = 0,
-  color: string = "rgba(000 000 000 / 0.25)"
+  color: string = "rgba(000 000 000 / 0.25)",
+  inset: boolean = false,
 ) {
-  return StyleSheet.create({
-    button: {
-      boxShadow: [
-        {
-          offsetX,
-          offsetY,
-          blurRadius,
-          spreadDistance,
-          color,
-        },
-      ],
-    },
-  });
+  return {
+    boxShadow: [{ offsetX, offsetY, blurRadius, spreadDistance, color, inset }],
+  };
+}
+
+export function mergeBoxShadows(...shadows: ReturnType<typeof boxShadow>[]) {
+  return {
+    boxShadow: shadows.flatMap((s) => s.boxShadow),
+  };
 }

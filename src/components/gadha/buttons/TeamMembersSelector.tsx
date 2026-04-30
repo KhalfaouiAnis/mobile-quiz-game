@@ -42,7 +42,7 @@ export default function TeamMembersSelector({ control, name, step = 1, colors: {
                 return (
                     <View
                         style={{
-                            boxShadow: boxShadow().button.boxShadow,
+                            boxShadow: boxShadow().boxShadow,
                             height: verticalScale(60),
                             paddingHorizontal: 30,
                             borderColor: border,

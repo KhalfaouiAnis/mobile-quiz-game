@@ -26,7 +26,7 @@ export default function AppButton({ title, onPress, loading, disabled, rounded =
             style={{
                 width,
                 borderRadius: br(),
-                boxShadow: boxShadow().button.boxShadow,
+                boxShadow: boxShadow().boxShadow,
             }}
             className={cn("items-center justify-center py-2 px-4 border border-secondary-500 disabled:bg-gray-400", {
                 "bg-[#F1190E]": danger,

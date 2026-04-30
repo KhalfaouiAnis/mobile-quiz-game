@@ -7,7 +7,7 @@ export default function ReportingModal() {
     return (
         <View
             className="items-center justify-center px-10 pt-10 bg-white rounded-xl"
-            style={boxShadow(0, 16, 32, 0, "rgb(000 000 000 / 0.23)").button}
+            style={boxShadow(0, 16, 32, 0, "rgb(000 000 000 / 0.23)")}
         >
             <Text
                 style={{ fontSize: fontScale(16) }}
@@ -26,7 +26,7 @@ export default function ReportingModal() {
             </View>
             <View
                 style={{
-                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow, padding: 2,
+                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").boxShadow, padding: 2,
                     borderRadius: 20, height: verticalScale(100), width: scale(400), marginTop: 6,
                 }}
             >
@@ -41,7 +41,7 @@ export default function ReportingModal() {
             <Pressable>
                 <View
                     style={{
-                        boxShadow: boxShadow().button.boxShadow,
+                        boxShadow: boxShadow().boxShadow,
                         height: verticalScale(48),
                         width: scale(140),
                         marginVertical: 12,

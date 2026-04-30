@@ -16,7 +16,7 @@ export default function SubscriptionCard({ iconUrl, isActive, selected, name, de
     return (
         <Pressable
             onPress={onPress}
-            style={[boxShadow(4, 4, 4, 0).button, {
+            style={[boxShadow(4, 4, 4, 0), {
                 borderWidth: selected ? 1 : undefined,
                 borderColor: selected ? "#F1190E" : undefined,
                 width: "auto", height: verticalScale(80), flex: 1

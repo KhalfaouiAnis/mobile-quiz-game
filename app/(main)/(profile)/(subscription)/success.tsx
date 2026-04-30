@@ -8,7 +8,7 @@ export default function Success() {
             header={
                 <View
                     className="items-center justify-center py-3 px-20 rounded-lg bg-secondary-500"
-                    style={boxShadow(0, 0, 50, 0, "rgba(141,247,251,1)").button}>
+                    style={boxShadow(0, 0, 50, 0, "rgba(141,247,251,1)")}>
                     <Text className="font-semibold">قدها</Text>
                 </View>
             }
@@ -16,7 +16,7 @@ export default function Success() {
             <View className="flex-1 items-center justify-center gap-y-8 bg-primary-500">
                 <View
                     className="bg-white items-center justify-center py-3 px-20 rounded-lg border border-secondary-500"
-                    style={boxShadow().button}>
+                    style={boxShadow()}>
                     <Text className="font-semibold">قدها</Text>
                 </View>
             </View>

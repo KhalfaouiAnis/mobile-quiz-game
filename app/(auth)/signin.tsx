@@ -15,9 +15,6 @@ import { OrSeparator } from "@/src/components/shared/OrSeparator";
 import { loginSchema, type LoginFormData } from '@/src/schemas/auth.schemas';
 import { useLogin } from '@/src/hooks/mutations/useLogin';
 import { OAuthButtons } from "@/src/components/auth/OAuthButtons";
-import { configureRevenueCat, fetchCustomerInfo } from "@/src/lib/revenuecat/service";
-import { queryClient } from "@/src/lib/query-client";
-import { CUSTOMER_INFO_QUERY_KEY } from "@/src/hooks/subscription/useCustomerInfo";
 import { scale } from "@/src/utils/dimensions";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
@@ -39,10 +36,10 @@ export default function SignInScreen() {
             async onSuccess(data) {
                 // await configureRevenueCat(data.user.id);
                 toast.success("authenticated successfully")
-                queryClient.prefetchQuery({
-                    queryKey: CUSTOMER_INFO_QUERY_KEY,
-                    queryFn: fetchCustomerInfo,
-                });
+                // queryClient.prefetchQuery({
+                //     queryKey: CUSTOMER_INFO_QUERY_KEY,
+                //     queryFn: fetchCustomerInfo,
+                // });
             }
         });
     };
@@ -86,7 +83,7 @@ export default function SignInScreen() {
                                 onPress={handleSubmit(onSubmit)}
                             />
                         </View>
-                        <View className="w-1/3 my-1"><OrSeparator label={t("welcome.or")} /></View>
+                        <View className="w-1/2 my-1"><OrSeparator label={t("welcome.or")} /></View>
                         <OAuthButtons onError={(msg) => Alert.alert('Error', msg)} />
                     </ViewWrapper>
                 </ScrollView>

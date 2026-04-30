@@ -13,7 +13,7 @@ const AuthHeader = ({ label, showLogo = true }: Props) => {
             <ArrowBack />
             <View className='mt-2'>
                 {showLogo && (
-                    <Image source={IMAGES.GadghaLogo} style={{ width: 140, height: 50, objectFit: "fill", borderRadius: 50 }} />
+                    <Image source={IMAGES.GadghaLogo} style={{ width: 110, height: 50, objectFit: "fill", borderRadius: 50 }} />
                 )}
                 {label && (
                     <Text className='text-white text-center text-xl font-cairo-bold'>{label}</Text>

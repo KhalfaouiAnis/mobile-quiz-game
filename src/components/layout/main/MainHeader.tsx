@@ -11,7 +11,7 @@ export function MainHeader() {
 
     return (
         <View
-            style={{ boxShadow: boxShadow(0, 0, 50, 0, "rgba(141 247 251 / 1)").button.boxShadow }}
+            style={{ boxShadow: boxShadow(0, 0, 50, 0, "rgba(141 247 251 / 1)").boxShadow }}
             className="relative flex-row justify-between px-2 bg-secondary-500">
             <View className='flex-row items-center justify-center relative z-20'>
                 <Link asChild href="/(profile)">
@@ -32,7 +32,7 @@ export function MainHeader() {
                     <Pressable className='items-center'>
                         <Image source={IMAGES.TheLiarLogo} style={{ width: 140, height: 70 }} contentFit="cover" />
                         <View
-                            style={{ boxShadow: boxShadow().button.boxShadow, height: 40, width: 140, borderWidth: 1.5, marginTop: -10 }}
+                            style={{ boxShadow: boxShadow().boxShadow, height: 40, width: 140, borderWidth: 1.5, marginTop: -10 }}
                             className="bg-secondary-500 rounded-xl items-center justify-center border-error relative -z-10"
                         >
                             <Text className='font-cairo-bold' style={{ fontSize: fontScale(18) }}>
@@ -43,7 +43,7 @@ export function MainHeader() {
                 </Link>
                 <Link disabled asChild href="/(liar)/join">
                     <Pressable
-                        style={boxShadow().button}
+                        style={boxShadow()}
                         className='bg-primary-500 rounded-xl p-1 border border-secondary-500 -top-5 items-start'
                     >
                         <Text
@@ -60,7 +60,7 @@ export function MainHeader() {
                     <Pressable className='items-center'>
                         <Image source={IMAGES.GadghaLogo} style={{ width: 140, height: 70, objectFit: "fill", borderRadius: 50 }} contentFit="cover" />
                         <View
-                            style={{ boxShadow: boxShadow().button.boxShadow, height: 40, width: 140, borderWidth: 1.5, marginTop: -5 }}
+                            style={{ boxShadow: boxShadow().boxShadow, height: 40, width: 140, borderWidth: 1.5, marginTop: -5 }}
                             className="bg-secondary-500 rounded-xl items-center justify-center border-error relative -z-10"
                         >
                             <Text
@@ -74,7 +74,7 @@ export function MainHeader() {
             <View className='mt-2 flex-row items-center justify-center absolute end-1 top-14 z-10'>
                 <Link disabled asChild href="/(challenge)/join">
                     <Pressable
-                        style={boxShadow().button}
+                        style={boxShadow()}
                         className='bg-primary-500 rounded-xl p-1 border border-secondary-500 -top-5 items-start'
                     >
                         <Text
@@ -86,7 +86,7 @@ export function MainHeader() {
                     <Pressable className='items-center'>
                         <Image source={IMAGES.TheChallengeLogo} style={{ width: 140, height: 70 }} contentFit="cover" />
                         <View
-                            style={{ boxShadow: boxShadow().button.boxShadow, width: 140, height: 40, borderWidth: 1.5, marginTop: -10 }}
+                            style={{ boxShadow: boxShadow().boxShadow, width: 140, height: 40, borderWidth: 1.5, marginTop: -10 }}
                             className="bg-secondary-500 rounded-xl items-center justify-center border-error relative -z-10"
                         >
                             <Text

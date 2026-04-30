@@ -18,13 +18,13 @@ export default function GenericModal({ description, cancelButton, actionButton }
     return (
         <View
             className="items-center justify-center p-6 bg-white rounded-xl"
-            style={boxShadow(0, 16, 32, 0, "rgb(000 000 000 / 0.23)").button}
+            style={boxShadow(0, 16, 32, 0, "rgb(000 000 000 / 0.23)")}
         >
             <Text className="font-cairo-semibold text-xl">{description}</Text>
             <View className="flex-row items-center gap-4 mt-10">
                 <Pressable
                     onPress={cancelButton.action}
-                    style={{ width: 140, height: 44, boxShadow: boxShadow().button.boxShadow, borderRadius: 16, borderColor: "#A8A8A8", borderWidth: 0.5 }}
+                    style={{ width: 140, height: 44, boxShadow: boxShadow().boxShadow, borderRadius: 16, borderColor: "#A8A8A8", borderWidth: 0.5 }}
                     className="bg-white items-center justify-center">
                     <Text className="font-cairo-bold text-black">{cancelButton.title}</Text>
                 </Pressable>

@@ -82,7 +82,7 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
                     width: scale(103),
                     borderColor: "#00a6da",
                     height: verticalScale(90),
-                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow
+                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").boxShadow
                 }}
                 className="bg-white items-center justify-center rounded-lg"
             >
@@ -97,7 +97,7 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
             </View>
             <View
                 style={{
-                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow,
+                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").boxShadow,
                     height: verticalScale(190),
                     borderColor: "#00a6da",
                     width: scale(103),
@@ -124,13 +124,13 @@ export default function GameActions({ isTeamA, team, handleBoost, boostActive }:
                 boost={{ disabled: team?.is_boost_used || boostActive, onPress: handleBoost }} />
             <Pressable
                 onPress={() => setShowModal(true)}
-                className="bg-white flex-row items-center justify-around border-2 rounded-lg"
+                className="bg-white flex-row items-start justify-around border-2 rounded-lg"
                 style={{
                     borderWidth: 3,
                     width: scale(103),
                     borderColor: "#00a6da",
                     height: verticalScale(46),
-                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow
+                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").boxShadow
                 }}
             >
                 <Text

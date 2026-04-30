@@ -7,7 +7,7 @@ import { boxShadow } from "@/src/utils/cn";
 export default function PaymentSucceedModal({ onClose }: { onClose: () => void }) {
     return (
         <View className="flex-1 my-12 items-center justify-center bg-white p-3 rounded-3xl border-[10px] border-secondary-500"
-            style={[boxShadow(0, 16, 32, 0, "rgb(000 000 000 / 0.23)").button,
+            style={[boxShadow(0, 16, 32, 0, "rgb(000 000 000 / 0.23)"),
             {
                 width: 400,
                 height: 280

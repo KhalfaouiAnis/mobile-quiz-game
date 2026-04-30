@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
-import Container from "@/src/components/shared/Container";
-import { CreateGadhaGameSession, CreateGadhaGameSessionSchema } from "@/src/types/game.gadha.types";
 import { COMMON_TEAM_NAMES } from "@/src/constants";
-import SetupSession from "@/src/components/gadha/SetupSession";
+import Container from "@/src/components/shared/Container";
+import SessionSetup from "@/src/components/gadha/SessionSetup";
+import { CreateGadhaGameSession, CreateGadhaGameSessionSchema } from "@/src/types/game.gadha.types";
 
 export default function Index() {
     const methods = useForm<CreateGadhaGameSession>({
@@ -18,7 +18,7 @@ export default function Index() {
     return (
         <Container>
             <FormProvider {...methods}>
-                <SetupSession />
+                <SessionSetup />
             </FormProvider>
         </Container>
     );

@@ -41,7 +41,7 @@ export default function CreateSession() {
                 style={{
                     width: scale(70),
                     height: verticalScale(60),
-                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").button.boxShadow
+                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").boxShadow
                 }}
             >
                 <Feather name="x-circle" size={scale(14)} color="#F1190E" className="absolute top-0.5 start-0" />
@@ -65,7 +65,7 @@ export default function CreateSession() {
                 style={{
                     width: scale(140),
                     height: verticalScale(90),
-                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").button.boxShadow,
+                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").boxShadow,
                     backgroundColor: selectedSubs.indexOf(item) > -1 ? "#00A6DA" : undefined
                 }}
             >
@@ -105,7 +105,7 @@ export default function CreateSession() {
             <View className="items-center gap-4">
                 <View
                     className="py-1 border border-secondary-500 rounded-md"
-                    style={[boxShadow(4, 4, 4, 0, "rgb(000 000 000 / 0.50)").button, { width: scale(420), paddingHorizontal: 80 }]}
+                    style={[boxShadow(4, 4, 4, 0, "rgb(000 000 000 / 0.50)"), { width: scale(420), paddingHorizontal: 80 }]}
                 >
                     <Text
                         style={{ fontSize: moderateScale(24) }}
@@ -129,7 +129,7 @@ export default function CreateSession() {
     return (
         <View className="flex-1">
             <View
-                style={{ boxShadow: boxShadow().button.boxShadow, width: scale(950) }}
+                style={{ boxShadow: boxShadow().boxShadow, width: scale(950) }}
                 className="bg-white mt-2 px-2 self-center items-center relative py-1 rounded-2xl border-4 border-primary-500"
             >
                 <View className="absolute -start-4 top-2 z-20" pointerEvents="box-none">

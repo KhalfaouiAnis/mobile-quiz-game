@@ -22,7 +22,7 @@ export default function Guest() {
                 <Pressable
                     onPress={() => router.navigate("/(main)/(profile)/update")}
                     className="bg-white w-1/2 flex-row items-center py-3 px-4 rounded-lg border border-secondary-500"
-                    style={boxShadow().button}>
+                    style={boxShadow()}>
                     <ProfileLinkIcon>
                         <Ionicons name="person-outline" size={24} color="#00A6DA" />
                     </ProfileLinkIcon>
@@ -34,7 +34,7 @@ export default function Guest() {
                     </View>
                 </Pressable>
                 <View
-                    style={boxShadow().button}
+                    style={boxShadow()}
                     className="flex-1 w-1/2 my-4 bg-white items-center py-2 gap-y-4 rounded-lg border border-secondary-500">
                     <Pressable
                         onPress={() => router.navigate("/(main)/(profile)/(help)")}

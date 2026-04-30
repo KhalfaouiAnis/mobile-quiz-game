@@ -19,7 +19,7 @@ export default function GameHistoryScreen() {
     return (
         <Container backgroundColor="#00A6DA" header={<AuthHeader showLogo={false} label="العابي السابقة" />}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerClassName="items-center pb-10" className="px-6 pt-6">
-                <View className="flex-row items-center gap-6 bg-error py-2 ps-16 pe-4 rounded-2xl" style={boxShadow().button}>
+                <View className="flex-row items-center gap-6 bg-error py-2 ps-16 pe-4 rounded-2xl" style={boxShadow()}>
                     <View>
                         <Text className="font-cairo-bold text-xl text-white">الاختبار الأخير</Text>
                         <Pressable
@@ -40,7 +40,7 @@ export default function GameHistoryScreen() {
                     contentContainerClassName="flex-row gap-8 mt-1"
                 >
                     <View
-                        style={boxShadow().button}
+                        style={boxShadow()}
                         className="flex-row items-center gap-2 bg-white px-4 py-12 rounded-xl">
                         <View className="p-2 py-3 border border-secondary-500 items-center bg-white rounded-full">
                             <Text className="font-cairo-bold">قدها</Text>
@@ -52,7 +52,7 @@ export default function GameHistoryScreen() {
                         <CircularProgressIndicator value={gadhaPending ? 0 : (gadha?.completionPercentage || 0)} />
                     </View>
                     <View
-                        style={boxShadow().button}
+                        style={boxShadow()}
                         className="flex-row items-center gap-2 bg-white px-4 py-12 rounded-xl">
                         <View className="p-2 py-3 border border-secondary-500 items-center bg-white rounded-full">
                             <Text className="font-cairo-bold">التحدي</Text>
@@ -61,7 +61,7 @@ export default function GameHistoryScreen() {
                         <CircularProgressIndicator value={85} />
                     </View>
                     <View
-                        style={boxShadow().button}
+                        style={boxShadow()}
                         className="flex-row items-center gap-2 bg-white px-4 py-12 rounded-xl">
                         <View className="flex-row gap-1 p-2 py-2 border border-secondary-500 items-center bg-white rounded-full">
                             <Text className="font-cairo-bold">اللعبة</Text>

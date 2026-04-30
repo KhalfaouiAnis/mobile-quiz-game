@@ -54,7 +54,7 @@ export default function OTPInput({ numberOfElements, gameCode, onComplete }: OTP
             justifyContent: 'center',
             alignItems: 'center',
             marginHorizontal: 8,
-            boxShadow: gameCode ? undefined : boxShadow().button.boxShadow,
+            boxShadow: gameCode ? undefined : boxShadow().boxShadow,
           }}
         >
           <Text className='text-xl text-black text-center font-bagel-regular'>

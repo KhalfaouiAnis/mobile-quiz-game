@@ -31,7 +31,7 @@ export function useUpdateProfile() {
     try {
       await api.patch("auth/profile", payload);
       queryClient.invalidateQueries({ queryKey: [AUTH_USER_QUERY_KEY] });
-      toast.success(t("common.profile_pic_changed"), { duration: 4000 });
+      // toast.success(t("common.profile_pic_changed"), { duration: 4000 });
     } catch (error) {
       console.log({ error });
     }

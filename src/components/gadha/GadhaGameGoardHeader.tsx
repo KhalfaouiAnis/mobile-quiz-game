@@ -11,7 +11,7 @@ export default function GadhaGameGoardHeader({ name, image_url }: { name: string
                 borderRadius: 10,
                 width: scale(100),
                 height: verticalScale(90),
-                boxShadow:image_url ? boxShadow(5, 5, 0, 0, "rgba(000 000 000 / 1)").button.boxShadow : undefined,
+                boxShadow:image_url ? boxShadow(5, 5, 0, 0, "rgba(000 000 000 / 1)").boxShadow : undefined,
             }}
         >
             {image_url ? (

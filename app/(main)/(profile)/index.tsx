@@ -34,7 +34,7 @@ export default function Index() {
                 contentContainerClassName="items-center my-2 pb-6 px-6"
             >
                 <Pressable
-                    style={boxShadow().button}
+                    style={boxShadow()}
                     onPress={() => router.navigate("/(profile)/update")}
                     className="bg-white w-1/2 flex-row gap-6 items-center justify-between py-3 px-4 rounded-lg border border-secondary-500"
                 >
@@ -107,7 +107,7 @@ export default function Index() {
                         </View>
                     </Pressable>
                     <Pressable
-                        style={boxShadow().button}
+                        style={boxShadow()}
                         onPress={() => setShowModal(true)}
                         className="bg-white flex-1 flex-row gap-6 items-center justify-between py-3 px-4 rounded-lg border border-secondary-500"
                     >

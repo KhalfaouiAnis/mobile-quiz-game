@@ -1,8 +1,8 @@
 import { useGadhaGameTimer } from '@/src/hooks/useGameTimer';
-import LinearGradient from "react-native-linear-gradient"
-import { VIEW_SCALE_FACTOR } from '@/src/constants';
 import { View, Text, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { boxShadow, mergeBoxShadows } from '@/src/utils/cn';
+import { scale } from '@/src/utils/dimensions';
 
 interface Props {
     duration: number,
@@ -10,38 +10,49 @@ interface Props {
     externalPause?: boolean
 }
 
+const sclaedSize = scale(140)
+
 const GameTimer = ({ duration = 15, onTimeUp, externalPause }: Props) => {
     const { seconds, isActive, pause, start, restart } = useGadhaGameTimer({ duration, externalPause, onTimeUp });
 
     const textColor = seconds <= 5 ? 'text-red-500' : 'text-black';
 
+    const ballStyle = {
+        width: sclaedSize,
+        height: sclaedSize * 1.1,
+        borderRadius: 99,
+        ...mergeBoxShadows(
+            boxShadow(0, -10, 10, 0, 'rgba(217,217,217,1)', true),
+            boxShadow(0, 10, 10, 0, 'rgba(255,255,255,1)', true),
+        ),
+    };
+
     return (
-        <View className="relative items-center p-2 rounded-full">
-            <LinearGradient
-                colors={['rgba(0,0,0,0.04)', 'rgba(0,0,0,0.02)']}
-                style={{ borderRadius: 9999, position: "absolute", inset: 0 }}
-            />
-            <View className="absolute inset-0 rounded-full border border-white/50" />
-            <View className={`w-24 h-24 rounded-full items-center justify-center bg-gray-50`}>
+        <View
+            style={ballStyle}
+            className="relative items-center p-2 rounded-full justify-center"
+        >
+            <View className={`w-24 h-24 rounded-full items-center justify-center`}>
                 <Text className={`text-3xl font-bagel-regular ${textColor}`}>
                     {seconds}
                 </Text>
             </View>
             <Pressable
                 hitSlop={10}
-                disabled={(duration - seconds) === duration}
                 onPress={isActive ? pause : start}
-                className="rounded-full absolute -top-3"
+                className="rounded-full absolute -top-4"
+                disabled={(duration - seconds) === duration}
             >
-                <Ionicons name={isActive ? 'pause-circle' : "play-circle"} size={36 * VIEW_SCALE_FACTOR} color={(duration - seconds) === duration ? "#e5e7eb" : "#00A6DA"} />
+                <Ionicons name={isActive ? 'pause-circle' : "play-circle"} size={scale(50)} color={(duration - seconds) === duration ? "#e5e7eb" : "#00A6DA"} />
             </Pressable>
 
             <Pressable
                 hitSlop={10}
                 onPress={restart}
-                className="rounded-full absolute -bottom-3"
+                className="rounded-full absolute -bottom-4"
+                style={{ transform: "rotateX:-90" }}
             >
-                <Ionicons style={{ transform: "rotateX:-90" }} name="refresh-circle" size={36 * VIEW_SCALE_FACTOR} color="#00A6DA" />
+                <Ionicons name="refresh-circle" size={scale(50)} color="#00A6DA" />
             </Pressable>
         </View>
     );

@@ -53,7 +53,7 @@ export default function GadhaGameTimePicker({
         <View
             collapsable={false}
             className="items-center justify-center"
-            style={{ direction: "rtl", width: scale(155), height: verticalScale(50), borderRadius: 16, boxShadow: boxShadow().button.boxShadow }}>
+            style={{ direction: "rtl", width: scale(155), height: verticalScale(50), borderRadius: 16, boxShadow: boxShadow().boxShadow }}>
             <Pressable
                 onPress={toggle}
                 ref={triggerRef}
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 12,
         borderColor: "#00A6DA",
         borderWidth: 3,
-        ...boxShadow(0, 2, 2).button,
+        ...boxShadow(0, 2, 2),
     },
     selectOption: {
         height: verticalScale(30),
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         alignItems: "center",
         justifyContent: "center",
-        ...boxShadow(0, 4, 9).button,
+        ...boxShadow(0, 4, 9),
     },
     dropdown: {
         position: "absolute",
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         width: "auto",
         padding: 4,
-        ...boxShadow().button,
+        ...boxShadow(),
     },
     listContent: {
         gap: 12,

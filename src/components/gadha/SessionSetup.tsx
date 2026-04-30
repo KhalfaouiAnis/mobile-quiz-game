@@ -12,7 +12,7 @@ import { CreateGadhaGameSession, GameGadhaSubcategory } from "@/src/types/game.g
 import DetailView from "./listing/CategoriesDetailView";
 import CategoriesListView from "./listing/CategoriesListView";
 
-export default function SetupSession() {
+export default function SessionSetup() {
     const rawSelected: GameGadhaSubcategory[] = useWatch({ name: 'subcategoryIds', defaultValue: [] });
     const [selectedCategory, setSelectedCategory] = useState(null);
     const { setValue, getValues } = useFormContext<CreateGadhaGameSession>()
@@ -38,7 +38,7 @@ export default function SetupSession() {
                 style={{
                     width: scale(70),
                     height: verticalScale(60),
-                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").button.boxShadow
+                    boxShadow: boxShadow(4, 4, 0, 0, "rgb(0 166 218 / 1)").boxShadow
                 }}
             >
                 <Feather name="x-circle" size={scale(14)} color="#F1190E" className="absolute top-0.5 start-0" />
@@ -63,7 +63,7 @@ export default function SetupSession() {
     return (
         <View className="flex-1">
             <View
-                style={{ boxShadow: boxShadow().button.boxShadow, width: scale(950) }}
+                style={{ boxShadow: boxShadow().boxShadow, width: scale(950) }}
                 className="bg-white mt-2 px-2 self-center items-center relative py-1 rounded-2xl border-4 border-primary-500"
             >
                 <View className="absolute -start-4 top-2 z-20" pointerEvents="box-none">

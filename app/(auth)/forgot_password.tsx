@@ -16,6 +16,7 @@ import { toast } from 'sonner-native';
 import { useTranslation } from 'react-i18next';
 import { scale, verticalScale } from '@/src/utils/dimensions';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { router } from 'expo-router';
 
 type Step = 'email' | 'otp' | 'reset' | 'done';
 
@@ -76,7 +77,10 @@ export default function ForgotPasswordScreen() {
 
     const onSubmitReset = (data: ResetPasswordFormData) => {
         resetMutation.mutate({ resetToken, newPassword: data.newPassword }, {
-            onSuccess: () => setStep('done'),
+            onSuccess: () => {
+                router.replace("/signin")
+                toast.info(t('welcome.password_changed'))
+            },
             onError: (err: any) => {
                 const msg = err?.response?.data?.message ?? 'Reset failed';
                 toast.error(msg)
@@ -145,7 +149,10 @@ export default function ForgotPasswordScreen() {
                             </View>
                         </>)}
                         {stepIndex === 2 && (<>
-                            <View className="flex-row gap-4 mt-6">
+                            <View style={{ width: scale(600), minHeight: verticalScale(54) }} className="flex-row gap-4 mt-6">
+                                {/* <View
+                                    style={{ width: scale(270), minHeight: verticalScale(54) }}
+                                > */}
                                 <AppTextInput
                                     required
                                     secureTextEntry
@@ -154,6 +161,10 @@ export default function ForgotPasswordScreen() {
                                     label={t("welcome.new_pass")}
                                     error={resetForm.formState.errors.newPassword?.message}
                                 />
+                                {/* </View> */}
+                                {/* <View
+                                    style={{ width: scale(270), minHeight: verticalScale(54) }}
+                                > */}
                                 <AppTextInput
                                     required
                                     secureTextEntry
@@ -162,6 +173,7 @@ export default function ForgotPasswordScreen() {
                                     label={t("welcome.confirm_new_pass")}
                                     error={resetForm.formState.errors.confirmPassword?.message}
                                 />
+                                {/* </View> */}
                             </View>
                             <View className="mt-10" pointerEvents={resetMutation.isPending ? "none" : "auto"}>
                                 <AppButton

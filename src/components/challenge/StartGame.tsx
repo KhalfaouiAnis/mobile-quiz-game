@@ -24,7 +24,7 @@ export default function StartGame2({ setCurrentStep }: { setCurrentStep: Dispatc
             </View>
             <View className="flex-row items-center justify-between w-full px-8 mt-4">
                 <Pressable className="flex-row items-center justify-between p-3 bg-white rounded-2xl"
-                    style={[boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button, { width: 200 }]}
+                    style={[boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)"), { width: 200 }]}
                 >
                     <Text className="text-error font-cairo-bold text-2xl">مدة السؤال</Text>
                     <Ionicons name="chevron-down" color="#00A6DA" size={30} />
@@ -32,7 +32,7 @@ export default function StartGame2({ setCurrentStep }: { setCurrentStep: Dispatc
                 <Pressable
                     onPress={() => router.replace("/game2/gameBoard")}
                     className="flex-row items-center justify-center p-3 bg-white rounded-2xl"
-                    style={[boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button, { width: 200 }]}
+                    style={[boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)"), { width: 200 }]}
                 >
                     <Text className="text-error font-cairo-bold text-2xl">ابدأ الآن</Text>
                 </Pressable>

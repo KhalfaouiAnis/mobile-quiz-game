@@ -45,7 +45,7 @@ export default UserActionButtons
 
 const styles = StyleSheet.create({
     card: {
-        boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow,
+        boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").boxShadow,
         width: BOX_WIDTH,
         height: BOX_HEIGHT,
         borderRadius: 12,

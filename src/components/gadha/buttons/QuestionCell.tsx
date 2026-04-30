@@ -31,7 +31,7 @@ const QuestionCell = memo(({ question, onPress }: Props) => {
             disabled={isDisabled}
             className="items-center justify-center rounded-xl relative"
             style={{
-                boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").button.boxShadow,
+                boxShadow: boxShadow(4, 4, 0, 0, "rgb(000 000 000 / 1)").boxShadow,
                 backgroundColor: isDisabled ? "rgb(141 136 136 / 0.77)" : "#00A6DA",
                 height: verticalScale(46),
                 width: scale(100),

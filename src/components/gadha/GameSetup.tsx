@@ -3,7 +3,7 @@ import { ActivityIndicator, Platform, Pressable, ScrollView, Text, View } from "
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner-native";
 import { useRouter } from "expo-router";
-import { GADHA_QUESTION_TIME_OPTIONS, TEXT_SCALE_FACOTR } from "@/src/constants";
+import { GADHA_QUESTION_TIME_OPTIONS } from "@/src/constants";
 import { isAxiosError } from "axios";
 import GadhaGameTimePicker from "./GadhaGameTimerPicker";
 import TeamMembersSelector from "./buttons/TeamMembersSelector";
@@ -74,7 +74,7 @@ export default function GameSetup() {
                         <Text
                             numberOfLines={2}
                             ellipsizeMode="tail"
-                            style={{ maxWidth: 200 * TEXT_SCALE_FACOTR }}
+                            style={{ maxWidth: 200 }}
                             className="text-error text-sm text-center font-cairo mt-1"
                         >
                             {errors.subcategoryIds.message}
@@ -88,7 +88,7 @@ export default function GameSetup() {
                 >
                     <View
                         style={{
-                            boxShadow: boxShadow().button.boxShadow,
+                            boxShadow: boxShadow().boxShadow,
                             width: scale(160),
                             height: moderateScale(48)
                         }}

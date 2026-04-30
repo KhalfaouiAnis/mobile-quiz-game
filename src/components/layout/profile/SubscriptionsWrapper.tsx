@@ -11,6 +11,7 @@ import { Package, Subscription_TYPES, SubscriptionResponse } from "@/src/types/i
 import { useQueryClient } from "@tanstack/react-query";
 import AppModal from "../../shared/modal/AppModal";
 import PaymentSucceedModal from "./PaymentSucceedModal";
+import { useInAppPayment } from "@/src/hooks/subscription/useInAppPayment";
 
 interface Props {
     title: string,
@@ -28,23 +29,23 @@ export function packageIcon(subscription_type: Subscription_TYPES) {
 
 export default function SubscriptionWrapper({ title, packages, subscriptions }: Props) {
     const [selectedPackageId, setSelectedPackageId] = useState<number>();
+    const { initiatePayment, status, error, reset } = useInAppPayment();
     const [showModal, setShowModal] = useState(false);
     const { mutate, isPending } = usePurchasePackage()
     const queryClient = useQueryClient();
 
     const handlePurchase = () => {
-        setTimeout(() => setShowModal(true), 500)
-        // mutate(Number(sub), {
-        //     onSuccess() {
-        //         setShowModal(true)
-        //         queryClient.invalidateQueries({ queryKey: ["subscriptions"] })
-        //     }
-        // })
+        // setTimeout(() => setShowModal(true), 500)
         // mutate(Number(selectedPackageId), {
         //     onSuccess() {
         //         queryClient.invalidateQueries({ queryKey: ["subscriptions"] })
         //     }
         // })
+        initiatePayment({
+            amount: { currency: "KWD", value: 2 },
+            customer: { fullName: "Anis", phoneNumber: "00000000" },
+            order: { placedAt: new Date(), products: [{ nameAr: "الاشتراك", nameEn: "Subscription", price: 2, qty: 1 }] }
+        });
     }
 
     return (
@@ -58,7 +59,7 @@ export default function SubscriptionWrapper({ title, packages, subscriptions }: 
                     borderWidth: 1, borderColor: "#FFF900",
                     width: scale(260), height: verticalScale(50),
                     alignItems: "center", justifyContent: "center",
-                    boxShadow: boxShadow(4, 4, 0, 0, "rgba(000 000 000 / 1)").button.boxShadow,
+                    boxShadow: boxShadow(4, 4, 0, 0, "rgba(000 000 000 / 1)").boxShadow,
                 }}>
                     <Text
                         style={{ fontSize: fontScale(22) }}

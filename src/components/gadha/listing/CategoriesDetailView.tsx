@@ -6,6 +6,7 @@ import { CreateGadhaGameSession, GameGadhaSubcategory } from "@/src/types/game.g
 import GameSetup from "../GameSetup";
 import EmptyList from "../../shared/empty-list";
 import { buildSections, FOOTER_HEIGHT, getSectionListTotalHeight, ROW_HEIGHT, ScrollButton, SECTION_HEADER_HEIGHT, SectionHeader, styles, SubcategoryRow } from ".";
+import { toast } from "sonner-native";
 
 const DetailView = ({ selectedCategory, allCategories }: any) => {
     const { getValues, setValue } = useFormContext<CreateGadhaGameSession>()
@@ -35,6 +36,8 @@ const DetailView = ({ selectedCategory, allCategories }: any) => {
             setValue('subcategoryIds', [...current, sub], {
                 shouldValidate: false,
             });
+        } else {
+            toast.info("تم الوصول إلى الحد الأقصى لعدد الفئات، يرجى إلغاء تحديد الفئات المحددة بالفعل", { duration: 5000 })
         }
     }, [getValues, setValue]);
 
